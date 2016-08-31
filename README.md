@@ -99,11 +99,12 @@ Another example with specific values
 let mockedFoo:Foo = mock(Foo);
 
 when(mockedFoo.getBar(1)).thenReturn('one');
-when(mockedFoo.getBar(1)).thenReturn('two');
+when(mockedFoo.getBar(2)).thenReturn('two');
 
 let foo:Foo = instance(mockedFoo);
 
 console.log(foo.getBar(1));	// one
-console.log(foo.getBar(1));	// two
+console.log(foo.getBar(2));	// two
 console.log(foo.getBar(1));	// null - no more behaviors defined
+console.log(foo.getBar(2));	// null - no more behaviors defined
 ```
