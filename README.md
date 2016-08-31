@@ -1,6 +1,6 @@
 # ts-mockito
 
-Mocking library for TypeScript inspired by http://www.mockito.org/
+Mocking library for TypeScript inspired by http://mockito.org/
 
 ## Main features
 
