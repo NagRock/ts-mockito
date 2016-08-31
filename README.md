@@ -78,7 +78,6 @@ verify(mockedFoo.getBar(4)).never();              // was never called with arg =
 If more than one behavior is set, first matching is executed and removed
 
 ```typescript
-
 let mockedFoo:Foo = mock(Foo);
 
 when(mockedFoo.getBar(anyNumber())).thenReturn('one');
@@ -90,5 +89,21 @@ let foo:Foo = instance(mockedFoo);
 console.log(foo.getBar(1));	// one
 console.log(foo.getBar(1));	// two
 console.log(foo.getBar(1));	// three
+console.log(foo.getBar(1));	// null - no more behaviors defined
+```
+
+Another example with specific values
+
+
+```typescript
+let mockedFoo:Foo = mock(Foo);
+
+when(mockedFoo.getBar(1)).thenReturn('one');
+when(mockedFoo.getBar(1)).thenReturn('two');
+
+let foo:Foo = instance(mockedFoo);
+
+console.log(foo.getBar(1));	// one
+console.log(foo.getBar(1));	// two
 console.log(foo.getBar(1));	// null - no more behaviors defined
 ```
