@@ -4,6 +4,9 @@ Mocking library for TypeScript inspired by http://www.mockito.org/
 
 ## Main features
 
+
+* Strongly typed
+* IDE autocomplete
 * `mock` - create mock
 * `when` - specify how mock should behave via:
 	* `thenReturn`, `thenThrowsError` - return value or throw an exception
