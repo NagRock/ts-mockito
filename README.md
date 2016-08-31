@@ -2,8 +2,6 @@
 
 Mocking library for TypeScript inspired by http://www.mockito.org/
 
-Thanks for Szczepan Faber (https://www.linkedin.com/in/szczepiq)
-
 ## Main features
 
 
@@ -117,3 +115,7 @@ console.log(foo.getBar(1));	// null - no more behaviors for arg === 1 defined
 console.log(foo.getBar(2));	// two
 console.log(foo.getBar(2));	// null - no more behaviors for arg ====2 defined
 ```
+
+### Thanks
+
+* Szczepan Faber (https://www.linkedin.com/in/szczepi) 
