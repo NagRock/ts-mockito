@@ -75,7 +75,7 @@ verify(mockedFoo.getBar(4)).never();              // was never called with arg =
 
 ### Recording multiple behaviors
 
-If more than one bahavior is set, first matching is executed and removed
+If more than one behavior is set, first matching is executed and removed
 
 ```typescript
 
