@@ -2,6 +2,8 @@
 
 Mocking library for TypeScript inspired by http://www.mockito.org/
 
+Thanks for Szczepan Faber (https://www.linkedin.com/in/szczepiq)
+
 ## Main features
 
 
