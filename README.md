@@ -26,7 +26,7 @@ let mockedFoo:Foo = mock(Foo);
 // Getting instance from mock
 let foo:Foo = instance(mockedFoo);
 
-// Using mock object
+// Using instance in source code
 foo.getBar(3);
 foo.getBar(5);
 
