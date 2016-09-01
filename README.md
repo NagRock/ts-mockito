@@ -7,13 +7,14 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 * Strongly typed
 * IDE autocomplete
-* `mock` - create mock
-* `when` - specify how mock should behave via:
-	* `thenReturn`, `thenThrowsError` - return value or throw an exception
-* `verify` - check if methods were called with given arguments
+* Mock creation (`mock`)
+* Changeing mock behavior (`when`) via:
+	* `thenReturn` - return value
+	* `thenThrowsError` - throw an error
+* Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString`, `arrayContainig` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
-* recording multiple behaviors
+* Recording multiple behaviors
 
 ## Usage
 
@@ -22,7 +23,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 // Creating mock
 let mockedFoo:Foo = mock(Foo);
 
-// Getting instance
+// Getting instance from mock
 let foo:Foo = instance(mockedFoo);
 
 // Using mock object
@@ -118,4 +119,4 @@ console.log(foo.getBar(2));	// null - no more behaviors for arg ====2 defined
 
 ### Thanks
 
-* Szczepan Faber (https://www.linkedin.com/in/szczepi) 
+* Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
