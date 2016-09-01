@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "lib",
+    "declaration": true,
+    "lib": [
+      "es5",
+      "dom"
+    ],
+    "types": [
+      "jasmine",
+      "node",
+      "lodash"
+    ]
+  }
+}
