@@ -114,7 +114,7 @@ console.log(foo.getBar(1));	// one
 console.log(foo.getBar(1));	// second time one
 console.log(foo.getBar(1));	// null - no more behaviors for arg === 1 defined
 console.log(foo.getBar(2));	// two
-console.log(foo.getBar(2));	// null - no more behaviors for arg ====2 defined
+console.log(foo.getBar(2));	// null - no more behaviors for arg === 2 defined
 ```
 
 ### Thanks
