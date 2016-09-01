@@ -2,6 +2,8 @@
 
 Mocking library for TypeScript inspired by http://mockito.org/
 
+**This is beta version!**
+
 ## Main features
 
 
@@ -12,7 +14,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `thenReturn` - return value
 	* `thenThrowsError` - throw an error
 * Checking if methods were called with given arguments (`verify`)
-	* `anything`, `notNull`, `anyString`, `arrayContainig` etc. - for more flexible comparision
+	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 * Recording multiple behaviors
 
