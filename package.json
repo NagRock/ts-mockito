@@ -1,6 +1,6 @@
 {
   "name": "ts-mockito",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
@@ -9,6 +9,10 @@
   },
   "author": "kuster.maciej@gmail.com",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NagRock/ts-mockito"
+  },
   "devDependencies": {
     "@types/jasmine": "^2.2.33",
     "@types/node": "^6.0.38",
