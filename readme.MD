@@ -18,6 +18,10 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 * Recording multiple behaviors
 
+## Installation
+
+`npm install ts-mockito --save-dev`
+
 ## Usage
 
 ### Basics
