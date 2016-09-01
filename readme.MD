@@ -10,7 +10,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Strongly typed
 * IDE autocomplete
 * Mock creation (`mock`)
-* Changeing mock behavior (`when`) via:
+* Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
 	* `thenThrowsError` - throw an error
 * Checking if methods were called with given arguments (`verify`)
