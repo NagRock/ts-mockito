@@ -262,6 +262,22 @@ describe('verifying mocked object', () => {
             });
         });
     });
+
+    describe('when more than one method has same expectations', () => {
+        it('method call counts are separated for every method', () => {
+            // given
+            let param = 3;
+
+            // when
+            foo.getStringById(param);
+            foo.convertNumberToString(param);
+            foo.convertNumberToString(param);
+
+            // then
+            verify(mockedFoo.getStringById(param)).once();
+            verify(mockedFoo.convertNumberToString(param)).twice();
+        });
+    });
 });
 
 function verifyErrorMessage(error, expectedCallCount, receivedCallCount): void {

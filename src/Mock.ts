@@ -22,11 +22,11 @@ export class Mock {
         return this.mock;
     }
 
-    public getAllMatchingActions(matchers:Array<Matcher>): Array<MethodAction> {
+    public getAllMatchingActions(methodName:string, matchers:Array<Matcher>): Array<MethodAction> {
         let result: Array<MethodAction> = [];
 
         for (let item of this.methodActions) {
-            if (item.isApplicable(matchers)) {
+            if (item.isApplicable(methodName, matchers)) {
                 result.push(item);
             }
         }

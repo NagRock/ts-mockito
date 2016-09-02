@@ -3,7 +3,10 @@ export class MethodAction {
 
     }
 
-    public isApplicable(matchers): boolean {
+    public isApplicable(methodName:string, matchers): boolean {
+        if (this.methodName != methodName) {
+            return false;
+        }
         let allValid = true;
         let index: number = 0;
         for (let arg of this.args) {

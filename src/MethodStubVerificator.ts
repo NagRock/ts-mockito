@@ -30,7 +30,7 @@ export class MethodStubVerificator<T> {
     }
 
     public times(value: number) {
-        let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.matchers);
+        let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
         if (value !== allMatchingActions.length) {
             let msg = this.getErrorBeginning(this.methodToVerify.matchers);
             throw new Error(msg + 'to be called ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
@@ -38,7 +38,7 @@ export class MethodStubVerificator<T> {
     }
 
     public atLeast(value: number) {
-        let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.matchers);
+        let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
         if (value > allMatchingActions.length) {
             let msg = this.getErrorBeginning(this.methodToVerify.matchers);
             throw new Error(msg + 'to be called at least ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
@@ -46,7 +46,7 @@ export class MethodStubVerificator<T> {
     }
 
     public atMost(value: number) {
-        let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.matchers);
+        let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
         if (value < allMatchingActions.length) {
             let msg = this.getErrorBeginning(this.methodToVerify.matchers);
             throw new Error(msg + 'to be called at least ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');

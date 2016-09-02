@@ -3,6 +3,10 @@ export class Foo {
         return value.toString();
     }
 
+    public getStringById(value:number):string {
+        return value.toString();
+    }
+
     public sumTwoNumbers(a:number, b:number):number {
         return a + b;
     }
