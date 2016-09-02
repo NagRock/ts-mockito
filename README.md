@@ -17,6 +17,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
+* Capturing arguments passed to method (`thenCapture`)
 * Recording multiple behaviors
 
 ## Installation
@@ -115,7 +116,56 @@ when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, a
 
 // prints '50' because we've changed sum method implementation to multiply!
 console.log(foo.sumTwoNumbers(5, 10));
-```             
+```
+
+### Capturing method arguments
+
+``` typescript
+let mockedFoo:Foo = mock(Foo);
+let foo:Foo = instance(mockedFoo);
+
+// Create captor for all arguments
+let firstArgCaptor: Captor<number> = new Captor<number>();
+let secondArgCaptor: Captor<number> = new Captor<number>();
+
+// Set matcher with anything() to capture all calls
+when(mockedFoo.sumTwoNumbers(anything(), anything())).thenCapture(firstArgCaptor, secondArgCaptor);
+
+// Call method twice with different values
+foo.sumTwoNumbers(1, 2);
+foo.sumTwoNumbers(3, 4);
+
+// Check first arg captor values
+console.log(firstArgCaptor.getFirstCallValue());    // prints 1
+console.log(firstArgCaptor.getLastCallValue());    // prints 3
+
+// Check second arg captor values
+console.log(secondArgCaptor.getFirstCallValue());    // prints 2
+console.log(secondArgCaptor.getLastCallValue());    // prints 4
+```
+
+You can also capture single arg and give matcher to the other
+
+``` typescript
+let mockedFoo:Foo = mock(Foo);
+let foo:Foo = instance(mockedFoo);
+
+// Create captor for second argument
+let secondArgCaptor: Captor<number> = new Captor<number>();
+
+// Set matcher equal matcher (number === 3) for first arg and anything() for second
+when(mockedFoo.sumTwoNumbers(3, anything())).thenCapture(new Captor(), secondArgCaptor);
+
+// Call method twice with different values
+foo.sumTwoNumbers(1, 2);    // this call will not be captured becasue first arg !== 3
+foo.sumTwoNumbers(3, 4);
+
+// Check second arg captor values
+console.log(secondArgCaptor.getFirstCallValue());    // prints 4
+console.log(secondArgCaptor.getLastCallValue());    // prints 4
+
+// As you can see first and last call values are same, because only second call has been captured
+```
 
 ### Recording multiple behaviors
 

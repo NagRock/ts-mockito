@@ -2,6 +2,8 @@ import {MethodToStub} from './MethodToStub';
 import {ReturnValueMethodStub} from './stub/ReturnValueMethodStub';
 import {ThrowErrorMethodStub} from './stub/ThrowErrorMethodStub';
 import {CallFunctionMethodStub} from './stub/CallFunctionMethodStub';
+import {Captor} from './Captor';
+import {CaptorMethodStub} from './stub/CaptorMethodStub';
 
 export class MethodStubSetter<T> {
     constructor(private methodToStub: MethodToStub) {
@@ -18,5 +20,9 @@ export class MethodStubSetter<T> {
 
     public thenCall(func: (...args:any[]) => any): void {
         this.methodToStub.methodStubCollection.add(new CallFunctionMethodStub(this.methodToStub.matchers, func));
+    }
+
+    public thenCapture(...args:Captor<any>[]):void {
+        this.methodToStub.methodStubCollection.add(new CaptorMethodStub(this.methodToStub.matchers, args));
     }
 }
