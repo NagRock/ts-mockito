@@ -12,7 +12,8 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Mock creation (`mock`)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
-	* `throwsError` - throw an error
+	* `throwError` - throw an error
+	* `thenCall` - call custom method
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
