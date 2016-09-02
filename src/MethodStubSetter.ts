@@ -16,7 +16,7 @@ export class MethodStubSetter<T> {
         this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.methodToStub.matchers, error));
     }
 
-    public thenCall(func: (...args) => any): void {
+    public thenCall(func: (...args:any[]) => any): void {
         this.methodToStub.methodStubCollection.add(new CallFunctionMethodStub(this.methodToStub.matchers, func));
     }
 }
