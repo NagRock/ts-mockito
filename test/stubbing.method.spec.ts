@@ -105,5 +105,76 @@ describe('mocking', () => {
                 expect(error.message).toEqual('sampleError');
             });
         });
+
+        describe('with stubbed function call', () => {
+            it('calls given function', () => {
+                // given
+                let sampleValue = 123;
+                let called = false;
+                when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
+                    called = true;
+                });
+
+                // when
+                foo.convertNumberToString(sampleValue);
+
+                // then
+                expect(called).toBeTruthy();
+            });
+        });
+
+        describe('with stubbed function call', () => {
+            describe('if mocked method is called with different argument', () => {
+                it('dont call given function', () => {
+                    // given
+                    let sampleValue = 123;
+                    let called = false;
+                    when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
+                        called = true;
+                    });
+
+                    // when
+                    foo.convertNumberToString(999);
+
+                    // then
+                    expect(called).toBeFalsy();
+                });
+            });
+        });
+
+        describe('with stubbed function call', () => {
+            it('returns value returned by given function', () => {
+                // given
+                let sampleValue = 123;
+                let expectedResult = 'valueFromFunction';
+                when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
+                    return expectedResult;
+                });
+
+                // when
+                let result = foo.convertNumberToString(sampleValue);
+
+                // then
+                expect(result).toEqual(expectedResult);
+            });
+        });
+
+        describe('with stubbed function call', () => {
+            it('pass arguments to given function', () => {
+                // given
+                let firstNumber = 5;
+                let secondNumber = 10;
+                let expectedResult = 50;
+                when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenCall((arg1:number, arg2:number) => {
+                    return arg1 * arg2;
+                });
+
+                // when
+                let result = foo.sumTwoNumbers(firstNumber, secondNumber);
+
+                // then
+                expect(result).toEqual(expectedResult);
+            });
+        });
     });
 });

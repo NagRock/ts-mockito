@@ -12,7 +12,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Mock creation (`mock`)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
-	* `thenThrowsError` - throw an error
+	* `throwsError` - throw an error
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
@@ -84,6 +84,37 @@ verify(mockedFoo.getBar(2)).atLeast(2);           // was called with arg === 2 m
 verify(mockedFoo.getBar(1)).atMoast(1);           // was called with arg === 1 max one time
 verify(mockedFoo.getBar(4)).never();              // was never called with arg === 4
 ```
+
+### Throwing errors
+
+``` typescript
+let mockedFoo:Foo = mock(Foo);
+
+when(mockedFoo.getBar(10)).throwError(new Error('fatal error'));
+
+let foo:Foo = instance(mockedFoo);
+try {
+    foo.getBar(10);
+} catch (error:Error) {
+    console.log(error.message); // 'fatal error'
+}
+```
+
+### Custom function
+
+You can also stub method with your own implementation
+
+``` typescript
+let mockedFoo:Foo = mock(Foo);
+let foo:Foo = instance(mockedFoo);
+
+when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, arg2:number) => {
+    return arg1 * arg2; 
+});
+
+// prints '50' because we've changed sum method implementation to multiply!
+console.log(foo.sumTwoNumbers(5, 10));
+```             
 
 ### Recording multiple behaviors
 
