@@ -1,4 +1,4 @@
-import {MethodStub} from './MethodStub';
+import {MethodStub} from './stub/MethodStub';
 
 export class MethodStubCollection {
     private hadMoreThanOneBehavior: boolean = false;

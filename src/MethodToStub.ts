@@ -1,5 +1,5 @@
 import {MethodStubCollection} from './MethodStubCollection';
-import {Matcher} from './matcher/Matcher';
+import {Matcher} from './matcher/type/Matcher';
 import {Mock} from './Mock';
 
 export class MethodToStub {

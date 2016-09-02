@@ -1,5 +1,6 @@
 import {MethodToStub} from './MethodToStub';
-import {MethodStub} from './MethodStub';
+import {ReturnValueMethodStub} from './stub/ReturnValueMethodStub';
+import {ThrowErrorMethodStub} from './stub/ThrowErrorMethodStub';
 
 export class MethodStubSetter<T> {
     constructor(private methodToStub: MethodToStub) {
@@ -7,10 +8,10 @@ export class MethodStubSetter<T> {
     }
 
     public thenReturn(value: T): void {
-        this.methodToStub.methodStubCollection.add(new MethodStub(this.methodToStub.matchers, value));
+        this.methodToStub.methodStubCollection.add(new ReturnValueMethodStub(this.methodToStub.matchers, value));
     }
 
-    public throwsError(value: Error): void {
-        this.methodToStub.methodStubCollection.add(new MethodStub(this.methodToStub.matchers, {error: value}));
+    public throwsError(error: Error): void {
+        this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.methodToStub.matchers, error));
     }
 }

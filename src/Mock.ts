@@ -1,9 +1,10 @@
 import {MethodStubCollection} from './MethodStubCollection';
 import {MethodToStub} from './MethodToStub';
-import {MethodStub} from './MethodStub';
-import {Matcher} from './matcher/Matcher';
-import {strictEqual} from './matcher/StrictEqualMatcher';
+import {Matcher} from './matcher/type/Matcher';
+import {strictEqual} from './matcher/type/StrictEqualMatcher';
 import {MethodAction} from './MethodAction';
+import {ReturnValueMethodStub} from './stub/ReturnValueMethodStub';
+import {MethodStub} from './stub/MethodStub';
 
 export class Mock {
     private methodStubCollections: any = {};
@@ -59,7 +60,9 @@ export class Mock {
             this.instance[key] = (...args) => {
                 let action: MethodAction = new MethodAction(key, args);
                 this.methodActions.push(action);
-                return this.getMethodStub(key, args);
+                let methodStub = this.getMethodStub(key, args);
+                methodStub.execute(args);
+                return methodStub.getValue();
             };
         }
     }
@@ -67,13 +70,13 @@ export class Mock {
     private getMethodStub(key, args):MethodStub {
         let methodStub: MethodStubCollection = this.methodStubCollections[key];
         if(!methodStub) {
-            return new MethodStub([], null).getValue();
+            return new ReturnValueMethodStub([], null);
         } else if (methodStub.getHadMoreThanOneBehavior() && methodStub.hasMatching(args)) {
-            return methodStub.getFirstMatchingAndRemove(args).getValue();
+            return methodStub.getFirstMatchingAndRemove(args);
         } else if (methodStub.hasMatching(args)) {
-            return methodStub.getFirstMatching(args).getValue();
+            return methodStub.getFirstMatching(args);
         } else {
-            return new MethodStub([], null).getValue();
+            return new ReturnValueMethodStub([], null);
         }
     }
 }

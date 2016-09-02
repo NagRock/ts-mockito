@@ -1,4 +1,4 @@
-import {Matcher} from './Matcher';
+import {Matcher} from './type/Matcher';
 
 export class MatchersToStringConverter {
     public convert(matchers: Array<Matcher>): string {

@@ -1,5 +1,5 @@
 import {MethodToStub} from './MethodToStub';
-import {Matcher} from './matcher/Matcher';
+import {Matcher} from './matcher/type/Matcher';
 import {MatchersToStringConverter} from './matcher/MatchersToStringConverter';
 
 export class MethodStubVerificator<T> {
