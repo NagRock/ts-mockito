@@ -1,5 +1,6 @@
 import {mock, instance, when} from '../src/ts-mockito';
 import {Foo} from './utils/Foo';
+import {anything} from '../src/matcher/type/AnythingMatcher';
 
 describe('mocking', () => {
     let mockedFoo: Foo;
@@ -12,6 +13,20 @@ describe('mocking', () => {
 
     describe('calling method', () => {
         describe('with stubbed return value', () => {
+            describe('without params', () => {
+                it('returns stubbed value', () => {
+                    // given
+                    let expectedResult = 'fake result';
+                    when(mockedFoo.getBar()).thenReturn(expectedResult);
+
+                    // when
+                    let result = foo.getBar();
+
+                    // then
+                    expect(result).toEqual(expectedResult);
+                });
+            });
+
             describe('with single param', () => {
                 it('returns stubbed value', () => {
                     // given
@@ -174,6 +189,53 @@ describe('mocking', () => {
 
                 // then
                 expect(result).toEqual(expectedResult);
+            });
+        });
+
+        describe('that was found in the constructor code', () => {
+            it('returns mocked value', () => {
+                // given
+                const expectedResult = 'fakeValue';
+                when(mockedFoo.dynamicMethod(anything())).thenReturn(expectedResult);
+
+                // when
+                const result = foo.dynamicMethod();
+
+                // then
+                expect(result).toEqual(expectedResult);
+            });
+        });
+
+        describe('that was found in the function code', () => {
+            it('returns mocked value', () => {
+                // given
+                const expectedResult = 'fakeValue';
+                when(mockedFoo.dynamicMethodInFunction(anything())).thenReturn(expectedResult);
+
+                // when
+                const result = foo.dynamicMethodInFunction();
+
+                // then
+                expect(result).toEqual(expectedResult);
+            });
+        });
+    });
+
+    describe('calling method', () => {
+        describe('that does not exists', () => {
+            it('throws error', () => {
+                // given
+
+                // when
+                let error = null;
+                try {
+                    foo['notExistingMethod']();
+                } catch (e) {
+                    error = e;
+                }
+
+                // then
+                expect(error).not.toBeNull();
             });
         });
     });
