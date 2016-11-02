@@ -15,9 +15,11 @@ export class Mock {
 
     constructor(private clazz: any) {
         this.mock.__tsmockitoInstance = this.instance;
+        this.createMethodStubsFromPrototypeOwnPropertyNames();
         this.createMethodStubsFromPrototypeKeys();
         this.createMethodStubsFromClassCode();
         this.createMethodStubsFromFunctionsCode();
+        this.createInstanceActionListenersFromPrototypeOwnPropertyNames();
         this.createInstanceActionListenersFromPrototypeKeys();
         this.createInstanceActionListenersFromClassCode();
         this.createInstanceActionListenersFromFunctionsCode();
@@ -36,6 +38,17 @@ export class Mock {
             }
         }
         return result;
+    }
+
+    private createMethodStubsFromPrototypeOwnPropertyNames(): void {
+        try {
+            let names = Object.getOwnPropertyNames(this.clazz.prototype);
+            for (let i = 0; i < names.length; i++) {
+                this.createMethodStub(names[i]);
+            }
+        } catch(error){
+            // es5 can throw an error when getOwnPropertyNames is called on primitives
+        }
     }
 
     private createMethodStubsFromPrototypeKeys(): void {
@@ -82,6 +95,17 @@ export class Mock {
 
             return new MethodToStub(this.methodStubCollections[key], matchers, this, key);
         };
+    }
+
+    private createInstanceActionListenersFromPrototypeOwnPropertyNames(): void {
+        try {
+            let names = Object.getOwnPropertyNames(this.clazz.prototype);
+            for (let i = 0; i < names.length; i++) {
+                this.createInstanceActionListener(names[i]);
+            }
+        } catch(error){
+            // es5 can throw an error when getOwnPropertyNames is called on primitives
+        }
     }
 
     private createInstanceActionListenersFromPrototypeKeys(): void {
