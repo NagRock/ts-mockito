@@ -1,9 +1,11 @@
+import {Matcher} from "./matcher/type/Matcher";
+
 export class MethodAction {
     constructor(public methodName: string, public args: Array<any>){
 
     }
 
-    public isApplicable(methodName:string, matchers): boolean {
+    public isApplicable(methodName:string, matchers:Matcher[]): boolean {
         if (this.methodName != methodName) {
             return false;
         }
@@ -13,6 +15,7 @@ export class MethodAction {
             if (matchers[index] && !matchers[index].match(arg)) {
                 allValid = false;
             }
+            index++;
         }
         return allValid;
     }
