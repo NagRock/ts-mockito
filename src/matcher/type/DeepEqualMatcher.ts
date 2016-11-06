@@ -1,4 +1,5 @@
 import {Matcher} from './Matcher';
+import * as _ from 'lodash';
 
 export function deepEqual(expectedValue:any):any {
     return new DeepEqualMatcher(expectedValue);

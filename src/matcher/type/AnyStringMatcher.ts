@@ -1,4 +1,5 @@
 import {Matcher} from './Matcher';
+import * as _ from 'lodash';
 
 export function anyString(): string {
     return new AnyStringMatcher() as any;
