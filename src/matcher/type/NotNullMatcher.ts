@@ -1,4 +1,5 @@
 import {Matcher} from './Matcher';
+import * as _ from 'lodash';
 
 export function notNull(): any {
     return new NotNullMatcher() as any;

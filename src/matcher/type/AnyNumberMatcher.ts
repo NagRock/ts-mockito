@@ -1,4 +1,5 @@
 import {Matcher} from './Matcher';
+import * as _ from 'lodash';
 
 export function anyNumber(): number {
     return new AnyNumberMatcher() as any;
