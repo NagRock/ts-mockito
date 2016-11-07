@@ -4,6 +4,6 @@ export class Matcher {
     }
 
     toString(): string {
-        return '';
+        return "";
     }
 }

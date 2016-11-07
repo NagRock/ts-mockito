@@ -1,6 +1,5 @@
-import {mock, instance, when} from '../src/ts-mockito';
-import {Foo} from './utils/Foo';
-import {anything} from '../src/matcher/type/AnythingMatcher';
+import {mock, instance, when, anything} from "../src/ts-mockito";
+import {Foo} from "./utils/Foo";
 
 describe('mocking', () => {
     let mockedFoo: Foo;
@@ -180,7 +179,7 @@ describe('mocking', () => {
                 let firstNumber = 5;
                 let secondNumber = 10;
                 let expectedResult = 50;
-                when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenCall((arg1:number, arg2:number) => {
+                when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenCall((arg1: number, arg2: number) => {
                     return arg1 * arg2;
                 });
 

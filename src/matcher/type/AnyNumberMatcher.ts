@@ -1,11 +1,7 @@
-import {Matcher} from './Matcher';
-import * as _ from 'lodash';
+import {Matcher} from "./Matcher";
+import * as _ from "lodash";
 
-export function anyNumber(): number {
-    return new AnyNumberMatcher() as any;
-}
-
-class AnyNumberMatcher extends Matcher {
+export class AnyNumberMatcher extends Matcher {
     constructor() {
         super();
     }
@@ -14,7 +10,7 @@ class AnyNumberMatcher extends Matcher {
         return _.isNumber(value);
     }
 
-    toString():string {
-        return 'anyNumber()';
+    toString(): string {
+        return "anyNumber()";
     }
 }

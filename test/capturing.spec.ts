@@ -1,6 +1,5 @@
 import {Foo} from './utils/Foo';
-import {mock, instance, when} from '../src/ts-mockito';
-import {anything} from '../src/matcher/type/AnythingMatcher';
+import {mock, instance, when, anything} from '../src/ts-mockito';
 import {Captor} from '../src/Captor';
 
 describe('capturing method arguments', () => {

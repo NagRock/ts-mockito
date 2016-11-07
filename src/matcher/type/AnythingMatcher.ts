@@ -1,10 +1,6 @@
-import {Matcher} from './Matcher';
+import {Matcher} from "./Matcher";
 
-export function anything(): any {
-    return new AnythingMatcher() as any;
-}
-
-class AnythingMatcher extends Matcher {
+export class AnythingMatcher extends Matcher {
     constructor() {
         super();
     }
@@ -14,6 +10,6 @@ class AnythingMatcher extends Matcher {
     }
 
     toString(): string {
-        return 'anything()';
+        return "anything()";
     }
 }

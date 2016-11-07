@@ -1,5 +1,5 @@
-import {strictEqual} from '../src/matcher/type/StrictEqualMatcher';
 import {ReturnValueMethodStub} from '../src/stub/ReturnValueMethodStub';
+import {strictEqual} from "../src/ts-mockito";
 
 describe('ReturnValueMethodStub', () => {
     describe('checking if given arg is applicable', () => {

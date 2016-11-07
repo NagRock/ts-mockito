@@ -1,11 +1,11 @@
-import {MethodStubCollection} from './MethodStubCollection';
-import {MethodToStub} from './MethodToStub';
-import {Matcher} from './matcher/type/Matcher';
-import {strictEqual} from './matcher/type/StrictEqualMatcher';
-import {MethodAction} from './MethodAction';
-import {ReturnValueMethodStub} from './stub/ReturnValueMethodStub';
-import {MethodStub} from './stub/MethodStub';
-import {RedundantMethodNameInCodeFinder} from './utils/RedundantMethodNameInCodeFinder';
+import {MethodStubCollection} from "./MethodStubCollection";
+import {MethodToStub} from "./MethodToStub";
+import {Matcher} from "./matcher/type/Matcher";
+import {MethodAction} from "./MethodAction";
+import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
+import {MethodStub} from "./stub/MethodStub";
+import {RedundantMethodNameInCodeFinder} from "./utils/RedundantMethodNameInCodeFinder";
+import {strictEqual} from "./ts-mockito";
 
 export class Mock {
     private methodStubCollections: any = {};
@@ -46,7 +46,7 @@ export class Mock {
             for (let i = 0; i < names.length; i++) {
                 this.createMethodStub(names[i]);
             }
-        } catch(error){
+        } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
         }
     }
@@ -103,7 +103,7 @@ export class Mock {
             for (let i = 0; i < names.length; i++) {
                 this.createInstanceActionListener(names[i]);
             }
-        } catch(error){
+        } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
         }
     }
@@ -130,7 +130,7 @@ export class Mock {
         }
     }
 
-    private createInstanceActionListener(key:string):void {
+    private createInstanceActionListener(key: string): void {
         if (this.instance[key]) {
             return;
         }

@@ -1,5 +1,6 @@
 import {Matcher} from '../../../src/matcher/type/Matcher';
-import {between} from '../../../src/matcher/type/BetweenMatcher';
+import {between} from "../../../src/ts-mockito";
+
 describe('BetweenMatcher', () => {
     describe('checking if value matches given min and max', () => {
         let testObj:Matcher = between(5, 10);

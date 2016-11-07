@@ -1,15 +1,11 @@
-import {Matcher} from './Matcher';
+import {Matcher} from "./Matcher";
 
-export function between(min:number, max:number): any {
-    return new BetweenMatcher(min, max) as any;
-}
-
-class BetweenMatcher extends Matcher {
-    constructor(private min:number, private max:number) {
+export class BetweenMatcher extends Matcher {
+    constructor(private min: number, private max: number) {
         super();
 
-        if(min > max) {
-            throw new Error('min value can\'t be greater than max');
+        if (min > max) {
+            throw new Error("between matcher error: min value can\'t be greater than max");
         }
     }
 
@@ -17,7 +13,7 @@ class BetweenMatcher extends Matcher {
         return value >= this.min && value <= this.max;
     }
 
-    toString():string {
-        return 'between(' + this.min + ', ' + this.max + ')';
+    toString(): string {
+        return "between(" + this.min + ", " + this.max + ")";
     }
 }

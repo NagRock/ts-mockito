@@ -1,11 +1,7 @@
-import {Matcher} from './Matcher';
-import * as _ from 'lodash';
+import {Matcher} from "./Matcher";
+import * as _ from "lodash";
 
-export function deepEqual(expectedValue:any):any {
-    return new DeepEqualMatcher(expectedValue);
-}
-
-class DeepEqualMatcher extends Matcher {
+export class DeepEqualMatcher extends Matcher {
     constructor(private expectedValue: any) {
         super();
     }
@@ -14,7 +10,7 @@ class DeepEqualMatcher extends Matcher {
         return _.isEqual(this.expectedValue, value);
     }
 
-    toString():string {
-        return 'deepEqual(' + this.expectedValue + ')';
+    toString(): string {
+        return "deepEqual(" + this.expectedValue + ")";
     }
 }

@@ -1,5 +1,5 @@
-import {strictEqual} from "../src/matcher/type/StrictEqualMatcher";
 import {MethodAction} from "../src/MethodAction";
+import {strictEqual} from "../src/ts-mockito";
 
 describe('MethodAction', () => {
     describe('checking if method with matchers is applicable', () => {
