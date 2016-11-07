@@ -26,11 +26,11 @@ export function instance<T>(mock: T): T {
     return (mock as any).__tsmockitoInstance as T;
 }
 
-export function anyNumber(): number {
+export function anyNumber(): any {
     return new AnyNumberMatcher() as any;
 }
 
-export function anyString(): string {
+export function anyString(): any {
     return new AnyStringMatcher() as any;
 }
 
