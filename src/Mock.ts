@@ -40,6 +40,10 @@ export class Mock {
         return result;
     }
 
+    public getFirstMatchingAction(methodName: string, matchers: Array<Matcher>): MethodAction {
+        return this.getAllMatchingActions(methodName, matchers)[0];
+    }
+
     private createMethodStubsFromPrototypeOwnPropertyNames(): void {
         try {
             let names = Object.getOwnPropertyNames(this.clazz.prototype);

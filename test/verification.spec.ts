@@ -1,13 +1,20 @@
 import {Foo} from './utils/Foo';
 import {mock, instance, verify} from '../src/ts-mockito';
+import {MethodCallToStringConverter} from "../src/utils/MethodCallToStringConverter";
+import {Bar} from "./utils/Bar";
 
 describe('verifying mocked object', () => {
     let mockedFoo: Foo;
     let foo: Foo;
+    let mockedBar: Bar;
+    let bar: Bar;
+    let methodCallToStringConverter: MethodCallToStringConverter = new MethodCallToStringConverter();
 
     beforeEach(() => {
         mockedFoo = mock(Foo);
         foo = instance(mockedFoo);
+        mockedBar = mock(Bar);
+        bar = instance(mockedBar);
     });
 
     describe('when no calls are expected', () => {
@@ -55,7 +62,7 @@ describe('verifying mocked object', () => {
                 }
 
                 //then
-                verifyErrorMessage(error, 0, 1);
+                verifyCallCountErrorMessage(error, 0, 1);
             });
         });
     });
@@ -96,7 +103,7 @@ describe('verifying mocked object', () => {
                 }
 
                 //then
-                verifyErrorMessage(error, 1, 2);
+                verifyCallCountErrorMessage(error, 1, 2);
             });
         });
     });
@@ -137,7 +144,7 @@ describe('verifying mocked object', () => {
                 }
 
                 //then
-                verifyErrorMessage(error, 2, 1);
+                verifyCallCountErrorMessage(error, 2, 1);
             });
         });
     });
@@ -182,7 +189,7 @@ describe('verifying mocked object', () => {
                 }
 
                 //then
-                verifyErrorMessage(error, 3, 4);
+                verifyCallCountErrorMessage(error, 3, 4);
             });
         });
     });
@@ -220,7 +227,7 @@ describe('verifying mocked object', () => {
                 }
 
                 //then
-                verifyErrorMessage(error, 2, 1);
+                verifyCallCountErrorMessage(error, 2, 1);
             });
         });
     });
@@ -258,7 +265,7 @@ describe('verifying mocked object', () => {
                 }
 
                 //then
-                verifyErrorMessage(error, 2, 3);
+                verifyCallCountErrorMessage(error, 2, 3);
             });
         });
     });
@@ -278,9 +285,467 @@ describe('verifying mocked object', () => {
             verify(mockedFoo.convertNumberToString(param)).twice();
         });
     });
+
+    describe('checking if method has been called before other', () => {
+        describe('when both of them are from same object', () => {
+            describe('and method with first param has been called before second', () => {
+                it('doesn`t throw error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    foo.convertNumberToString(firstCallParam);
+                    foo.convertNumberToString(secondCallParam);
+
+                    // then
+                    verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedFoo.convertNumberToString(secondCallParam));
+                });
+            });
+
+            describe('but method with first param has been called after second', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(secondCallParam);
+                    foo.convertNumberToString(firstCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called before');
+                    expect(error.message).toContain('but has been called after.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(secondCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(firstCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called before');
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first and second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called before');
+                    expect(error.message).toContain('none of them has been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+        });
+    });
+
+    describe('checking if method has been called after other', () => {
+        describe('when both of them are from same object', () => {
+            describe('and method with first param has been called after second', () => {
+                it('doesn`t throw error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    foo.convertNumberToString(secondCallParam);
+                    foo.convertNumberToString(firstCallParam);
+
+                    // then
+                    verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedFoo.convertNumberToString(secondCallParam));
+                });
+            });
+
+            describe('but method with first param has been called before second', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(firstCallParam);
+                    foo.convertNumberToString(secondCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain('but has been called before.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(secondCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(firstCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first and second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedFoo.convertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain('none of them has been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+        });
+    });
+
+    describe('checking if method has been called before other', () => {
+        describe('when they are from different objects', () => {
+            describe('and method with first param has been called before second', () => {
+                it('doesn`t throw error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    foo.convertNumberToString(firstCallParam);
+                    bar.differentConvertNumberToString(secondCallParam);
+
+                    // then
+                    verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedBar.differentConvertNumberToString(secondCallParam));
+                });
+            });
+
+            describe('but method with first param has been called after second', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    bar.differentConvertNumberToString(secondCallParam);
+                    foo.convertNumberToString(firstCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called before');
+                    expect(error.message).toContain('but has been called after.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    bar.differentConvertNumberToString(secondCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(firstCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called before');
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first and second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledBefore(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called before');
+                    expect(error.message).toContain('none of them has been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+        });
+    });
+
+    describe('checking if method has been called after other', () => {
+        describe('when they are from different objects', () => {
+            describe('and method with first param has been called after second', () => {
+                it('doesn`t throw error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    bar.differentConvertNumberToString(secondCallParam);
+                    foo.convertNumberToString(firstCallParam);
+
+                    // then
+                    verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedBar.differentConvertNumberToString(secondCallParam));
+                });
+            });
+
+            describe('but method with first param has been called before second', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(firstCallParam);
+                    bar.differentConvertNumberToString(secondCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain('but has been called before.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    bar.differentConvertNumberToString(secondCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+                    foo.convertNumberToString(firstCallParam);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any) + 'has never been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+
+            describe('but method with first and second param has never been called', () => {
+                it('throws error', () => {
+                    // given
+                    let firstCallParam = 5;
+                    let secondCallParam = 10;
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.convertNumberToString(firstCallParam)).calledAfter(mockedBar.differentConvertNumberToString(secondCallParam));
+                    } catch (e) {
+                        error = e;
+                    }
+
+                    // then
+                    const firstCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedFoo.convertNumberToString(firstCallParam) as any));
+                    const secondCallMsgIndex = error.message.indexOf(methodCallToStringConverter.convert(mockedBar.differentConvertNumberToString(secondCallParam) as any));
+                    expect(error.message).toContain('to be called after');
+                    expect(error.message).toContain('none of them has been called.');
+                    expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
+                });
+            });
+        });
+    });
 });
 
-function verifyErrorMessage(error, expectedCallCount, receivedCallCount): void {
+function verifyCallCountErrorMessage(error, expectedCallCount, receivedCallCount): void {
     expect(error.message).toContain(expectedCallCount + ' time(s). But');
     expect(error.message).toContain('has been called ' + receivedCallCount + ' time(s)');
 }

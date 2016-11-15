@@ -2,8 +2,6 @@
 
 Mocking library for TypeScript inspired by http://mockito.org/
 
-**This is beta version!**
-
 ## Main features
 
 
@@ -17,8 +15,10 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
+	* `calledBefore`, `calledAfter` - allows call order verification
 * Capturing arguments passed to method (`thenCapture`)
 * Recording multiple behaviors
+* Readable error messages (ex. 'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).')
 
 ## Installation
 
@@ -85,6 +85,27 @@ verify(mockedFoo.getBar(anyNumber()).times(4);     // was called with any number
 verify(mockedFoo.getBar(2)).atLeast(2);           // was called with arg === 2 min two times
 verify(mockedFoo.getBar(1)).atMoast(1);           // was called with arg === 1 max one time
 verify(mockedFoo.getBar(4)).never();              // was never called with arg === 4
+```
+
+### Call order verification
+
+``` typescript
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+let mockedBar:Bar = mock(Bar);
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+let bar:Bar = instance(mockedBar);
+
+// Some calls
+foo.getBar(1);
+bar.getFoo(2);
+
+// Call order verification
+verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(2));    // foo.getBar(1) has been called before bar.getFoo(2)
+verify(mockedBar.getFoo(2)).calledAfter(mockedFoo.getBar(1));    // bar.getFoo(2) has been called before foo.getBar(1)
+verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(999999));    // throws error (mockedBar.getFoo(999999) has never been called)
 ```
 
 ### Throwing errors

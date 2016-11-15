@@ -1,19 +1,18 @@
-import {MethodToStub} from './MethodToStub';
-import {Matcher} from './matcher/type/Matcher';
-import {MatchersToStringConverter} from './matcher/MatchersToStringConverter';
+import {MethodToStub} from "./MethodToStub";
+import {MethodCallToStringConverter} from "./utils/MethodCallToStringConverter";
 
 export class MethodStubVerificator<T> {
-    private matchersToStringConverter:MatchersToStringConverter = new MatchersToStringConverter();
+    private methodCallToStringConverter: MethodCallToStringConverter = new MethodCallToStringConverter();
 
     constructor(private methodToVerify: MethodToStub) {
 
     }
 
-    public called():void {
+    public called(): void {
         this.atLeast(1);
     }
 
-    public never():void {
+    public never(): void {
         this.times(0);
     }
 
@@ -29,32 +28,67 @@ export class MethodStubVerificator<T> {
         this.times(3);
     }
 
-    public times(value: number) {
+    public times(value: number): void {
         let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
         if (value !== allMatchingActions.length) {
-            let msg = this.getErrorBeginning(this.methodToVerify.matchers);
-            throw new Error(msg + 'to be called ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
+            let methodToVerifyAsString = this.methodCallToStringConverter.convert(this.methodToVerify);
+            throw new Error('Expected "' + methodToVerifyAsString + 'to be called ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
         }
     }
 
-    public atLeast(value: number) {
+    public atLeast(value: number): void {
         let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
         if (value > allMatchingActions.length) {
-            let msg = this.getErrorBeginning(this.methodToVerify.matchers);
-            throw new Error(msg + 'to be called at least ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
+            let methodToVerifyAsString = this.methodCallToStringConverter.convert(this.methodToVerify);
+            throw new Error('Expected "' + methodToVerifyAsString + 'to be called at least ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
         }
     }
 
-    public atMost(value: number) {
+    public atMost(value: number): void {
         let allMatchingActions = this.methodToVerify.mock.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
         if (value < allMatchingActions.length) {
-            let msg = this.getErrorBeginning(this.methodToVerify.matchers);
-            throw new Error(msg + 'to be called at least ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
+            let methodToVerifyAsString = this.methodCallToStringConverter.convert(this.methodToVerify);
+            throw new Error('Expected "' + methodToVerifyAsString + 'to be called at least ' + value + ' time(s). But has been called ' + allMatchingActions.length + ' time(s).');
         }
     }
 
-    private getErrorBeginning(matchers:Array<Matcher>):string {
-        let matchersAsString = this.matchersToStringConverter.convert(matchers);
-        return 'Expected "' + this.methodToVerify.name + '(' + matchersAsString + ')" ';
+    public calledBefore(method: any): void {
+        const firstMethodAction = this.methodToVerify.mock.getFirstMatchingAction(this.methodToVerify.name, this.methodToVerify.matchers);
+        const secondMethodAction = method.mock.getFirstMatchingAction(method.name, method.matchers);
+        let mainMethodToVerifyAsString = this.methodCallToStringConverter.convert(this.methodToVerify);
+        let secondMethodAsString = this.methodCallToStringConverter.convert(method);
+        let errorBeginning = 'Expected "' + mainMethodToVerifyAsString + 'to be called before ' + secondMethodAsString;
+
+        if (firstMethodAction && secondMethodAction) {
+            if (!firstMethodAction.hasBeenCalledBefore(secondMethodAction)) {
+                throw new Error(errorBeginning + 'but has been called after.');
+            }
+        } else if (firstMethodAction && !secondMethodAction) {
+            throw new Error(errorBeginning + 'but ' + secondMethodAsString + 'has never been called.');
+        } else if (!firstMethodAction && secondMethodAction) {
+            throw new Error(errorBeginning + 'but ' + mainMethodToVerifyAsString + 'has never been called.');
+        } else {
+            throw new Error(errorBeginning + 'but none of them has been called.');
+        }
+    }
+
+    public calledAfter(method: any): void {
+        const firstMethodAction = this.methodToVerify.mock.getFirstMatchingAction(this.methodToVerify.name, this.methodToVerify.matchers);
+        const secondMethodAction = method.mock.getFirstMatchingAction(method.name, method.matchers);
+        let mainMethodToVerifyAsString = this.methodCallToStringConverter.convert(this.methodToVerify);
+        let secondMethodAsString = this.methodCallToStringConverter.convert(method);
+        let errorBeginning = 'Expected "' + mainMethodToVerifyAsString + 'to be called after ' + secondMethodAsString;
+
+        if (firstMethodAction && secondMethodAction) {
+            if (firstMethodAction.hasBeenCalledBefore(secondMethodAction)) {
+                throw new Error(errorBeginning + 'but has been called before.');
+            }
+        } else if (firstMethodAction && !secondMethodAction) {
+            throw new Error(errorBeginning + 'but ' + secondMethodAsString + 'has never been called.');
+        } else if (!firstMethodAction && secondMethodAction) {
+            throw new Error(errorBeginning + 'but ' + mainMethodToVerifyAsString + 'has never been called.');
+        } else {
+            throw new Error(errorBeginning + 'but none of them has been called.');
+        }
     }
 }

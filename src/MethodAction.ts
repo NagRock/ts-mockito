@@ -1,8 +1,11 @@
 import {Matcher} from "./matcher/type/Matcher";
 
 export class MethodAction {
-    constructor(public methodName: string, public args: Array<any>){
+    private static globalCallIndex:number = 0;
+    private callIndex:number;
 
+    constructor(public methodName: string, public args: Array<any>){
+        this.callIndex = ++MethodAction.globalCallIndex;
     }
 
     public isApplicable(methodName:string, matchers:Matcher[]): boolean {
@@ -18,5 +21,13 @@ export class MethodAction {
             index++;
         }
         return allValid;
+    }
+
+    public getCallIndex():number {
+        return this.callIndex;
+    }
+
+    public hasBeenCalledBefore(action:MethodAction):boolean {
+        return this.getCallIndex() < action.getCallIndex();
     }
 }

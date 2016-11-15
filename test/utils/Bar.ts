@@ -3,7 +3,7 @@ export class Bar {
         
     }
 
-    public convertNumberToString(value:number):string {
+    public differentConvertNumberToString(value:number):string {
         return value.toString();
     }
 
