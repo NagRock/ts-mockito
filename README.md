@@ -229,3 +229,4 @@ console.log(foo.getBar(2));	// null - no more behaviors for arg === 2 defined
 ### Thanks
 
 * Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
+* Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol) 
