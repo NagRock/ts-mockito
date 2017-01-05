@@ -1,4 +1,4 @@
-import {Mock} from "./Mock";
+import {Mocker} from "./Mock";
 import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodStubSetter} from "./MethodStubSetter";
 import {AnyNumberMatcher} from "./matcher/type/AnyNumberMatcher";
@@ -11,8 +11,8 @@ import {Matcher} from "./matcher/type/Matcher";
 import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 export {Captor} from "./Captor";
 
-export function mock<T>(clazz: {new(...args: any[]): T; }): T {
-    return new Mock(clazz).getMock();
+export function mock<T>(clazz: {new(...args: any[]): T;}): T {
+    return new Mocker(clazz).getMock();
 }
 
 export function verify<T>(method: T): MethodStubVerificator<T> {
@@ -25,6 +25,10 @@ export function when<T>(method: T): MethodStubSetter<T> {
 
 export function instance<T>(mock: T): T {
     return (mock as any).__tsmockitoInstance as T;
+}
+
+export function reset<T>(mock: T): void {
+    (mock as any).__tsmockitoMocker.reset();
 }
 
 export function anyNumber(): any {

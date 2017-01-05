@@ -7,7 +7,7 @@ import {MethodStub} from "./stub/MethodStub";
 import {RedundantMethodNameInCodeFinder} from "./utils/RedundantMethodNameInCodeFinder";
 import {strictEqual} from "./ts-mockito";
 
-export class Mock {
+export class Mocker {
     private methodStubCollections: any = {};
     private methodActions: Array<MethodAction> = [];
     private mock: any = {};
@@ -15,6 +15,7 @@ export class Mock {
 
     constructor(private clazz: any) {
         this.mock.__tsmockitoInstance = this.instance;
+        this.mock.__tsmockitoMocker = this;
         this.createMethodStubsFromPrototypeOwnPropertyNames();
         this.createMethodStubsFromPrototypeKeys();
         this.createMethodStubsFromClassCode();
@@ -27,6 +28,10 @@ export class Mock {
 
     public getMock(): any {
         return this.mock;
+    }
+
+    public reset(): void {
+        this.methodActions = [];
     }
 
     public getAllMatchingActions(methodName: string, matchers: Array<Matcher>): Array<MethodAction> {
