@@ -155,7 +155,7 @@ foo.getBar(1);
 verify(mockedFoo.getBar(1)).twice();      // getBar with arg "1" has been called twice
 
 // Reset mock
-reset(mockedFoo);                         // Reset mock
+reset(mockedFoo);
 
 // Call count verification
 verify(mockedFoo.getBar(1)).never();      // has never been called after reset
