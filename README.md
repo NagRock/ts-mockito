@@ -16,6 +16,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 	* `calledBefore`, `calledAfter` - allows call order verification
+* Resetting mock (`reset`)
 * Capturing arguments passed to method (`thenCapture`)
 * Recording multiple behaviors
 * Readable error messages (ex. 'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).')
@@ -137,6 +138,27 @@ when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, a
 
 // prints '50' because we've changed sum method implementation to multiply!
 console.log(foo.sumTwoNumbers(5, 10));
+```
+
+### Resetting mock
+
+``` typescript
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// Some calls
+foo.getBar(1);
+foo.getBar(1);
+verify(mockedFoo.getBar(1)).twice();      // getBar with arg "1" has been called twice
+
+// Reset mock
+reset(mockedFoo);                         // Reset mock
+
+// Call count verification
+verify(mockedFoo.getBar(1)).never();      // has never been called after reset
 ```
 
 ### Capturing method arguments
