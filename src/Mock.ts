@@ -6,6 +6,7 @@ import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {MethodStub} from "./stub/MethodStub";
 import {RedundantMethodNameInCodeFinder} from "./utils/RedundantMethodNameInCodeFinder";
 import {strictEqual} from "./ts-mockito";
+import {PrototypeKeyCodeGetter} from "./utils/PrototypeKeyCodeGetter";
 
 export class Mocker {
     private methodStubCollections: any = {};
@@ -13,6 +14,7 @@ export class Mocker {
     private mock: any = {};
     private instance: any = {};
     private redundantMethodNameInCodeFinder = new RedundantMethodNameInCodeFinder();
+    private subKeysInCodeFinder = new PrototypeKeyCodeGetter();
 
     constructor(private clazz: any) {
         this.mock.__tsmockitoInstance = this.instance;
@@ -76,7 +78,7 @@ export class Mocker {
 
     private createMethodStubsFromFunctionsCode(): void {
         for (let key in this.clazz.prototype) {
-            const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.prototype[key].toString());
+            const subKeys = this.redundantMethodNameInCodeFinder.find(this.subKeysInCodeFinder.get(this.clazz.prototype, key));
             for (let subKey in subKeys) {
                 this.createMethodStub(subKey);
             }
@@ -133,7 +135,7 @@ export class Mocker {
 
     private createInstanceActionListenersFromFunctionsCode(): void {
         for (let key in this.clazz.prototype) {
-            const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.prototype[key].toString());
+            const subKeys = this.redundantMethodNameInCodeFinder.find(this.subKeysInCodeFinder.get(this.clazz.prototype, key));
             for (let subKey in subKeys) {
                 this.createInstanceActionListener(subKey);
             }
