@@ -12,6 +12,7 @@ export class Mocker {
     private methodActions: Array<MethodAction> = [];
     private mock: any = {};
     private instance: any = {};
+    private redundantMethodNameInCodeFinder = new RedundantMethodNameInCodeFinder();
 
     constructor(private clazz: any) {
         this.mock.__tsmockitoInstance = this.instance;
@@ -67,7 +68,7 @@ export class Mocker {
     }
 
     private createMethodStubsFromClassCode(): void {
-        const subKeys = new RedundantMethodNameInCodeFinder().find(this.clazz.toString());
+        const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.toString());
         for (let subKey in subKeys) {
             this.createMethodStub(subKey);
         }
@@ -75,7 +76,7 @@ export class Mocker {
 
     private createMethodStubsFromFunctionsCode(): void {
         for (let key in this.clazz.prototype) {
-            const subKeys = new RedundantMethodNameInCodeFinder().find(this.clazz.prototype[key].toString());
+            const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.prototype[key].toString());
             for (let subKey in subKeys) {
                 this.createMethodStub(subKey);
             }
@@ -124,7 +125,7 @@ export class Mocker {
     }
 
     private createInstanceActionListenersFromClassCode(): void {
-        const subKeys = new RedundantMethodNameInCodeFinder().find(this.clazz.toString());
+        const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.toString());
         for (let subKey in subKeys) {
             this.createInstanceActionListener(subKey);
         }
@@ -132,7 +133,7 @@ export class Mocker {
 
     private createInstanceActionListenersFromFunctionsCode(): void {
         for (let key in this.clazz.prototype) {
-            const subKeys = new RedundantMethodNameInCodeFinder().find(this.clazz.prototype[key].toString());
+            const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.prototype[key].toString());
             for (let subKey in subKeys) {
                 this.createInstanceActionListener(subKey);
             }
