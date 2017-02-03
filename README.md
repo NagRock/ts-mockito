@@ -16,7 +16,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 	* `calledBefore`, `calledAfter` - allows call order verification
-* Resetting mock (`reset`)
+* Resetting mock (`reset`, `resetCalls`)
 * Capturing arguments passed to method (`thenCapture`)
 * Recording multiple behaviors
 * Readable error messages (ex. 'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).')
@@ -140,7 +140,9 @@ when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, a
 console.log(foo.sumTwoNumbers(5, 10));
 ```
 
-### Resetting mock
+### Resetting mock calls
+
+You can reset just mock call counter
 
 ``` typescript
 // Creating mock
@@ -155,10 +157,35 @@ foo.getBar(1);
 verify(mockedFoo.getBar(1)).twice();      // getBar with arg "1" has been called twice
 
 // Reset mock
+resetCalls(mockedFoo);
+
+// Call count verification
+verify(mockedFoo.getBar(1)).never();      // has never been called after reset
+```
+
+### Resetting mock
+
+Or reset mock call counter with all stubs
+
+``` typescript
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+when(mockedFoo.getBar(1).thenReturn("one")).
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// Some calls
+console.log(foo.getBar(1));               // "one" - as defined in stub
+console.log(foo.getBar(1));               // "one" - as defined in stub
+verify(mockedFoo.getBar(1)).twice();      // getBar with arg "1" has been called twice
+
+// Reset mock
 reset(mockedFoo);
 
 // Call count verification
 verify(mockedFoo.getBar(1)).never();      // has never been called after reset
+console.log(foo.getBar(1));               // null - previously added stub has been removed
 ```
 
 ### Capturing method arguments
