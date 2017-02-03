@@ -1,5 +1,5 @@
 import {Foo} from "./utils/Foo";
-import {mock, instance, verify, reset, anything} from "../src/ts-mockito";
+import {mock, instance, verify, reset, anything, when} from "../src/ts-mockito";
 
 describe("resetting mocked object", () => {
     let mockedFoo: Foo;
@@ -126,6 +126,39 @@ describe("resetting mocked object", () => {
                     expect(e.message).toContain('to be called after');
                     expect(e.message).toContain('but none of them has been called');
                 }
+            });
+        });
+    });
+
+    describe("when object has been stubbed", () => {
+        describe("but later stub has been reset", () => {
+            it("should reset configured stubs", () => {
+                // given
+                when(mockedFoo.convertNumberToString(3)).thenReturn("three");
+                reset(mockedFoo);
+
+                // when
+                const result: string = foo.convertNumberToString(3);
+
+                // then
+                expect(result).toBeNull();
+            });
+        });
+    });
+
+    describe("when object has been stubbed", () => {
+        describe("but later stub has been reset", () => {
+            it("should be able to setup new stubs", () => {
+                // given
+                when(mockedFoo.convertNumberToString(3)).thenReturn("three");
+                reset(mockedFoo);
+                when(mockedFoo.convertNumberToString(3)).thenReturn("newStubbedValue");
+
+                // when
+                const result: string = foo.convertNumberToString(3);
+
+                // then
+                expect(result).toEqual("newStubbedValue");
             });
         });
     });

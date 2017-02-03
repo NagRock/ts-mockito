@@ -34,6 +34,7 @@ export class Mocker {
     }
 
     public reset(): void {
+        this.methodStubCollections = {};
         this.methodActions = [];
     }
 
