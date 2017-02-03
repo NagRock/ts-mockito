@@ -17,10 +17,29 @@ describe('mocking', () => {
 
         });
     });
+
+    describe("mocking object that extends abstract class", () => {
+        it("does not throw null pointer when reading descriptor", () => {
+            // given
+
+            // when
+            mockedFoo = mock(FooWithGetterAndSetter);
+            foo = instance(mockedFoo);
+
+            // then
+        });
+    });
 });
 
-class FooWithGetterAndSetter {
+abstract class SampleAbstractClass {
+    public get sampleString(): string {
+        return "sampleString";
+    }
+}
+
+class FooWithGetterAndSetter extends SampleAbstractClass {
     constructor(private dependency: Bar) {
+        super();
     }
 
     public sampleMethod(): number {
