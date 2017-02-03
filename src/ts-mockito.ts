@@ -31,6 +31,10 @@ export function reset<T>(mock: T): void {
     (mock as any).__tsmockitoMocker.reset();
 }
 
+export function resetCalls<T>(mock: T): void {
+    (mock as any).__tsmockitoMocker.resetCalls();
+}
+
 export function anyNumber(): any {
     return new AnyNumberMatcher() as any;
 }

@@ -38,6 +38,10 @@ export class Mocker {
         this.methodActions = [];
     }
 
+    public resetCalls(): void {
+        this.methodActions = [];
+    }
+
     public getAllMatchingActions(methodName: string, matchers: Array<Matcher>): Array<MethodAction> {
         let result: Array<MethodAction> = [];
 
