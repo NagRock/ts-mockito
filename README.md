@@ -63,6 +63,22 @@ console.log(foo.getBar(3));
 console.log(foo.getBar(999));
 ```
 
+### Stubbing getter value
+
+```
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+
+// stub getter before execution
+when(mockedFoo.sampleGetter).thenReturn('three');
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// prints three
+console.log(foo.sampleGetter);
+```
+
 ### Call count verification
 
 ``` typescript
@@ -280,3 +296,4 @@ console.log(foo.getBar(2));	// null - no more behaviors for arg === 2 defined
 * Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
 * Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol) 
 * Clickmeeting (http://clickmeeting.com)
+* Thomas Hilzendegen (https://github.com/thomashilzendegen)

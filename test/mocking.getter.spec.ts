@@ -34,18 +34,6 @@ describe("mocking", () => {
             foo = instance(mockedFoo);
 
             // when
-            when(mockedFoo.sampleString).thenReturn("sampleString");
-
-            // then
-            expect(foo.sampleString).toBe("sampleString");
-        });
-
-        it("does create own property descriptors on instance", () => {
-            // given
-            mockedFoo = mock(FooWithGetterAndSetter);
-            foo = instance(mockedFoo);
-
-            // when
             when(mockedFoo.twoPlusTwo).thenReturn(42);
 
             // then
@@ -90,8 +78,6 @@ describe("mocking", () => {
 });
 
 abstract class SampleAbstractClass {
-    public sampleField: string;
-    
     public get sampleString(): string {
         return "sampleString";
     }
