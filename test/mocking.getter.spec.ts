@@ -2,12 +2,12 @@ import {mock, instance, when} from "../src/ts-mockito";
 import {Bar} from "./utils/Bar";
 import {MethodToStub} from "../src/MethodToStub";
 
-describe('mocking', () => {
+describe("mocking", () => {
     let mockedFoo: FooWithGetterAndSetter;
     let foo: FooWithGetterAndSetter;
 
-    describe('mocking object with getters and setters', () => {
-        it('does not execute getter or setter code (not throwing null pointer exception)', () => {
+    describe("mocking object with getters and setters", () => {
+        it("does not execute getter or setter code (not throwing null pointer exception)", () => {
             // given
 
             // when
@@ -18,7 +18,7 @@ describe('mocking', () => {
 
         });
 
-        it('does create own property descriptors on mock', () => {
+        it("does create own property descriptors on mock", () => {
             // given
 
             // when
@@ -28,41 +28,51 @@ describe('mocking', () => {
             expect(<any>mockedFoo.twoPlusTwo instanceof MethodToStub).toBe(true);
         });
 
-        it('does create own property descriptors on instance', () => {
+        it("does create own property descriptors on instance", () => {
             // given
-
-            // when
             mockedFoo = mock(FooWithGetterAndSetter);
             foo = instance(mockedFoo);
 
+            // when
+            when(mockedFoo.sampleString).thenReturn("sampleString");
+
+            // then
+            expect(foo.sampleString).toBe("sampleString");
+        });
+
+        it("does create own property descriptors on instance", () => {
+            // given
+            mockedFoo = mock(FooWithGetterAndSetter);
+            foo = instance(mockedFoo);
+
+            // when
             when(mockedFoo.twoPlusTwo).thenReturn(42);
 
             // then
             expect(foo.twoPlusTwo).toBe(42);
         });
 
-        it('does create inherited property descriptors on mock', () => {
+        it("does create inherited property descriptors on mock", () => {
             // given
-
-            // when
             mockedFoo = mock(FooWithGetterAndSetter);
             foo = instance(mockedFoo);
+
+            // when
 
             // then
             expect(<any>mockedFoo.sampleString instanceof MethodToStub).toBe(true);
         });
 
-        it('does create inherited property descriptors on instance', () => {
+        it("does create inherited property descriptors on instance", () => {
             // given
-
-            // when
             mockedFoo = mock(FooWithGetterAndSetter);
             foo = instance(mockedFoo);
 
-            when(mockedFoo.sampleString).thenReturn('42');
+            // when
+            when(mockedFoo.sampleString).thenReturn("42");
 
             // then
-            expect(foo.sampleString).toBe('42');
+            expect(foo.sampleString).toBe("42");
         });
     });
 
@@ -80,6 +90,8 @@ describe('mocking', () => {
 });
 
 abstract class SampleAbstractClass {
+    public sampleField: string;
+    
     public get sampleString(): string {
         return "sampleString";
     }
