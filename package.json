@@ -1,7 +1,7 @@
 {
   "name": "ts-mockito",
   "version": "1.2.0",
-  "description": "",
+  "description": "Mocking library for TypeScript",
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
   "scripts": {
@@ -15,6 +15,15 @@
     "type": "git",
     "url": "https://github.com/NagRock/ts-mockito"
   },
+  "keywords": [
+    "mock",
+    "typescript",
+    "tests",
+    "fake",
+    "stub",
+    "spy",
+    "javascript"
+  ],
   "devDependencies": {
     "@types/jasmine": "^2.2.33",
     "@types/lodash": "^4.14.34",
