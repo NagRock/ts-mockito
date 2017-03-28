@@ -255,40 +255,67 @@ console.log(secondArgCaptor.getLastCallValue());    // prints 4
 
 ### Recording multiple behaviors
 
-If more than one behavior is set, first matching is executed and removed
+You can set multiple returning values for same matching values
 
 ``` typescript
-let mockedFoo:Foo = mock(Foo);
+const mockedFoo:Foo = mock(Foo);
 
-when(mockedFoo.getBar(anyNumber())).thenReturn('one');
-when(mockedFoo.getBar(anyNumber()).thenReturn('two');
-when(mockedFoo.getBar(anyNumber())).thenReturn('three');
+when(mockedFoo.getBar(anyNumber())).thenReturn('one').thenReturn('two').thenReturn('three');
 
-let foo:Foo = instance(mockedFoo);
+const foo:Foo = instance(mockedFoo);
 
 console.log(foo.getBar(1));	// one
 console.log(foo.getBar(1));	// two
 console.log(foo.getBar(1));	// three
-console.log(foo.getBar(1));	// null - no more behaviors defined
+console.log(foo.getBar(1));	// three - last defined behavior will be repeated infinity
 ```
 
 Another example with specific values
 
-
 ``` typescript
 let mockedFoo:Foo = mock(Foo);
 
-when(mockedFoo.getBar(1)).thenReturn('one');
-when(mockedFoo.getBar(1)).thenReturn('second time one');
+when(mockedFoo.getBar(1)).thenReturn('one').thenReturn('another one');
 when(mockedFoo.getBar(2)).thenReturn('two');
 
 let foo:Foo = instance(mockedFoo);
 
 console.log(foo.getBar(1));	// one
-console.log(foo.getBar(1));	// second time one
-console.log(foo.getBar(1));	// null - no more behaviors for arg === 1 defined
 console.log(foo.getBar(2));	// two
-console.log(foo.getBar(2));	// null - no more behaviors for arg === 2 defined
+console.log(foo.getBar(1));	// another one
+console.log(foo.getBar(1));	// another one - this is last defined behavior for arg '1' so it will be repeated
+console.log(foo.getBar(2));	// two
+console.log(foo.getBar(2));	// two - this is last defined behavior for arg '2' so it will be repeated
+```
+
+Short notation:
+
+``` typescript
+const mockedFoo:Foo = mock(Foo);
+
+// You can specify return values as multiple thenReturn args
+when(mockedFoo.getBar(anyNumber())).thenReturn('one', 'two', 'three');
+
+const foo:Foo = instance(mockedFoo);
+
+console.log(foo.getBar(1));	// one
+console.log(foo.getBar(1));	// two
+console.log(foo.getBar(1));	// three
+console.log(foo.getBar(1));	// three - last defined behavior will be repeated infinity
+```
+
+Possible errors:
+
+``` typescript
+const mockedFoo:Foo = mock(Foo);
+
+// When multiple matchers, matches same result:
+when(mockedFoo.getBar(anyNumber())).thenReturn('one');
+when(mockedFoo.getBar(3)).thenReturn('one');
+
+const foo:Foo = instance(mockedFoo);
+foo.getBar(3); // MultipleMatchersMatchSameStubError will be thrown, two matchers match same method call
+
 ```
 
 ### Thanks
