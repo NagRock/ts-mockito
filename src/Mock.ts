@@ -10,7 +10,7 @@ import {PrototypeKeyCodeGetter} from "./utils/PrototypeKeyCodeGetter";
 
 export class Mocker {
     private methodStubCollections: any = {};
-    private methodActions: Array<MethodAction> = [];
+    private methodActions: MethodAction[] = [];
     private mock: any = {};
     private instance: any = {};
     private redundantMethodNameInCodeFinder = new RedundantMethodNameInCodeFinder();
@@ -252,5 +252,9 @@ export class Mocker {
         } else {
             return new ReturnValueMethodStub([], null);
         }
+    }
+
+    getActionsByName(name: string): MethodAction[] {
+        return this.methodActions.filter(action => action.methodName === name);
     }
 }

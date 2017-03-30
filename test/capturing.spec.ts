@@ -1,8 +1,7 @@
-import {Foo} from './utils/Foo';
-import {mock, instance, when, anything} from '../src/ts-mockito';
-import {Captor} from '../src/Captor';
+import {Foo} from "./utils/Foo";
+import {capture, instance, mock} from "../src/ts-mockito";
 
-describe('capturing method arguments', () => {
+describe("capturing method arguments", () => {
     let mockedFoo: Foo;
     let foo: Foo;
 
@@ -11,47 +10,44 @@ describe('capturing method arguments', () => {
         foo = instance(mockedFoo);
     });
 
-    describe('when method has been called', () => {
-        it('captures all arguments passed to it', () => {
+    describe("when method has been called", () => {
+        it("captures all arguments passed to it", () => {
             // given
-            let firstArgCaptor: Captor<number> = new Captor<number>();
-            let secondArgCaptor: Captor<number> = new Captor<number>();
-            when(mockedFoo.sumTwoNumbers(anything(), anything())).thenCapture(firstArgCaptor, secondArgCaptor);
 
             // when
-            foo.sumTwoNumbers(5, 10);
-            foo.sumTwoNumbers(15, 20);
+            foo.concatStringWithNumber("first", 1);
+            foo.concatStringWithNumber("second", 2);
+            foo.concatStringWithNumber("third", 3);
 
             // then
-            expect(firstArgCaptor.getFirstCallValue()).toEqual(5);
-            expect(firstArgCaptor.getCallValueByIndex(0)).toEqual(5);
-            expect(firstArgCaptor.getSecondCallValue()).toEqual(15);
-            expect(firstArgCaptor.getLastCallValue()).toEqual(15);
-            expect(firstArgCaptor.getCallValueByIndex(1)).toEqual(15);
-
-            expect(secondArgCaptor.getFirstCallValue()).toEqual(10);
-            expect(secondArgCaptor.getCallValueByIndex(0)).toEqual(10);
-            expect(secondArgCaptor.getSecondCallValue()).toEqual(20);
-            expect(secondArgCaptor.getLastCallValue()).toEqual(20);
-            expect(secondArgCaptor.getCallValueByIndex(1)).toEqual(20);
+            expect(capture(mockedFoo.concatStringWithNumber).first()).toEqual(["first", 1]);
+            expect(capture(mockedFoo.concatStringWithNumber).second()).toEqual(["second", 2]);
+            expect(capture(mockedFoo.concatStringWithNumber).third()).toEqual(["third", 3]);
+            expect(capture(mockedFoo.concatStringWithNumber).beforeLast()).toEqual(["second", 2]);
+            expect(capture(mockedFoo.concatStringWithNumber).last()).toEqual(["third", 3]);
+            expect(capture(mockedFoo.concatStringWithNumber).byCallIndex(0)).toEqual(["first", 1]);
+            expect(capture(mockedFoo.concatStringWithNumber).byCallIndex(1)).toEqual(["second", 2]);
+            expect(capture(mockedFoo.concatStringWithNumber).byCallIndex(2)).toEqual(["third", 3]);
         });
     });
 
-    describe('when method has been called', () => {
-        describe('but some calls has been skipped because of not matching values', () => {
-            it('captures only fully matched calls', () => {
+    describe("when method has been called twice", () => {
+        describe("but we want check third call arguments", () => {
+            it("throws error", () => {
                 // given
-                let matchingFirstArg = 15;
-                let secondArgCaptor: Captor<number> = new Captor<number>();
-                when(mockedFoo.sumTwoNumbers(matchingFirstArg, anything())).thenCapture(new Captor(), secondArgCaptor);
+                foo.concatStringWithNumber("first", 1);
+                foo.concatStringWithNumber("second", 2);
 
                 // when
-                foo.sumTwoNumbers(5, 10);
-                foo.sumTwoNumbers(matchingFirstArg, 20);
+                let error;
+                try {
+                    capture(mockedFoo.concatStringWithNumber).third();
+                } catch (e) {
+                    error = e;
+                }
 
-                // then
-                expect(secondArgCaptor.getFirstCallValue()).toEqual(20);
-                expect(secondArgCaptor.getLastCallValue()).toEqual(20);
+                //then
+                expect(error.message).toContain("Cannot capture arguments");
             });
         });
     });

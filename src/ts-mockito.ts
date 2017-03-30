@@ -9,9 +9,22 @@ import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
 import {Matcher} from "./matcher/type/Matcher";
 import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
-export {Captor} from "./Captor";
+import {
+    ArgCaptor,
+    ArgCaptor1,
+    ArgCaptor10,
+    ArgCaptor2,
+    ArgCaptor3,
+    ArgCaptor4,
+    ArgCaptor5,
+    ArgCaptor6,
+    ArgCaptor7,
+    ArgCaptor8,
+    ArgCaptor9
+} from "./capture/ArgCaptor";
+import {MethodToStub} from "./MethodToStub";
 
-export function mock<T>(clazz: {new(...args: any[]): T;}): T {
+export function mock<T>(clazz: { new(...args: any[]): T; }): T {
     return new Mocker(clazz).getMock();
 }
 
@@ -25,6 +38,26 @@ export function when<T>(method: T): MethodStubSetter<T> {
 
 export function instance<T>(mock: T): T {
     return (mock as any).__tsmockitoInstance as T;
+}
+
+export function capture<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6, h: T7, i: T8, j: T9) => any): ArgCaptor10<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>;
+export function capture<T0, T1, T2, T3, T4, T5, T6, T7, T8>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6, h: T7, i: T8) => any): ArgCaptor9<T0, T1, T2, T3, T4, T5, T6, T7, T8>;
+export function capture<T0, T1, T2, T3, T4, T5, T6, T7>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6, h: T7) => any): ArgCaptor8<T0, T1, T2, T3, T4, T5, T6, T7>;
+export function capture<T0, T1, T2, T3, T4, T5, T6>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6) => any): ArgCaptor7<T0, T1, T2, T3, T4, T5, T6>;
+export function capture<T0, T1, T2, T3, T4, T5>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5) => any): ArgCaptor6<T0, T1, T2, T3, T4, T5>;
+export function capture<T0, T1, T2, T3, T4>(method: (a: T0, b: T1, c: T2, d: T3, e: T4) => any): ArgCaptor5<T0, T1, T2, T3, T4>;
+export function capture<T0, T1, T2, T3>(method: (a: T0, b: T1, c: T2, d: T3) => any): ArgCaptor4<T0, T1, T2, T3>;
+export function capture<T0, T1, T2>(method: (a: T0, b: T1, c: T2) => any): ArgCaptor3<T0, T1, T2>;
+export function capture<T0, T1>(method: (a: T0, b: T1) => any): ArgCaptor2<T0, T1>;
+export function capture<T0>(method: (a: T0) => any): ArgCaptor1<T0>;
+export function capture(method: (...args: any[]) => any): ArgCaptor {
+    const methodStub: MethodToStub = method();
+    if (methodStub instanceof MethodToStub) {
+        const actions = methodStub.mocker.getActionsByName(methodStub.name);
+        return new ArgCaptor(actions);
+    } else {
+        throw Error("Cannot capture from not mocked object.");
+    }
 }
 
 export function reset<T>(mock: T): void {

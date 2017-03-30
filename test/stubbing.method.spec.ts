@@ -1,4 +1,4 @@
-import {mock, instance, when, anything} from "../src/ts-mockito";
+import {anything, instance, mock, when} from "../src/ts-mockito";
 import {Foo} from "./utils/Foo";
 
 describe('mocking', () => {
