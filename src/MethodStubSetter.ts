@@ -18,7 +18,7 @@ export class MethodStubSetter<T> {
         return this;
     }
 
-    public throwsError(...rest: Error[]): this {
+    public thenThrow(...rest: Error[]): this {
         for (let error of rest) {
             this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.groupIndex, this.methodToStub.matchers, error));
         }

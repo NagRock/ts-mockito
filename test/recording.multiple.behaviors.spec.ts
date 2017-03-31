@@ -112,7 +112,7 @@ describe("recording multiple behaviors", () => {
             const firstMatchingError = new Error("firstError");
             when(mockedFoo.convertNumberToString(sampleValue))
                 .thenReturn(firstMatchingStubResult)
-                .throwsError(firstMatchingError)
+                .thenThrow(firstMatchingError)
                 .thenReturn(secondMatchingStubResult);
 
             // when

@@ -105,7 +105,7 @@ describe('mocking', () => {
                 // given
                 let sampleValue = 123;
                 let sampleError = new Error('sampleError');
-                when(mockedFoo.convertNumberToString(sampleValue)).throwsError(sampleError);
+                when(mockedFoo.convertNumberToString(sampleValue)).thenThrow(sampleError);
 
                 // when
                 let error = null;
