@@ -4,19 +4,29 @@ import {ThrowErrorMethodStub} from "./stub/ThrowErrorMethodStub";
 import {CallFunctionMethodStub} from "./stub/CallFunctionMethodStub";
 
 export class MethodStubSetter<T> {
+    private static globalGroupIndex: number = 0;
+    private groupIndex: number;
+
     constructor(private methodToStub: MethodToStub) {
-
+        this.groupIndex = ++MethodStubSetter.globalGroupIndex;
     }
 
-    public thenReturn(value: T): void {
-        this.methodToStub.methodStubCollection.add(new ReturnValueMethodStub(this.methodToStub.matchers, value));
+    public thenReturn(...rest: T[]): this {
+        for (let value of rest) {
+            this.methodToStub.methodStubCollection.add(new ReturnValueMethodStub(this.groupIndex, this.methodToStub.matchers, value));
+        }
+        return this;
     }
 
-    public throwsError(error: Error): void {
-        this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.methodToStub.matchers, error));
+    public throwsError(...rest: Error[]): this {
+        for (let error of rest) {
+            this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.groupIndex, this.methodToStub.matchers, error));
+        }
+        return this;
     }
 
-    public thenCall(func: (...args: any[]) => any): void {
-        this.methodToStub.methodStubCollection.add(new CallFunctionMethodStub(this.methodToStub.matchers, func));
+    public thenCall(func: (...args: any[]) => any): this {
+        this.methodToStub.methodStubCollection.add(new CallFunctionMethodStub(this.groupIndex, this.methodToStub.matchers, func));
+        return this;
     }
 }

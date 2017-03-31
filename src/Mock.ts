@@ -244,13 +244,12 @@ export class Mocker {
     private getMethodStub(key, args): MethodStub {
         let methodStub: MethodStubCollection = this.methodStubCollections[key];
         if (!methodStub) {
-            return new ReturnValueMethodStub([], null);
-        } else if (methodStub.getHadMoreThanOneBehavior() && methodStub.hasMatching(args)) {
-            return methodStub.getFirstMatchingAndRemove(args);
-        } else if (methodStub.hasMatching(args)) {
-            return methodStub.getFirstMatching(args);
+            return new ReturnValueMethodStub(-1, [], null);
+        } else if (methodStub.hasMatchingInAnyGroup(args)) {
+            const groupIndex = methodStub.getLastMatchingGroupIndex(args);
+            return methodStub.getFirstMatchingFromGroupAndRemoveIfNotLast(groupIndex, args);
         } else {
-            return new ReturnValueMethodStub([], null);
+            return new ReturnValueMethodStub(-1, [], null);
         }
     }
 

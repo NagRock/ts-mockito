@@ -1,51 +1,67 @@
-import {MethodStub} from './stub/MethodStub';
+import {MethodStub} from "./stub/MethodStub";
 
 export class MethodStubCollection {
-    private hadMoreThanOneBehavior: boolean = false;
-    private items: Array<MethodStub> = [];
+    private items: MethodStub[] = [];
 
     public add(item: MethodStub) {
         this.items.push(item);
-
-        if(this.items.length > 1) {
-            this.hadMoreThanOneBehavior = true;
-        }
     }
 
-    public getFirstMatchingAndRemove(args): MethodStub {
-        let index = this.getFirstMatchingIndex(args);
-        let result = this.getFirstMatching(args);
-        if (index > -1) {
+    public getLastMatchingGroupIndex(args): number {
+        for (let i = this.items.length - 1; i >= 0; i--) {
+            const item = this.items[i];
+            if (item.isApplicable(args)) {
+                return item.getGroupIndex();
+            }
+        }
+        return -1;
+    }
+
+    public getFirstMatchingFromGroupAndRemoveIfNotLast(groupIndex: number, args: any[]): MethodStub {
+        let index = this.getFirstMatchingIndexFromGroup(groupIndex, args);
+        let result = this.getFirstMatchingFromGroup(groupIndex, args);
+        if (index > -1 && this.getItemsCountInGroup(groupIndex) > 1) {
             this.items.splice(index, 1);
         }
         return result;
     }
 
-    public getFirstMatching(args): MethodStub {
+    private getFirstMatchingFromGroup(groupIndex: number, args: any[]): MethodStub {
         for (let item of this.items) {
-            if (item.isApplicable(args)) {
+            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
                 return item;
             }
         }
         return null;
     }
 
-    public getHadMoreThanOneBehavior(): boolean {
-        return this.hadMoreThanOneBehavior;
-    }
-
-    public hasMatching(args): boolean {
-        return this.getFirstMatchingIndex(args) > -1;
-    }
-
-    private getFirstMatchingIndex(args): number {
-        let index = 0;
+    public hasMatchingInAnyGroup(args: any[]): boolean {
         for (let item of this.items) {
             if (item.isApplicable(args)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private getFirstMatchingIndexFromGroup(groupIndex: number, args: any[]): number {
+        let index = 0;
+        for (let item of this.items) {
+            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
                 return index;
             }
             index++;
         }
         return -1;
+    }
+
+    private getItemsCountInGroup(groupIndex: number): number {
+        let result = 0;
+        for (let item of this.items) {
+            if (item.getGroupIndex() === groupIndex) {
+                result++;
+            }
+        }
+        return result;
     }
 }
