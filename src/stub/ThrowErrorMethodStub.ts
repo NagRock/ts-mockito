@@ -1,12 +1,13 @@
 import {Matcher} from '../matcher/type/Matcher';
 import {ArgsToMatchersValidator} from '../matcher/ArgsToMatchersValidator';
 import {MethodStub} from './MethodStub';
+import {AbstractMethodStub} from "./AbstractMethodStub";
 
-export class ThrowErrorMethodStub implements MethodStub {
+export class ThrowErrorMethodStub extends AbstractMethodStub implements MethodStub {
     private validator: ArgsToMatchersValidator = new ArgsToMatchersValidator();
 
-    constructor(private matchers: Array<Matcher>, private error: Error) {
-
+    constructor(protected groupIndex:number, private matchers: Array<Matcher>, private error: Error) {
+        super();
     }
 
     public isApplicable(args: any[]): boolean {

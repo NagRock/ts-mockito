@@ -1,7 +1,7 @@
-import {mock, instance, when, anything} from "../src/ts-mockito";
+import {anything, instance, mock, when} from "../src/ts-mockito";
 import {Foo} from "./utils/Foo";
 
-describe('mocking', () => {
+describe("mocking", () => {
     let mockedFoo: Foo;
     let foo: Foo;
 
@@ -10,12 +10,12 @@ describe('mocking', () => {
         foo = instance(mockedFoo);
     });
 
-    describe('calling method', () => {
-        describe('with stubbed return value', () => {
-            describe('without params', () => {
-                it('returns stubbed value', () => {
+    describe("calling method", () => {
+        describe("with stubbed return value", () => {
+            describe("without params", () => {
+                it("returns stubbed value", () => {
                     // given
-                    let expectedResult = 'fake result';
+                    let expectedResult = "fake result";
                     when(mockedFoo.getBar()).thenReturn(expectedResult);
 
                     // when
@@ -26,10 +26,10 @@ describe('mocking', () => {
                 });
             });
 
-            describe('with single param', () => {
-                it('returns stubbed value', () => {
+            describe("with single param", () => {
+                it("returns stubbed value", () => {
                     // given
-                    let expectedResult = 'sampleResult';
+                    let expectedResult = "sampleResult";
                     let sampleNumber = 10;
                     when(mockedFoo.convertNumberToString(sampleNumber)).thenReturn(expectedResult);
 
@@ -41,8 +41,8 @@ describe('mocking', () => {
                 });
             });
 
-            describe('with two params', () => {
-                it('returns stubbed value if two params matches', () => {
+            describe("with two params", () => {
+                it("returns stubbed value if two params matches", () => {
                     // given
                     let expectedResult = 999;
                     let firstNumber = 20;
@@ -56,7 +56,7 @@ describe('mocking', () => {
                     expect(result).toEqual(expectedResult);
                 });
 
-                it('returns null if first param doesnt match', () => {
+                it("returns null if first param doesnt match", () => {
                     // given
                     let expectedResult = 999;
                     let firstNumber = 20;
@@ -70,7 +70,7 @@ describe('mocking', () => {
                     expect(result).toBeNull();
                 });
 
-                it('returns null if second param doesnt match', () => {
+                it("returns null if second param doesnt match", () => {
                     // given
                     let expectedResult = 999;
                     let firstNumber = 20;
@@ -84,7 +84,7 @@ describe('mocking', () => {
                     expect(result).toBeNull();
                 });
 
-                it('returns null if both params doesnt match', () => {
+                it("returns null if both params doesnt match", () => {
                     // given
                     let expectedResult = 999;
                     let firstNumber = 20;
@@ -100,12 +100,12 @@ describe('mocking', () => {
             });
         });
 
-        describe('with stubbed error', () => {
-            it('throws given error', () => {
+        describe("with stubbed error", () => {
+            it("throws given error", () => {
                 // given
                 let sampleValue = 123;
-                let sampleError = new Error('sampleError');
-                when(mockedFoo.convertNumberToString(sampleValue)).throwsError(sampleError);
+                let sampleError = new Error("sampleError");
+                when(mockedFoo.convertNumberToString(sampleValue)).thenThrow(sampleError);
 
                 // when
                 let error = null;
@@ -116,12 +116,12 @@ describe('mocking', () => {
                 }
 
                 // then
-                expect(error.message).toEqual('sampleError');
+                expect(error.message).toEqual("sampleError");
             });
         });
 
-        describe('with stubbed function call', () => {
-            it('calls given function', () => {
+        describe("with stubbed function call", () => {
+            it("calls given function", () => {
                 // given
                 let sampleValue = 123;
                 let called = false;
@@ -137,9 +137,9 @@ describe('mocking', () => {
             });
         });
 
-        describe('with stubbed function call', () => {
-            describe('if mocked method is called with different argument', () => {
-                it('dont call given function', () => {
+        describe("with stubbed function call", () => {
+            describe("if mocked method is called with different argument", () => {
+                it("dont call given function", () => {
                     // given
                     let sampleValue = 123;
                     let called = false;
@@ -156,11 +156,11 @@ describe('mocking', () => {
             });
         });
 
-        describe('with stubbed function call', () => {
-            it('returns value returned by given function', () => {
+        describe("with stubbed function call", () => {
+            it("returns value returned by given function", () => {
                 // given
                 let sampleValue = 123;
-                let expectedResult = 'valueFromFunction';
+                let expectedResult = "valueFromFunction";
                 when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
                     return expectedResult;
                 });
@@ -173,8 +173,8 @@ describe('mocking', () => {
             });
         });
 
-        describe('with stubbed function call', () => {
-            it('pass arguments to given function', () => {
+        describe("with stubbed function call", () => {
+            it("pass arguments to given function", () => {
                 // given
                 let firstNumber = 5;
                 let secondNumber = 10;
@@ -191,10 +191,10 @@ describe('mocking', () => {
             });
         });
 
-        describe('that was found in the constructor code', () => {
-            it('returns mocked value', () => {
+        describe("that was found in the constructor code", () => {
+            it("returns mocked value", () => {
                 // given
-                const expectedResult = 'fakeValue';
+                const expectedResult = "fakeValue";
                 when(mockedFoo.dynamicMethod(anything())).thenReturn(expectedResult);
 
                 // when
@@ -205,10 +205,10 @@ describe('mocking', () => {
             });
         });
 
-        describe('that was found in the function code', () => {
-            it('returns mocked value', () => {
+        describe("that was found in the function code", () => {
+            it("returns mocked value", () => {
                 // given
-                const expectedResult = 'fakeValue';
+                const expectedResult = "fakeValue";
                 when(mockedFoo.dynamicMethodInFunction(anything())).thenReturn(expectedResult);
 
                 // when
@@ -220,15 +220,15 @@ describe('mocking', () => {
         });
     });
 
-    describe('calling method', () => {
-        describe('that does not exists', () => {
-            it('throws error', () => {
+    describe("calling method", () => {
+        describe("that does not exists", () => {
+            it("throws error", () => {
                 // given
 
                 // when
                 let error = null;
                 try {
-                    foo['notExistingMethod']();
+                    foo["notExistingMethod"]();
                 } catch (e) {
                     error = e;
                 }

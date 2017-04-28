@@ -5,7 +5,7 @@ describe('ReturnValueMethodStub', () => {
     describe('checking if given arg is applicable', () => {
         it('returns true when arg match', () => {
             // given
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([strictEqual(10)], 50);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(10)], 50);
 
             // when
             let result = testObj.isApplicable([10]);
@@ -16,7 +16,7 @@ describe('ReturnValueMethodStub', () => {
 
         it('returns false when arg doesnt match', () => {
             // given
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([strictEqual(10)], 50);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(10)], 50);
 
             // when
             let result = testObj.isApplicable([999]);
@@ -31,7 +31,7 @@ describe('ReturnValueMethodStub', () => {
             // given
             let firstValue = 10;
             let secondValue = 20;
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([strictEqual(firstValue), strictEqual(secondValue)], 50);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(firstValue), strictEqual(secondValue)], 50);
 
             // when
             let result = testObj.isApplicable([firstValue, secondValue]);
@@ -44,7 +44,7 @@ describe('ReturnValueMethodStub', () => {
             // given
             let firstValue = 10;
             let secondValue = 20;
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([strictEqual(firstValue), strictEqual(secondValue)], 50);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(firstValue), strictEqual(secondValue)], 50);
 
             // when
             let result = testObj.isApplicable([30, secondValue]);
@@ -57,7 +57,7 @@ describe('ReturnValueMethodStub', () => {
             // given
             let firstValue = 10;
             let secondValue = 20;
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([strictEqual(firstValue), strictEqual(secondValue)], 50);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(firstValue), strictEqual(secondValue)], 50);
 
             // when
             let result = testObj.isApplicable([firstValue, 30]);
@@ -70,7 +70,7 @@ describe('ReturnValueMethodStub', () => {
             // given
             let firstValue = 10;
             let secondValue = 20;
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([strictEqual(firstValue), strictEqual(secondValue)], 50);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(firstValue), strictEqual(secondValue)], 50);
 
             // when
             let result = testObj.isApplicable([30, 40]);
@@ -84,7 +84,7 @@ describe('ReturnValueMethodStub', () => {
         it('returns it', () => {
             // given
             let mockedValue = 50;
-            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub([], mockedValue);
+            let testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [], mockedValue);
 
             // when
             let result = testObj.getValue();

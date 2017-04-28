@@ -2,6 +2,9 @@
 
 Mocking library for TypeScript inspired by http://mockito.org/
 
+## 1.x to 2.x migration guide
+[1.x to 2.x migration guide](https://github.com/NagRock/ts-mockito/wiki/ts-mockito-1.x-to-2.x-migration-guide)
+
 ## Main features
 
 
@@ -17,7 +20,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 	* `calledBefore`, `calledAfter` - allows call order verification
 * Resetting mock (`reset`, `resetCalls`)
-* Capturing arguments passed to method (`thenCapture`)
+* Capturing arguments passed to method (`capture`)
 * Recording multiple behaviors
 * Readable error messages (ex. 'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).')
 
@@ -210,85 +213,80 @@ console.log(foo.getBar(1));               // null - previously added stub has be
 let mockedFoo:Foo = mock(Foo);
 let foo:Foo = instance(mockedFoo);
 
-// Create captor for all arguments
-let firstArgCaptor: Captor<number> = new Captor<number>();
-let secondArgCaptor: Captor<number> = new Captor<number>();
-
-// Set matcher with anything() to capture all calls
-when(mockedFoo.sumTwoNumbers(anything(), anything())).thenCapture(firstArgCaptor, secondArgCaptor);
-
-// Call method twice with different values
+// Call method
 foo.sumTwoNumbers(1, 2);
-foo.sumTwoNumbers(3, 4);
 
 // Check first arg captor values
-console.log(firstArgCaptor.getFirstCallValue());    // prints 1
-console.log(firstArgCaptor.getLastCallValue());    // prints 3
-
-// Check second arg captor values
-console.log(secondArgCaptor.getFirstCallValue());    // prints 2
-console.log(secondArgCaptor.getLastCallValue());    // prints 4
+const [firstArg, secondArg] = capture(mockedFoo.sumTwoNumbers).last();
+console.log(firstArg);    // prints 1
+console.log(secondArg);    // prints 2
 ```
 
-You can also capture single arg and give matcher to the other
-
-``` typescript
-let mockedFoo:Foo = mock(Foo);
-let foo:Foo = instance(mockedFoo);
-
-// Create captor for second argument
-let secondArgCaptor: Captor<number> = new Captor<number>();
-
-// Set matcher equal matcher (number === 3) for first arg and anything() for second
-when(mockedFoo.sumTwoNumbers(3, anything())).thenCapture(new Captor(), secondArgCaptor);
-
-// Call method twice with different values
-foo.sumTwoNumbers(1, 2);    // this call will not be captured becasue first arg !== 3
-foo.sumTwoNumbers(3, 4);
-
-// Check second arg captor values
-console.log(secondArgCaptor.getFirstCallValue());    // prints 4
-console.log(secondArgCaptor.getLastCallValue());    // prints 4
-
-// As you can see first and last call values are same, because only second call has been captured
-```
+You can also get other calls using `first()`, `second()`, `byCallIndex(3)` and more...
 
 ### Recording multiple behaviors
 
-If more than one behavior is set, first matching is executed and removed
+You can set multiple returning values for same matching values
 
 ``` typescript
-let mockedFoo:Foo = mock(Foo);
+const mockedFoo:Foo = mock(Foo);
 
-when(mockedFoo.getBar(anyNumber())).thenReturn('one');
-when(mockedFoo.getBar(anyNumber()).thenReturn('two');
-when(mockedFoo.getBar(anyNumber())).thenReturn('three');
+when(mockedFoo.getBar(anyNumber())).thenReturn('one').thenReturn('two').thenReturn('three');
 
-let foo:Foo = instance(mockedFoo);
+const foo:Foo = instance(mockedFoo);
 
 console.log(foo.getBar(1));	// one
 console.log(foo.getBar(1));	// two
 console.log(foo.getBar(1));	// three
-console.log(foo.getBar(1));	// null - no more behaviors defined
+console.log(foo.getBar(1));	// three - last defined behavior will be repeated infinitely
 ```
 
 Another example with specific values
 
-
 ``` typescript
 let mockedFoo:Foo = mock(Foo);
 
-when(mockedFoo.getBar(1)).thenReturn('one');
-when(mockedFoo.getBar(1)).thenReturn('second time one');
+when(mockedFoo.getBar(1)).thenReturn('one').thenReturn('another one');
 when(mockedFoo.getBar(2)).thenReturn('two');
 
 let foo:Foo = instance(mockedFoo);
 
 console.log(foo.getBar(1));	// one
-console.log(foo.getBar(1));	// second time one
-console.log(foo.getBar(1));	// null - no more behaviors for arg === 1 defined
 console.log(foo.getBar(2));	// two
-console.log(foo.getBar(2));	// null - no more behaviors for arg === 2 defined
+console.log(foo.getBar(1));	// another one
+console.log(foo.getBar(1));	// another one - this is last defined behavior for arg '1' so it will be repeated
+console.log(foo.getBar(2));	// two
+console.log(foo.getBar(2));	// two - this is last defined behavior for arg '2' so it will be repeated
+```
+
+Short notation:
+
+``` typescript
+const mockedFoo:Foo = mock(Foo);
+
+// You can specify return values as multiple thenReturn args
+when(mockedFoo.getBar(anyNumber())).thenReturn('one', 'two', 'three');
+
+const foo:Foo = instance(mockedFoo);
+
+console.log(foo.getBar(1));	// one
+console.log(foo.getBar(1));	// two
+console.log(foo.getBar(1));	// three
+console.log(foo.getBar(1));	// three - last defined behavior will be repeated infinity
+```
+
+Possible errors:
+
+``` typescript
+const mockedFoo:Foo = mock(Foo);
+
+// When multiple matchers, matches same result:
+when(mockedFoo.getBar(anyNumber())).thenReturn('one');
+when(mockedFoo.getBar(3)).thenReturn('one');
+
+const foo:Foo = instance(mockedFoo);
+foo.getBar(3); // MultipleMatchersMatchSameStubError will be thrown, two matchers match same method call
+
 ```
 
 ### Thanks

@@ -129,23 +129,4 @@ describe("resetting mocked object", () => {
             });
         });
     });
-
-    describe("when object has been stubbed", () => {
-        describe("but later stub has been reset", () => {
-            it("should not reset stubs", () => {
-                // given
-                when(mockedFoo.convertNumberToString(3)).thenReturn("three");
-                resetCalls(mockedFoo);
-                when(mockedFoo.convertNumberToString(3)).thenReturn("newStubbedValue");
-
-                // when
-                const firstResult: string = foo.convertNumberToString(3);
-                const secondResult: string = foo.convertNumberToString(3);
-
-                // then
-                expect(firstResult).toEqual("three");
-                expect(secondResult).toEqual("newStubbedValue");
-            });
-        });
-    });
 });
