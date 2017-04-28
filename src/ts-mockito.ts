@@ -1,14 +1,3 @@
-import {Mocker} from "./Mock";
-import {MethodStubVerificator} from "./MethodStubVerificator";
-import {MethodStubSetter} from "./MethodStubSetter";
-import {AnyNumberMatcher} from "./matcher/type/AnyNumberMatcher";
-import {AnyStringMatcher} from "./matcher/type/AnyStringMatcher";
-import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
-import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
-import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
-import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
-import {Matcher} from "./matcher/type/Matcher";
-import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 import {
     ArgCaptor,
     ArgCaptor1,
@@ -20,9 +9,20 @@ import {
     ArgCaptor6,
     ArgCaptor7,
     ArgCaptor8,
-    ArgCaptor9
+    ArgCaptor9,
 } from "./capture/ArgCaptor";
+import {AnyNumberMatcher} from "./matcher/type/AnyNumberMatcher";
+import {AnyStringMatcher} from "./matcher/type/AnyStringMatcher";
+import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
+import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
+import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
+import {Matcher} from "./matcher/type/Matcher";
+import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
+import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
+import {MethodStubSetter} from "./MethodStubSetter";
+import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
+import {Mocker} from "./Mock";
 
 export function mock<T>(clazz: { new(...args: any[]): T; }): T {
     return new Mocker(clazz).getMock();
