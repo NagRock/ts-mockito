@@ -270,7 +270,7 @@ const foo:Foo = instance(mockedFoo);
 console.log(foo.getBar(1));	// one
 console.log(foo.getBar(1));	// two
 console.log(foo.getBar(1));	// three
-console.log(foo.getBar(1));	// three - last defined behavior will be repeated infinity
+console.log(foo.getBar(1));	// three - last defined behavior will be repeated infinitely
 ```
 
 Another example with specific values
