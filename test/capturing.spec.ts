@@ -20,6 +20,9 @@ describe("capturing method arguments", () => {
             foo.concatStringWithNumber("third", 3);
 
             // then
+            const [firstCapturedValue, secondCapturedValue] = capture(mockedFoo.concatStringWithNumber).first();
+            expect(firstCapturedValue).toEqual("first");
+            expect(secondCapturedValue).toEqual(1);
             expect(capture(mockedFoo.concatStringWithNumber).first()).toEqual(["first", 1]);
             expect(capture(mockedFoo.concatStringWithNumber).second()).toEqual(["second", 2]);
             expect(capture(mockedFoo.concatStringWithNumber).third()).toEqual(["third", 3]);
