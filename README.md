@@ -15,6 +15,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `thenReturn` - return value
 	* `throwError` - throw an error
 	* `thenCall` - call custom method
+* Changing field values (`fields`)
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
@@ -80,6 +81,29 @@ let foo:Foo = instance(mockedFoo);
 
 // prints three
 console.log(foo.sampleGetter);
+```
+
+### Setting field values
+
+```
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+
+// set single field value
+fields(mockedFoo).setValue('myField', 'myValue');
+// set multiple field values at once
+fields(mockedFoo).setValues({
+    'myField2': 'myValue2',
+	'myField3': 42
+});
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// prints myValue, myValue2, 42
+console.log(foo.myField);
+console.log(foo.myField2);
+console.log(foo.myField3);
 ```
 
 ### Call count verification
@@ -184,12 +208,13 @@ verify(mockedFoo.getBar(1)).never();      // has never been called after reset
 
 ### Resetting mock
 
-Or reset mock call counter with all stubs
+Or reset mock call counter with all stubs and fields
 
 ``` typescript
 // Creating mock
 let mockedFoo:Foo = mock(Foo);
-when(mockedFoo.getBar(1).thenReturn("one")).
+when(mockedFoo.getBar(1).thenReturn("one"));
+fields(mockedFoo).setValue('myField', 'myValue');
 
 // Getting instance
 let foo:Foo = instance(mockedFoo);
@@ -197,6 +222,7 @@ let foo:Foo = instance(mockedFoo);
 // Some calls
 console.log(foo.getBar(1));               // "one" - as defined in stub
 console.log(foo.getBar(1));               // "one" - as defined in stub
+console.log(foo.myField);                 // "myValue" - as defined in stub
 verify(mockedFoo.getBar(1)).twice();      // getBar with arg "1" has been called twice
 
 // Reset mock
@@ -205,6 +231,7 @@ reset(mockedFoo);
 // Call count verification
 verify(mockedFoo.getBar(1)).never();      // has never been called after reset
 console.log(foo.getBar(1));               // null - previously added stub has been removed
+console.log(foo.myField);                 // undefined - previously set field has been unset
 ```
 
 ### Capturing method arguments
