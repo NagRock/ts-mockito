@@ -1,4 +1,8 @@
 export class Foo {
+    bar: number;
+    baz: string;
+    qoo: Date;
+
     public dynamicMethod: Function;
     public dynamicMethodInFunction: Function;
 

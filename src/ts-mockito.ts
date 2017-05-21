@@ -23,6 +23,7 @@ import {MethodStubSetter} from "./MethodStubSetter";
 import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
 import {Mocker} from "./Mock";
+import {FieldValueSetter} from "./FieldValueSetter";
 
 export function mock<T>(clazz: { new(...args: any[]): T; }): T {
     return new Mocker(clazz).getMock();
@@ -34,6 +35,10 @@ export function verify<T>(method: T): MethodStubVerificator<T> {
 
 export function when<T>(method: T): MethodStubSetter<T> {
     return new MethodStubSetter(method as any);
+}
+
+export function fields<T>(mock: T): FieldValueSetter<T> {
+    return new FieldValueSetter(mock);
 }
 
 export function instance<T>(mock: T): T {
