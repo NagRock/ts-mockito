@@ -11,6 +11,10 @@ export class DeepEqualMatcher extends Matcher {
     }
 
     toString(): string {
-        return "deepEqual(" + this.expectedValue + ")";
+        if(this.expectedValue instanceof Array) {
+            return `deepEqual([${this.expectedValue}])`;
+        } else {
+            return `deepEqual(${this.expectedValue})`;
+        }
     }
 }

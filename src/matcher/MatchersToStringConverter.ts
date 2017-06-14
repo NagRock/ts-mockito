@@ -2,10 +2,10 @@ import {Matcher} from './type/Matcher';
 
 export class MatchersToStringConverter {
     public convert(matchers: Array<Matcher>): string {
-        let result: string = '';
+        let result: string[] = [];
         for (let matcher of matchers) {
-            result += matcher.toString();
+            result.push(matcher.toString());
         }
-        return result;
+        return result.join(", ");
     }
 }

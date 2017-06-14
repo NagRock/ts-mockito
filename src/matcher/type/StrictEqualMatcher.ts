@@ -10,6 +10,10 @@ export class StrictEqualMatcher extends Matcher {
     }
 
     toString(): string {
-        return "strictEqual(" + this.expectedValue + ")";
+        if(this.expectedValue instanceof Array) {
+            return `strictEqual([${this.expectedValue}])`;
+        } else {
+            return `strictEqual(${this.expectedValue})`;
+        }
     }
 }
