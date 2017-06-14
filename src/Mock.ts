@@ -11,6 +11,7 @@ import {PrototypeKeyCodeGetter} from "./utils/PrototypeKeyCodeGetter";
 export class Mocker {
     private methodStubCollections: any = {};
     private methodActions: MethodAction[] = [];
+    private setFields: any = {};
     private mock: any = {};
     private instance: any = {};
     private redundantMethodNameInCodeFinder = new RedundantMethodNameInCodeFinder();
@@ -38,6 +39,10 @@ export class Mocker {
     public reset(): void {
         this.methodStubCollections = {};
         this.methodActions = [];
+        for (const key in this.setFields) {
+            delete this.instance[key];
+        }
+        this.setFields = {};
     }
 
     public resetCalls(): void {
@@ -57,6 +62,11 @@ export class Mocker {
 
     public getFirstMatchingAction(methodName: string, matchers: Array<Matcher>): MethodAction {
         return this.getAllMatchingActions(methodName, matchers)[0];
+    }
+
+    public setFieldValue(fieldName: string, value: any) {
+        this.setFields[fieldName] = true;
+        this.instance[fieldName] = value;
     }
 
     private createMethodStubsFromPrototypeOwnPropertyDescriptors(prototype: any = this.clazz.prototype): void {

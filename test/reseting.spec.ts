@@ -1,5 +1,5 @@
 import {Foo} from "./utils/Foo";
-import {mock, instance, verify, reset, anything, when} from "../src/ts-mockito";
+import {mock, instance, verify, reset, anything, when, fields} from "../src/ts-mockito";
 
 describe("resetting mocked object", () => {
     let mockedFoo: Foo;
@@ -159,6 +159,27 @@ describe("resetting mocked object", () => {
 
                 // then
                 expect(result).toEqual("newStubbedValue");
+            });
+        });
+    });
+
+    describe("when field has been set", () => {
+        describe("but later stub has been reset", () => {
+            it("fields should not be set", () => {
+                // given
+                fields(mockedFoo).setValues({
+                    "bar": 42,
+                    "baz": "Test",
+                    "qoo": new Date()
+                });
+                
+                // when
+                reset(mockedFoo);
+
+                // then
+                expect(foo.bar).toBeUndefined();
+                expect(foo.baz).toBeUndefined();
+                expect(foo.qoo).toBeUndefined();
             });
         });
     });
