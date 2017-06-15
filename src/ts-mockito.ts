@@ -1,3 +1,4 @@
+import { AnyOfClassMatcher } from './matcher/type/AnyOfClassMatcher';
 import {
     ArgCaptor,
     ArgCaptor1,
@@ -66,6 +67,10 @@ export function reset<T>(mock: T): void {
 
 export function resetCalls<T>(mock: T): void {
     (mock as any).__tsmockitoMocker.resetCalls();
+}
+
+export function anyOfClass<T>(expectedClass: { new (...args: any[]): T }): any {
+    return new AnyOfClassMatcher(expectedClass) as any;
 }
 
 export function anyNumber(): any {

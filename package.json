@@ -5,8 +5,8 @@
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
   "scripts": {
-    "compile": "rm -rf lib && ./node_modules/.bin/tsc -p ./src",
-    "test": "npm run compile && ./node_modules/.bin/karma start karma.conf.js --single-run",
+    "compile": "rm -rf lib && .\\node_modules\\.bin\\tsc -p ./src",
+    "test": "npm run compile && .\\node_modules\\.bin\\karma start karma.conf.js --single-run",
     "test:watch": "npm run compile && ./node_modules/.bin/karma start karma.conf.js"
   },
   "author": "kuster.maciej@gmail.com",
