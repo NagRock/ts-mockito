@@ -16,7 +16,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `throwError` - throw an error
 	* `thenCall` - call custom method
 * Checking if methods were called with given arguments (`verify`)
-	* `anything`, `notNull`, `anyString` etc. - for more flexible comparision
+	* `anything`, `notNull`, `anyString`, `anyOfClass` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 	* `calledBefore`, `calledAfter` - allows call order verification
 * Resetting mock (`reset`, `resetCalls`)
