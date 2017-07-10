@@ -1,4 +1,6 @@
 export class RedundantMethodNameInCodeFinder {
+    private notMockableFunctionNames: string[] = ["hasOwnProperty"];
+
     find(code: string): any {
         let result: any = [];
         let subCodes: Array<string> = code.match(/\.(.{0,40})\(/g);
@@ -7,7 +9,9 @@ export class RedundantMethodNameInCodeFinder {
                 let methodNames = subCode.match(/[a-zA-Z_][a-zA-Z0-9_$]+/g);
                 if (methodNames && methodNames.length > 0) {
                     for (let methodName of methodNames) {
-                        result[methodName] = true;
+                        if (this.notMockableFunctionNames.indexOf(methodName) < 0) {
+                            result[methodName] = true;
+                        }
                     }
                 }
             }

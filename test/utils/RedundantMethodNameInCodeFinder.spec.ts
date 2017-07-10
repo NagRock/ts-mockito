@@ -14,6 +14,17 @@ describe('RedundantMethodNameInCodeFinder', () => {
             expect(result['toString']).toBeTruthy();
             expect(result['anonymousMethod']).toBeTruthy();
         });
+
+        it('should not find hasOwnProperty as it should not be mocked (because its used by mockito to evaluate properties)', () => {
+            // given
+            const code = getSampleCode();
+
+            // when
+            const result = new RedundantMethodNameInCodeFinder().find(code);
+
+            // then
+            expect(result['hasOwnProperty'] instanceof Function).toBeTruthy();
+        });
     });
 });
 
@@ -23,6 +34,7 @@ export class Foo {
     constructor (private temp:string) {
         this.anonymousMethod = function(arg) {
             console.log(arg);
+            temp.hasOwnProperty("fakeProperty");
         }
     }
     
