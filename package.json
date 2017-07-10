@@ -39,7 +39,7 @@
     "karma-webpack": "^2.0.3",
     "sourcemap": "^0.1.0",
     "ts-helpers": "^1.1.1",
-    "typescript": "^2.2.2",
+    "typescript": "^2.4.0",
     "webpack": "^2.3.2"
   },
   "dependencies": {
