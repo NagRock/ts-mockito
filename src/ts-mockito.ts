@@ -26,7 +26,7 @@ import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
 import {Mocker} from "./Mock";
 
-export function mock<T>(clazz: { new(...args: any[]): T; }): T {
+export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
     return new Mocker(clazz).getMock();
 }
 

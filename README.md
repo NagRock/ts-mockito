@@ -10,7 +10,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 * Strongly typed
 * IDE autocomplete
-* Mock creation (`mock`)
+* Mock creation (`mock`) (also abstract classes)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
 	* `throwError` - throw an error
@@ -286,6 +286,23 @@ when(mockedFoo.getBar(3)).thenReturn('one');
 
 const foo:Foo = instance(mockedFoo);
 foo.getBar(3); // MultipleMatchersMatchSameStubError will be thrown, two matchers match same method call
+
+```
+
+### Mocking types
+
+You can mock abstract classes
+
+``` typescript
+const mockedFoo: SampleAbstractClass = mock(SampleAbstractClass);
+const foo: SampleAbstractClass = instance(mockedFoo);
+```
+
+You can also mock generic classes, but note that generic type is just needed by mock type definition
+
+``` typescript
+const mockedFoo: SampleGeneric<SampleInterface> = mock(SampleGeneric);
+const foo: SampleGeneric<SampleInterface> = instance(mockedFoo);
 
 ```
 
