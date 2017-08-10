@@ -289,6 +289,70 @@ foo.getBar(3); // MultipleMatchersMatchSameStubError will be thrown, two matcher
 
 ```
 
+### Mocking types
+
+You can mock abstract classes
+
+``` typescript
+const mockedFoo = mock(SampleAbstractClass);
+const foo = instance(mockedFoo);
+
+abstract class SampleAbstractClass {
+    dependency:Bar;
+
+    public get sampleString(): string {
+        return "sampleString";
+    }
+
+    public sampleMethod(): number {
+        return 4;
+    }
+
+    public get twoPlusTwo(): number {
+        return this.dependency.sumTwoNumbers(2, 2);
+    }
+
+    public set twoPlusTwo(value: number) {
+        this.dependency.sumTwoNumbers(value, 0);
+    }
+}
+
+```
+
+You can also mock generic classes, but note that the type parameter can't be set
+
+``` typescript
+
+const mockedFoo = mock(SampleGeneric);
+const foo = instance(mockedFoo);
+
+interface SampleInterface {
+    dependency:Bar;
+
+    sampleMethod(): number;
+}
+
+class SampleGeneric<T> {
+    dependency: Bar;
+
+    public get sampleString(): string {
+        return "sampleString";
+    }
+
+    public sampleMethod(): number {
+        return 4;
+    }
+
+    public get twoPlusTwo(): number {
+        return this.dependency.sumTwoNumbers(2, 2);
+    }
+
+    public set twoPlusTwo(value: number) {
+        this.dependency.sumTwoNumbers(value, 0);
+    }
+}
+```
+
 ### Thanks
 
 * Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
