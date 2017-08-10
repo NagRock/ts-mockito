@@ -1,6 +1,6 @@
-import {mock, instance, when} from "../src/ts-mockito";
-import {Bar} from "./utils/Bar";
 import {MethodToStub} from "../src/MethodToStub";
+import {instance, mock, when} from "../src/ts-mockito";
+import {Bar} from "./utils/Bar";
 
 describe("mocking", () => {
     describe("mocking abstract class", () => {
@@ -89,6 +89,20 @@ describe("mocking", () => {
             expect(<any>mockedFoo.twoPlusTwo instanceof MethodToStub).toBe(true);
         });
 
+        it("allows to mock method with generic return type value (with IDE completion)", () => {
+            // given
+            mockedFoo = mock(SampleGeneric);
+            foo = instance(mockedFoo);
+            const expectedResult = new SampleInterfaceImplementation();
+            when(mockedFoo.getGenericTypedValue()).thenReturn(expectedResult);
+
+            // when
+            const result = foo.getGenericTypedValue();
+
+            // then
+            expect(expectedResult).toEqual(result);
+        });
+
         it("does create own property descriptors on instance", () => {
             // given
             mockedFoo = mock(SampleGeneric);
@@ -127,7 +141,7 @@ describe("mocking", () => {
 });
 
 abstract class SampleAbstractClass {
-    dependency:Bar;
+    dependency: Bar;
 
     public get sampleString(): string {
         return "sampleString";
@@ -147,9 +161,17 @@ abstract class SampleAbstractClass {
 }
 
 interface SampleInterface {
-    dependency:Bar;
+    dependency: Bar;
 
     sampleMethod(): number;
+}
+
+class SampleInterfaceImplementation implements SampleInterface {
+    dependency: Bar;
+
+    public sampleMethod(): number {
+        return 999;
+    }
 }
 
 class SampleGeneric<T> {
@@ -169,5 +191,9 @@ class SampleGeneric<T> {
 
     public set twoPlusTwo(value: number) {
         this.dependency.sumTwoNumbers(value, 0);
+    }
+
+    public getGenericTypedValue(): T {
+        return null;
     }
 }
