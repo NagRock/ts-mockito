@@ -10,7 +10,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 * Strongly typed
 * IDE autocomplete
-* Mock creation (`mock`)
+* Mock creation (`mock`) (also abstract classes)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
 	* `throwError` - throw an error
@@ -294,63 +294,16 @@ foo.getBar(3); // MultipleMatchersMatchSameStubError will be thrown, two matcher
 You can mock abstract classes
 
 ``` typescript
-const mockedFoo = mock(SampleAbstractClass);
-const foo = instance(mockedFoo);
-
-abstract class SampleAbstractClass {
-    dependency:Bar;
-
-    public get sampleString(): string {
-        return "sampleString";
-    }
-
-    public sampleMethod(): number {
-        return 4;
-    }
-
-    public get twoPlusTwo(): number {
-        return this.dependency.sumTwoNumbers(2, 2);
-    }
-
-    public set twoPlusTwo(value: number) {
-        this.dependency.sumTwoNumbers(value, 0);
-    }
-}
-
+const mockedFoo: SampleAbstractClass = mock(SampleAbstractClass);
+const foo: SampleAbstractClass = instance(mockedFoo);
 ```
 
-You can also mock generic classes, but note that the type parameter can't be set
+You can also mock generic classes, but note that generic type is just needed by mock type definition
 
 ``` typescript
+const mockedFoo: SampleGeneric<SampleInterface> = mock(SampleGeneric);
+const foo: SampleGeneric<SampleInterface> = instance(mockedFoo);
 
-const mockedFoo = mock(SampleGeneric);
-const foo = instance(mockedFoo);
-
-interface SampleInterface {
-    dependency:Bar;
-
-    sampleMethod(): number;
-}
-
-class SampleGeneric<T> {
-    dependency: Bar;
-
-    public get sampleString(): string {
-        return "sampleString";
-    }
-
-    public sampleMethod(): number {
-        return 4;
-    }
-
-    public get twoPlusTwo(): number {
-        return this.dependency.sumTwoNumbers(2, 2);
-    }
-
-    public set twoPlusTwo(value: number) {
-        this.dependency.sumTwoNumbers(value, 0);
-    }
-}
 ```
 
 ### Thanks
