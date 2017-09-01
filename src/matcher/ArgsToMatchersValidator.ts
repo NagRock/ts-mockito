@@ -2,6 +2,9 @@ import {Matcher} from './type/Matcher';
 
 export class ArgsToMatchersValidator {
     public validate(matchers: Array<Matcher>, args:any[]):boolean {
+        if(matchers.length != args.length) {
+            return false;
+        }
         let allValid = true;
         let index: number = 0;
         for (let arg of args) {
