@@ -15,11 +15,11 @@ describe("mocking", () => {
             describe("without params", () => {
                 it("returns stubbed value", () => {
                     // given
-                    let expectedResult = "fake result";
+                    const expectedResult = "fake result";
                     when(mockedFoo.getBar()).thenReturn(expectedResult);
 
                     // when
-                    let result = foo.getBar();
+                    const result = foo.getBar();
 
                     // then
                     expect(result).toEqual(expectedResult);
@@ -29,12 +29,12 @@ describe("mocking", () => {
             describe("with single param", () => {
                 it("returns stubbed value", () => {
                     // given
-                    let expectedResult = "sampleResult";
-                    let sampleNumber = 10;
+                    const expectedResult = "sampleResult";
+                    const sampleNumber = 10;
                     when(mockedFoo.convertNumberToString(sampleNumber)).thenReturn(expectedResult);
 
                     // when
-                    let result = foo.convertNumberToString(sampleNumber);
+                    const result = foo.convertNumberToString(sampleNumber);
 
                     // then
                     expect(result).toEqual(expectedResult);
@@ -96,6 +96,44 @@ describe("mocking", () => {
 
                     // then
                     expect(result).toBeNull();
+                });
+            });
+
+            describe("with optional argument", () => {
+                describe("and optional argument is provided", () => {
+                    it("returns stubbed value", () => {
+                        // given
+                        const expectedResult = 999;
+                        const firstNumber = 2;
+                        const secondNumber = 3;
+                        when(mockedFoo.sampleMethodWithOptionalArgument(firstNumber, secondNumber)).thenReturn(expectedResult);
+
+                        // when
+                        const result = foo.sampleMethodWithOptionalArgument(firstNumber, secondNumber);
+
+                        // then
+                        expect(expectedResult).toEqual(result);
+                    });
+                });
+
+                describe("and optional argument is not provided", () => {
+                    it("returns stubbed value", () => {
+                        // given
+                        const firstExpectedResult = 999;
+                        const secondExpectedResult = 333;
+                        const firstNumber = 2;
+                        const secondNumber = 3;
+                        when(mockedFoo.sampleMethodWithOptionalArgument(firstNumber)).thenReturn(firstExpectedResult);
+                        when(mockedFoo.sampleMethodWithOptionalArgument(firstNumber, secondNumber)).thenReturn(secondExpectedResult);
+
+                        // when
+                        const firstResult = foo.sampleMethodWithOptionalArgument(firstNumber);
+                        const secondResult = foo.sampleMethodWithOptionalArgument(firstNumber, secondNumber);
+
+                        // then
+                        expect(firstExpectedResult).toEqual(firstResult);
+                        expect(secondExpectedResult).toEqual(secondResult);
+                    });
                 });
             });
         });
@@ -198,7 +236,7 @@ describe("mocking", () => {
                 when(mockedFoo.dynamicMethod(anything())).thenReturn(expectedResult);
 
                 // when
-                const result = foo.dynamicMethod();
+                const result = foo.dynamicMethod("sample matching anything() matcher");
 
                 // then
                 expect(result).toEqual(expectedResult);
@@ -212,7 +250,7 @@ describe("mocking", () => {
                 when(mockedFoo.dynamicMethodInFunction(anything())).thenReturn(expectedResult);
 
                 // when
-                const result = foo.dynamicMethodInFunction();
+                const result = foo.dynamicMethodInFunction("sample matching anything() matcher");
 
                 // then
                 expect(result).toEqual(expectedResult);

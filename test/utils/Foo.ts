@@ -11,7 +11,7 @@ export class Foo {
     public getBar(): string {
         this.dynamicMethodInFunction = function () {
             return 'dynamicMethodInFunction';
-        }
+        };
         return 'bar';
     }
 
@@ -28,6 +28,10 @@ export class Foo {
     }
 
     public sumTwoNumbers(a: number, b: number): number {
+        return a + b;
+    }
+
+    public sampleMethodWithOptionalArgument(a: number, b?:number): number {
         return a + b;
     }
 }
