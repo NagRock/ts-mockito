@@ -13,7 +13,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Mock creation (`mock`) (also abstract classes)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
-	* `throwError` - throw an error
+	* `thenThrow` - throw an error
 	* `thenCall` - call custom method
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString`, `anyOfClass` etc. - for more flexible comparision
@@ -133,7 +133,7 @@ verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(999999));    // throws
 ``` typescript
 let mockedFoo:Foo = mock(Foo);
 
-when(mockedFoo.getBar(10)).throwError(new Error('fatal error'));
+when(mockedFoo.getBar(10)).thenThrow(new Error('fatal error'));
 
 let foo:Foo = instance(mockedFoo);
 try {
