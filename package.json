@@ -6,8 +6,8 @@
   "typings": "lib/ts-mockito",
   "scripts": {
     "compile": "rm -rf lib && ./node_modules/.bin/tsc -p ./src",
-    "test": "npm run compile && ./node_modules/.bin/karma start karma.conf.js --single-run",
-    "test:watch": "npm run compile && ./node_modules/.bin/karma start karma.conf.js"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "kuster.maciej@gmail.com",
   "license": "ISC",
@@ -25,24 +25,27 @@
     "javascript"
   ],
   "devDependencies": {
-    "@types/jasmine": "^2.2.33",
+    "@types/jest": "^20.0.8",
     "@types/lodash": "^4.14.34",
     "@types/node": "^6.0.38",
-    "awesome-typescript-loader": "^3.1.2",
-    "jasmine-core": "^2.4.1",
-    "karma": "^1.2.0",
-    "karma-cli": "^1.0.1",
-    "karma-jasmine": "^1.0.2",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-source-map-support": "^1.2.0",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^2.0.3",
-    "sourcemap": "^0.1.0",
+    "jest": "^21.1.0",
     "ts-helpers": "^1.1.1",
-    "typescript": "^2.4.0",
-    "webpack": "^2.3.2"
+    "ts-jest": "^21.0.1",
+    "typescript": "^2.4.0"
   },
   "dependencies": {
     "lodash": "^4.15.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(spec))\\.(ts|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
   }
 }
