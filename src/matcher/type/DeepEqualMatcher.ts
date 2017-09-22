@@ -7,13 +7,14 @@ export class DeepEqualMatcher extends Matcher {
     }
 
     match(value: any): boolean {
-        return _.isEqualWith(this.expectedValue, value, (expected, actual) => {
-            if (expected instanceof Matcher) {
-                return expected.match(actual);
-            }
+        return _.isEqualWith(this.expectedValue, value,
+            (expected: any, actual: any): boolean => {
+                if (expected instanceof Matcher) {
+                    return expected.match(actual);
+                }
 
-            return undefined;
-        });
+                return undefined;
+            });
     }
 
     toString(): string {

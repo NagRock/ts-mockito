@@ -1,5 +1,6 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anything, deepEqual} from "../../../src/ts-mockito";
+import {deepEqual} from "../../../src/ts-mockito";
+import {anyString} from "../../../src/ts-mockito";
 
 describe('DeepEqualMatcher', () => {
     describe('checking if two different instances of same number matches', () => {
@@ -63,10 +64,10 @@ describe('DeepEqualMatcher', () => {
     });
 
     describe('checking if expected value has Matcher as a value', () => {
-        it('delegates to the matcher', () => {
+        it('returns true if matcher returns true', () => {
             // given
-            const firstValue = {a: 1, b: anything()};
-            const secondValue = {a: 1, b: 2};
+            const firstValue = {a: 1, b: anyString()};
+            const secondValue = {a: 1, b: '2'};
             let testObj: Matcher = deepEqual(firstValue);
 
             // when
@@ -74,6 +75,19 @@ describe('DeepEqualMatcher', () => {
 
             // then
             expect(result).toBeTruthy();
+        });
+
+        it('returns false if matcher returns false', () => {
+            // given
+            const firstValue = {a: 1, b: anyString()};
+            const secondValue = {a: 1, b: 2};
+            let testObj: Matcher = deepEqual(firstValue);
+
+            // when
+            const result = testObj.match(secondValue);
+
+            // then
+            expect(result).toBeFalsy();
         });
     });
 });
