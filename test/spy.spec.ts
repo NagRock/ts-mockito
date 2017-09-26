@@ -16,66 +16,127 @@ describe("spying on a real object", () => {
     }
 
     describe("calling a mocked method", () => {
-        it("delegates the call to a mock", () => {
+        it("delegates a call to the mock", () => {
+            // given
             let foo = new Real();
-            let mocked = spy(foo);
+            let spiedFoo = spy(foo);
 
-            when(mocked.bar()).thenReturn(3);
+            // when
+            when(spiedFoo.bar()).thenReturn(3);
 
+            // then
             expect(foo.bar()).toBe(3);
         });
     });
 
     describe("calling a real method", () => {
         it("executes the instance method", () => {
+            // given
             let foo = new Real();
 
+            // when
             spy(foo);
 
+            // then
             expect(foo.bar()).toBe(2);
 
+        });
+    });
+
+    describe("calling an object's own method", () => {
+        it("delegates a call to the mock", () => {
+            // given
+            let foo = {
+                bar: () => 3
+            };
+            let spiedFoo = spy(foo);
+
+            // when
+            when(spiedFoo.bar()).thenReturn(42);
+
+            // then
+            expect(foo.bar()).toBe(42);
         });
     });
 
     describe("capturing", () => {
-        it("captures the call to a real method", () => {
+        it("captures a call to the real method", () => {
+            // given
             let foo = new Real();
-            let mocked = spy(foo);
+            let spiedFoo = spy(foo);
 
+            // when
             foo.bar();
 
-            expect(capture(mocked.bar).last()).toBeDefined();
+            // then
+            expect(capture(spiedFoo.bar).last()).toBeDefined();
         });
 
         it("captures the call arguments", () => {
+            // given
             let foo = new Real();
-            let mocked = spy(foo);
+            let spiedFoo = spy(foo);
 
+            // when
             foo.foo(42);
 
-            expect(capture(mocked.foo).last()).toEqual([42]);
+            // then
+            expect(capture<number>(spiedFoo.foo).last()).toEqual([42]);
+        });
+
+        it("captures a call to the own property", () => {
+            // given
+            let foo = {
+                bar: (a) => a
+            };
+            let spiedFoo = spy(foo);
+
+            // when
+            foo.bar(42);
+
+            // then
+            expect(capture<number>(spiedFoo.bar).last()).toEqual([42]);
         });
     });
 
     describe("resetting", () => {
-        it("restores the call to a real method", () => {
+        it("restores a call to the real method", () => {
+            // given
             let foo = new Real();
-            let mocked = spy(foo);
+            let spiedFoo = spy(foo);
 
-            when(mocked.bar()).thenReturn(3);
-            reset(mocked);
+            // when
+            when(spiedFoo.bar()).thenReturn(3);
+            reset(spiedFoo);
 
+            // then
             expect(foo.bar()).toBe(2);
         });
 
-        it("restores property descriptors", () => {
+        it("cleans up not owned property descriptors", () => {
+            // given
             let foo = new Real();
-            let mocked = spy(foo);
+            let spiedFoo = spy(foo);
 
-            when(mocked.baz).thenReturn(42);
-            reset(mocked);
+            // when
+            when(spiedFoo.baz).thenReturn(42);
+            reset(spiedFoo);
 
-            expect(Object.getOwnPropertyDescriptor(foo, 'baz').get).toBeDefined();
+            // then
+            expect(Object.getOwnPropertyDescriptor(foo, 'baz')).not.toBeDefined();
+        });
+
+        it("restores getter properties", () => {
+            // given
+            let foo = new Real();
+            let spiedFoo = spy(foo);
+
+            // when
+            when(spiedFoo.baz).thenReturn(42);
+            reset(spiedFoo);
+
+            // then
+            expect(foo.baz).toBe(3);
         });
     });
 });

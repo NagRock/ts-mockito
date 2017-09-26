@@ -18,8 +18,8 @@ export class Mocker {
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
-        this.createMethodStubsFromPrototypeOwnPropertyDescriptors();
-        this.createMethodStubsFromPrototypeOwnPropertyNames();
+        this.createMethodStubsFromOwnPropertyDescriptors();
+        this.createMethodStubsFromOwnPropertyNames();
         this.createMethodStubsFromPrototypeKeys();
         this.createMethodStubsFromClassCode();
         this.createMethodStubsFromFunctionsCode();
@@ -58,36 +58,46 @@ export class Mocker {
         return this.getAllMatchingActions(methodName, matchers)[0];
     }
 
-    private createMethodStubsFromPrototypeOwnPropertyDescriptors(prototype: any = this.clazz.prototype): void {
+    protected createMethodStubsFromOwnPropertyDescriptors(prototype: any = this.clazz.prototype,
+                                                          recurse: boolean = true): void {
         try {
-            let names = Object.getOwnPropertyNames(prototype);
-            for (let i = 0; i < names.length; i++) {
-                let key = names[i];
-                let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
-                if (descriptor && descriptor.get) {
-                    this.createPropertyStub(key);
+            while (prototype !== Object.prototype) {
+                let names = Object.getOwnPropertyNames(prototype);
+                for (let i = 0; i < names.length; i++) {
+                    let key = names[i];
+                    let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
+                    if (descriptor && descriptor.get) {
+                        this.createPropertyStub(key);
+                    }
                 }
-            }
 
-            prototype = prototype.__proto__;
-            if (prototype && prototype !== Object.prototype) {
-                this.createMethodStubsFromPrototypeOwnPropertyDescriptors(prototype);
+                if (!recurse) {
+                    return;
+                }
+
+                prototype = prototype.__proto__;
+                this.createMethodStubsFromOwnPropertyDescriptors(prototype);
             }
         } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
         }
     }
 
-    private createMethodStubsFromPrototypeOwnPropertyNames(prototype: any = this.clazz.prototype): void {
+    protected createMethodStubsFromOwnPropertyNames(prototype: any = this.clazz.prototype,
+                                                    recurse: boolean = true): void {
         try {
-            let names = Object.getOwnPropertyNames(prototype);
-            for (let i = 0; i < names.length; i++) {
-                this.createMethodStub(names[i]);
-            }
+            while (prototype !== Object.prototype) {
+                let names = Object.getOwnPropertyNames(prototype);
+                for (let i = 0; i < names.length; i++) {
+                    this.createMethodStub(names[i]);
+                }
 
-            prototype = prototype.__proto__;
-            if (prototype && prototype !== Object.prototype) {
-                this.createMethodStubsFromPrototypeOwnPropertyNames(prototype);
+                if (!recurse) {
+                    return;
+                }
+
+                prototype = prototype.__proto__;
+                this.createMethodStubsFromOwnPropertyNames(prototype);
             }
         } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
@@ -155,14 +165,14 @@ export class Mocker {
     }
 
     protected createInstanceActionListenersFromOwnPropertyDescriptors(prototype: any = this.clazz.prototype,
-                                                                    recurse: boolean = true): void {
+                                                                      recurse: boolean = true): void {
         try {
             let names = Object.getOwnPropertyNames(prototype);
             for (let i = 0; i < names.length; i++) {
                 let key = names[i];
                 let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
                 if (descriptor && descriptor.get) {
-                    this.createInstancePropertyDescriptorListener(key, descriptor);
+                    this.createInstancePropertyDescriptorListener(key, descriptor, prototype);
                 }
             }
 
@@ -179,7 +189,9 @@ export class Mocker {
         }
     }
 
-    protected createInstancePropertyDescriptorListener(key: string, descriptor?: PropertyDescriptor): void {
+    protected createInstancePropertyDescriptorListener(key: string,
+                                                       descriptor: PropertyDescriptor,
+                                                       prototype: any): void {
         if (this.instance.hasOwnProperty(key)) {
             return;
         }
@@ -190,11 +202,11 @@ export class Mocker {
     }
 
     protected createInstanceActionListenersFromOwnPropertyNames(prototype: any = this.clazz.prototype,
-                                                              recurse: boolean = true): void {
+                                                                recurse: boolean = true): void {
         try {
             let names = Object.getOwnPropertyNames(prototype);
             for (let i = 0; i < names.length; i++) {
-                this.createInstanceActionListener(names[i]);
+                this.createInstanceActionListener(names[i], prototype);
             }
 
             if (!recurse) {
@@ -212,14 +224,14 @@ export class Mocker {
 
     private createInstanceActionListenersFromPrototypeKeys(): void {
         for (let key in this.clazz.prototype) {
-            this.createInstanceActionListener(key);
+            this.createInstanceActionListener(key, this.clazz.prototype);
         }
     }
 
     private createInstanceActionListenersFromClassCode(): void {
         const subKeys = this.redundantMethodNameInCodeFinder.find(this.clazz.toString());
         for (let subKey in subKeys) {
-            this.createInstanceActionListener(subKey);
+            this.createInstanceActionListener(subKey, this.clazz.prototype);
         }
     }
 
@@ -227,12 +239,12 @@ export class Mocker {
         for (let key in this.clazz.prototype) {
             const subKeys = this.redundantMethodNameInCodeFinder.find(this.subKeysInCodeFinder.get(this.clazz.prototype, key));
             for (let subKey in subKeys) {
-                this.createInstanceActionListener(subKey);
+                this.createInstanceActionListener(subKey, this.clazz.prototype);
             }
         }
     }
 
-    protected createInstanceActionListener(key: string): void {
+    protected createInstanceActionListener(key: string, prototype: any): void {
         if (this.instance.hasOwnProperty(key)) {
             return;
         }
