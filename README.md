@@ -313,10 +313,23 @@ You can partially mock an existing instance:
 
 ``` typescript
 const foo: Foo = new Foo();
-const mockedFoo = spy(foo);
-when(mockedFoo.getBar(3)).thenReturn('one');
+const spiedFoo = spy(foo);
+
+when(spiedFoo.getBar(3)).thenReturn('one');
+
 console.log(foo.getBar(3)); // 'one'
 console.log(foo.getBaz()); // call to a real method
+```
+
+You can spy on plain objects too:
+
+``` typescript
+const foo = { bar: () => 42 };
+const spiedFoo = spy(foo);
+
+foo.bar();
+
+console.log(capture(spiedFoo.bar).last()); // [42] 
 ```
 
 ### Thanks
