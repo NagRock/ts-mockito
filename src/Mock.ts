@@ -18,8 +18,7 @@ export class Mocker {
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
-        this.createMethodStubsFromOwnPropertyDescriptors();
-        this.createMethodStubsFromOwnPropertyNames();
+        this.createMethodStubsFromOwnProperties();
         this.createMethodStubsFromPrototypeKeys();
         this.createMethodStubsFromClassCode();
         this.createMethodStubsFromFunctionsCode();
@@ -58,47 +57,29 @@ export class Mocker {
         return this.getAllMatchingActions(methodName, matchers)[0];
     }
 
-    protected createMethodStubsFromOwnPropertyDescriptors(prototype: any = this.clazz.prototype,
+    protected createMethodStubsFromOwnProperties(prototype: any = this.clazz.prototype,
                                                           recurse: boolean = true): void {
-        try {
-            while (prototype !== Object.prototype) {
-                let names = Object.getOwnPropertyNames(prototype);
-                for (let i = 0; i < names.length; i++) {
-                    let key = names[i];
-                    let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
-                    if (descriptor && descriptor.get) {
-                        this.createPropertyStub(key);
-                    }
-                }
-
-                if (!recurse) {
-                    return;
-                }
-
-                prototype = prototype.__proto__;
-                this.createMethodStubsFromOwnPropertyDescriptors(prototype);
-            }
-        } catch (error) {
-            // es5 can throw an error when getOwnPropertyNames is called on primitives
+        if (prototype === Object.prototype) {
+            return;
         }
-    }
 
-    protected createMethodStubsFromOwnPropertyNames(prototype: any = this.clazz.prototype,
-                                                    recurse: boolean = true): void {
         try {
-            while (prototype !== Object.prototype) {
-                let names = Object.getOwnPropertyNames(prototype);
-                for (let i = 0; i < names.length; i++) {
-                    this.createMethodStub(names[i]);
+            for (let key of Object.getOwnPropertyNames(prototype)) {
+                let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
+
+                if (!descriptor) {
+                    continue;
                 }
 
-                if (!recurse) {
-                    return;
+                if (descriptor.get) {
+                    this.createPropertyStub(key);
+                } else {
+                    this.createMethodStub(key);
                 }
-
-                prototype = prototype.__proto__;
-                this.createMethodStubsFromOwnPropertyNames(prototype);
             }
+
+            prototype = prototype.__proto__;
+            this.createMethodStubsFromOwnProperties(prototype);
         } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
         }
@@ -264,13 +245,11 @@ export class Mocker {
 
     private getMethodStub(key: string, args: any[]): MethodStub {
         let methodStub: MethodStubCollection = this.methodStubCollections[key];
-        if (!methodStub) {
-            return this.getEmptyMethodStub(key, args);
-        } else if (methodStub.hasMatchingInAnyGroup(args)) {
+        if (methodStub && methodStub.hasMatchingInAnyGroup(args)) {
             const groupIndex = methodStub.getLastMatchingGroupIndex(args);
             return methodStub.getFirstMatchingFromGroupAndRemoveIfNotLast(groupIndex, args);
         } else {
-            return new ReturnValueMethodStub(-1, [], null);
+            return this.getEmptyMethodStub(key, args);
         }
     }
 

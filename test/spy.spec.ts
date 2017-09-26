@@ -1,4 +1,4 @@
-import {capture, reset, spy, when} from "../src/ts-mockito";
+import {capture, reset, spy, when, verify} from "../src/ts-mockito";
 
 describe("spying on a real object", () => {
     class Real {
@@ -27,6 +27,18 @@ describe("spying on a real object", () => {
             // then
             expect(foo.bar()).toBe(3);
         });
+
+        it("executes the real method if arguments don't match", () => {
+            // given
+            let foo = new Real();
+            let spiedFoo = spy(foo);
+
+            // when
+            when(spiedFoo.foo(1)).thenReturn(42);
+
+            // then
+            expect(foo.foo(2)).toBe(2);
+        });
     });
 
     describe("calling a real method", () => {
@@ -39,7 +51,6 @@ describe("spying on a real object", () => {
 
             // then
             expect(foo.bar()).toBe(2);
-
         });
     });
 
@@ -96,6 +107,49 @@ describe("spying on a real object", () => {
 
             // then
             expect(capture<number>(spiedFoo.bar).last()).toEqual([42]);
+        });
+    });
+
+    describe("verifying calls", () => {
+        it("throws an error if number of calls doesn't match", () => {
+            // given
+            let foo = new Real();
+            let spiedFoo = spy(foo);
+
+            // when
+            foo.bar();
+            foo.bar();
+
+            // then
+            expect(() => verify(spiedFoo.bar()).once()).toThrow();
+        });
+
+        describe("when foo() is called before bar()", () => {
+            it("throws an error if expected foo() to have been called after bar()", () => {
+                // given
+                let foo = new Real();
+                let spiedFoo = spy(foo);
+
+                // when
+                foo.foo(1);
+                foo.bar();
+
+                // then
+                expect(() => verify(spiedFoo.foo(1)).calledAfter(spiedFoo.bar())).toThrow();
+            });
+
+            it("passes if expected foo() to have been before after bar()", () => {
+                // given
+                let foo = new Real();
+                let spiedFoo = spy(foo);
+
+                // when
+                foo.foo(1);
+                foo.bar();
+
+                // then
+                expect(() => verify(spiedFoo.foo(1)).calledBefore(spiedFoo.bar())).not.toThrow();
+            });
         });
     });
 
