@@ -1,12 +1,12 @@
-import {Matcher} from "./Matcher";
 import * as _ from "lodash";
+import {Matcher} from "./Matcher";
 
 export class NotNullMatcher extends Matcher {
-    match(value: any): boolean {
+    public match(value: any): boolean {
         return !_.isNull(value);
     }
 
-    toString(): string {
+    public toString(): string {
         return "notNull()";
     }
 }

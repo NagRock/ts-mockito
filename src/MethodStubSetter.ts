@@ -1,7 +1,7 @@
 import {MethodToStub} from "./MethodToStub";
+import {CallFunctionMethodStub} from "./stub/CallFunctionMethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {ThrowErrorMethodStub} from "./stub/ThrowErrorMethodStub";
-import {CallFunctionMethodStub} from "./stub/CallFunctionMethodStub";
 
 export class MethodStubSetter<T> {
     private static globalGroupIndex: number = 0;
@@ -12,14 +12,14 @@ export class MethodStubSetter<T> {
     }
 
     public thenReturn(...rest: T[]): this {
-        for (let value of rest) {
+        for (const value of rest) {
             this.methodToStub.methodStubCollection.add(new ReturnValueMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         }
         return this;
     }
 
     public thenThrow(...rest: Error[]): this {
-        for (let error of rest) {
+        for (const error of rest) {
             this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.groupIndex, this.methodToStub.matchers, error));
         }
         return this;

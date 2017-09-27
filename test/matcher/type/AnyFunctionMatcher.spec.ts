@@ -1,39 +1,39 @@
-import { AnyFunctionMatcher } from './../../../src/matcher/type/AnyFunctionMatcher';
-import { Matcher } from "../../../src/matcher/type/Matcher";
-import { anyFunction } from "../../../src/ts-mockito";
+import {Matcher} from "../../../src/matcher/type/Matcher";
+import {anyFunction} from "../../../src/ts-mockito";
+import {AnyFunctionMatcher} from "./../../../src/matcher/type/AnyFunctionMatcher";
 
-describe('AnyFunctionMatcher', () => {
+describe("AnyFunctionMatcher", () => {
 
-    describe('checking if function is function', () => {
-        it('returns true', () => {
+    describe("checking if function is function", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anyFunction();
+            const testObj: Matcher = anyFunction();
 
             // when
-            const result = testObj.match(() => 'arbitrary return value');
+            const result = testObj.match(() => "arbitrary return value");
 
             // then
             expect(result).toBeTruthy();
         });
     });
 
-    describe('checking if string is function', () => {
-        it('returns false', () => {
+    describe("checking if string is function", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyFunction();
+            const testObj: Matcher = anyFunction();
 
             // when
-            const result = testObj.match('some string');
+            const result = testObj.match("some string");
 
             // then
             expect(result).toBeFalsy();
         });
     });
 
-    describe('checking if number is function', () => {
-        it('returns false', () => {
+    describe("checking if number is function", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyFunction();
+            const testObj: Matcher = anyFunction();
 
             // when
             const result = testObj.match(5);
@@ -43,29 +43,29 @@ describe('AnyFunctionMatcher', () => {
         });
     });
 
-    describe('checking if object is function', () => {
-        it('returns false', () => {
+    describe("checking if object is function", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyFunction();
+            const testObj: Matcher = anyFunction();
 
             // when
-            const result = testObj.match({prop1: 'prop1Value'});
+            const result = testObj.match({prop1: "prop1Value"});
 
             // then
             expect(result).toBeFalsy();
         });
     });
 
-    describe('checking if toString works', () => {
-        it('returns \'anyFunction()\'', () => {
+    describe("checking if toString works", () => {
+        it("returns 'anyFunction()'", () => {
             // given
-            let testObj: Matcher = anyFunction();
+            const testObj: Matcher = anyFunction();
 
             // when
             const result = testObj.toString();
 
             // then
-            expect(result).toEqual('anyFunction()');
+            expect(result).toEqual("anyFunction()");
         });
     });
 

@@ -1,12 +1,12 @@
-import {Matcher} from "./Matcher";
 import * as _ from "lodash";
+import {Matcher} from "./Matcher";
 
 export class DeepEqualMatcher extends Matcher {
     constructor(private expectedValue: any) {
         super();
     }
 
-    match(value: any): boolean {
+    public match(value: any): boolean {
         return _.isEqualWith(this.expectedValue, value,
             (expected: any, actual: any): boolean => {
                 if (expected instanceof Matcher) {
@@ -17,8 +17,8 @@ export class DeepEqualMatcher extends Matcher {
             });
     }
 
-    toString(): string {
-        if(this.expectedValue instanceof Array) {
+    public toString(): string {
+        if (this.expectedValue instanceof Array) {
             return `deepEqual([${this.expectedValue}])`;
         } else {
             return `deepEqual(${this.expectedValue})`;

@@ -1,4 +1,5 @@
 import {MethodAction} from "../MethodAction";
+
 export class ArgCaptor {
     constructor(private actions: MethodAction[]) {
     }
@@ -25,7 +26,7 @@ export class ArgCaptor {
 
     public byCallIndex(index: number): any {
         if (index >= this.actions.length) {
-            throw new Error("Cannot capture arguments, method has not been called so many times: " + (index + 1));
+            throw new Error(`Cannot capture arguments, method has not been called so many times: ${index + 1}`);
         }
         return this.actions[index].args;
     }

@@ -1,6 +1,6 @@
-import {mock, instance, when} from "../src/ts-mockito";
-import {Bar} from "./utils/Bar";
 import {MethodToStub} from "../src/MethodToStub";
+import {instance, mock, when} from "../src/ts-mockito";
+import {Bar} from "./utils/Bar";
 
 describe("mocking", () => {
     let mockedFoo: FooWithGetterAndSetter;
@@ -25,7 +25,7 @@ describe("mocking", () => {
             mockedFoo = mock(FooWithGetterAndSetter);
 
             // then
-            expect(<any>mockedFoo.twoPlusTwo instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.twoPlusTwo as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create own property descriptors on instance", () => {
@@ -48,7 +48,7 @@ describe("mocking", () => {
             // when
 
             // then
-            expect(<any>mockedFoo.sampleString instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.sampleString as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create inherited property descriptors on instance", () => {

@@ -13,15 +13,15 @@ describe("recording multiple behaviors", () => {
     describe("when more than one behavior matches", () => {
         it("using added later", () => {
             // given
-            let sampleValue = 3;
-            let firstStubResult = "first";
-            let secondStubResult = "second";
+            const sampleValue = 3;
+            const firstStubResult = "first";
+            const secondStubResult = "second";
             when(mockedFoo.convertNumberToString(sampleValue)).thenReturn(firstStubResult);
             when(mockedFoo.convertNumberToString(sampleValue)).thenReturn(secondStubResult);
 
             // when
-            let firstCallResult = foo.convertNumberToString(sampleValue);
-            let secondCallResult = foo.convertNumberToString(sampleValue);
+            const firstCallResult = foo.convertNumberToString(sampleValue);
+            const secondCallResult = foo.convertNumberToString(sampleValue);
 
             // then
             expect(firstCallResult).toEqual(secondStubResult);
@@ -32,16 +32,16 @@ describe("recording multiple behaviors", () => {
     describe("when one of behaviors doesnt match", () => {
         it("is skipped", () => {
             // given
-            let sampleValue = 3;
-            let firstMatchingStubResult = "first";
-            let secondMatchingStubResult = "second";
+            const sampleValue = 3;
+            const firstMatchingStubResult = "first";
+            const secondMatchingStubResult = "second";
             when(mockedFoo.convertNumberToString(sampleValue)).thenReturn(firstMatchingStubResult);
             when(mockedFoo.convertNumberToString(123)).thenReturn("not matching behavior");
             when(mockedFoo.convertNumberToString(sampleValue)).thenReturn(secondMatchingStubResult);
 
             // when
-            let firstCallResult = foo.convertNumberToString(sampleValue);
-            let secondCallResult = foo.convertNumberToString(sampleValue);
+            const firstCallResult = foo.convertNumberToString(sampleValue);
+            const secondCallResult = foo.convertNumberToString(sampleValue);
 
             // then
             expect(firstCallResult).toEqual(secondMatchingStubResult);
@@ -139,14 +139,14 @@ describe("recording multiple behaviors", () => {
     describe("when just one behavior was set", () => {
         it("behavior is not removed", () => {
             // given
-            let sampleValue = 3;
-            let firstCallExpectedResult = "first";
+            const sampleValue = 3;
+            const firstCallExpectedResult = "first";
             when(mockedFoo.convertNumberToString(sampleValue)).thenReturn(firstCallExpectedResult);
 
             // when
-            let firstCallResult = foo.convertNumberToString(sampleValue);
-            let secondCallResult = foo.convertNumberToString(sampleValue);
-            let thirdCallResult = foo.convertNumberToString(sampleValue);
+            const firstCallResult = foo.convertNumberToString(sampleValue);
+            const secondCallResult = foo.convertNumberToString(sampleValue);
+            const thirdCallResult = foo.convertNumberToString(sampleValue);
 
             // then
             expect(firstCallResult).toEqual(firstCallExpectedResult);

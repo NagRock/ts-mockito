@@ -5,12 +5,12 @@ export class StrictEqualMatcher extends Matcher {
         super();
     }
 
-    match(value: any): boolean {
+    public match(value: any): boolean {
         return this.expectedValue === value;
     }
 
-    toString(): string {
-        if(this.expectedValue instanceof Array) {
+    public toString(): string {
+        if (this.expectedValue instanceof Array) {
             return `strictEqual([${this.expectedValue}])`;
         } else {
             return `strictEqual(${this.expectedValue})`;

@@ -1,20 +1,20 @@
 import {Matcher} from "./matcher/type/Matcher";
 
 export class MethodAction {
-    private static globalCallIndex:number = 0;
-    private callIndex:number;
+    private static globalCallIndex: number = 0;
+    private callIndex: number;
 
-    constructor(public methodName: string, public args: Array<any>){
+    constructor(public methodName: string, public args: Array<any>) {
         this.callIndex = ++MethodAction.globalCallIndex;
     }
 
-    public isApplicable(methodName:string, matchers:Matcher[]): boolean {
-        if (this.methodName != methodName) {
+    public isApplicable(methodName: string, matchers: Matcher[]): boolean {
+        if (this.methodName !== methodName) {
             return false;
         }
         let allValid = true;
         let index: number = 0;
-        for (let arg of this.args) {
+        for (const arg of this.args) {
             if (matchers[index] && !matchers[index].match(arg)) {
                 allValid = false;
             }
@@ -23,11 +23,11 @@ export class MethodAction {
         return allValid;
     }
 
-    public getCallIndex():number {
+    public getCallIndex(): number {
         return this.callIndex;
     }
 
-    public hasBeenCalledBefore(action:MethodAction):boolean {
+    public hasBeenCalledBefore(action: MethodAction): boolean {
         return this.getCallIndex() < action.getCallIndex();
     }
 }

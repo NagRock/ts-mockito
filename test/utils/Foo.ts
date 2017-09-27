@@ -3,16 +3,12 @@ export class Foo {
     public dynamicMethodInFunction: Function;
 
     constructor() {
-        this.dynamicMethod = function () {
-            return 'dynamicMethod';
-        }
+        this.dynamicMethod = () => "dynamicMethod";
     }
 
     public getBar(): string {
-        this.dynamicMethodInFunction = function () {
-            return 'dynamicMethodInFunction';
-        };
-        return 'bar';
+        this.dynamicMethodInFunction = () => "dynamicMethodInFunction";
+        return "bar";
     }
 
     public concatStringWithNumber(sampleString: string, sampleNumber: number): string {
@@ -31,7 +27,7 @@ export class Foo {
         return a + b;
     }
 
-    public sampleMethodWithOptionalArgument(a: number, b?:number): number {
+    public sampleMethodWithOptionalArgument(a: number, b?: number): number {
         return a + b;
     }
 }

@@ -18,25 +18,16 @@ export class MethodStubCollection {
     }
 
     public getFirstMatchingFromGroupAndRemoveIfNotLast(groupIndex: number, args: any[]): MethodStub {
-        let index = this.getFirstMatchingIndexFromGroup(groupIndex, args);
-        let result = this.getFirstMatchingFromGroup(groupIndex, args);
+        const index = this.getFirstMatchingIndexFromGroup(groupIndex, args);
+        const result = this.getFirstMatchingFromGroup(groupIndex, args);
         if (index > -1 && this.getItemsCountInGroup(groupIndex) > 1) {
             this.items.splice(index, 1);
         }
         return result;
     }
 
-    private getFirstMatchingFromGroup(groupIndex: number, args: any[]): MethodStub {
-        for (let item of this.items) {
-            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
     public hasMatchingInAnyGroup(args: any[]): boolean {
-        for (let item of this.items) {
+        for (const item of this.items) {
             if (item.isApplicable(args)) {
                 return true;
             }
@@ -44,9 +35,18 @@ export class MethodStubCollection {
         return false;
     }
 
+    private getFirstMatchingFromGroup(groupIndex: number, args: any[]): MethodStub {
+        for (const item of this.items) {
+            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     private getFirstMatchingIndexFromGroup(groupIndex: number, args: any[]): number {
         let index = 0;
-        for (let item of this.items) {
+        for (const item of this.items) {
             if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
                 return index;
             }
@@ -57,7 +57,7 @@ export class MethodStubCollection {
 
     private getItemsCountInGroup(groupIndex: number): number {
         let result = 0;
-        for (let item of this.items) {
+        for (const item of this.items) {
             if (item.getGroupIndex() === groupIndex) {
                 result++;
             }

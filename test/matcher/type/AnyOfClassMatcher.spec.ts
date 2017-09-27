@@ -1,19 +1,18 @@
-import { AnyOfClassMatcher } from './../../../src/matcher/type/AnyOfClassMatcher';
-import { Matcher } from "../../../src/matcher/type/Matcher";
-import { anyOfClass } from "../../../src/ts-mockito";
+import {Matcher} from "../../../src/matcher/type/Matcher";
+import {anyOfClass} from "../../../src/ts-mockito";
+import {AnyOfClassMatcher} from "./../../../src/matcher/type/AnyOfClassMatcher";
 
-describe('AnyOfClassMatcher', () => {
+describe("AnyOfClassMatcher", () => {
 
     class Car {
         constructor() {
         }
     }
 
-
-    describe('checking if class matches', () => {
-        it('returns true', () => {
+    describe("checking if class matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anyOfClass(Car);
+            const testObj: Matcher = anyOfClass(Car);
             const value = new Car();
 
             // when
@@ -24,10 +23,10 @@ describe('AnyOfClassMatcher', () => {
         });
     });
 
-    describe('checking if null matches', () => {
-        it('returns false', () => {
+    describe("checking if null matches", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyOfClass(Car);
+            const testObj: Matcher = anyOfClass(Car);
             const value = null;
 
             // when
@@ -38,22 +37,22 @@ describe('AnyOfClassMatcher', () => {
         });
     });
 
-    describe('checking if null matches null', () => {
-        it('throws error', () => {
+    describe("checking if null matches null", () => {
+        it("throws error", () => {
             try {
                 anyOfClass(null);
-                fail('If you reach this statement, the test failed.');
+                fail("If you reach this statement, the test failed.");
             } catch (e) {
-                expect((<Error>e).message).toEqual('The expected class cannot be null.');
+                expect((e as Error).message).toEqual("The expected class cannot be null.");
             }
         });
     });
 
-    describe('checking if different classes match', () => {
-        it('returns false', () => {
+    describe("checking if different classes match", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyOfClass(Car);
-            const value = 'a string';
+            const testObj: Matcher = anyOfClass(Car);
+            const value = "a string";
 
             // when
             const result = testObj.match(value);
@@ -63,16 +62,16 @@ describe('AnyOfClassMatcher', () => {
         });
     });
 
-    describe('checking if toString works', () => {
-        it('returns \'anyOfClass(Car)\'', () => {
+    describe("checking if toString works", () => {
+        it("returns 'anyOfClass(Car)'", () => {
             // given
-            let testObj: Matcher = anyOfClass(Car);
+            const testObj: Matcher = anyOfClass(Car);
 
             // when
             const result = testObj.toString();
 
             // then
-            expect(result).toEqual('anyOfClass(Car)');
+            expect(result).toEqual("anyOfClass(Car)");
         });
     });
 });

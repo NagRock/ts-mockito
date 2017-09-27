@@ -1,5 +1,5 @@
+import {anything, instance, mock, reset, verify, when} from "../src/ts-mockito";
 import {Foo} from "./utils/Foo";
-import {mock, instance, verify, reset, anything, when} from "../src/ts-mockito";
 
 describe("resetting mocked object", () => {
     let mockedFoo: Foo;
@@ -100,8 +100,8 @@ describe("resetting mocked object", () => {
                     verify(mockedFoo.getBar()).calledBefore(mockedFoo.sumTwoNumbers(2, 3));
                     fail();
                 } catch (e) {
-                    expect(e.message).toContain('to be called before');
-                    expect(e.message).toContain('but none of them has been called');
+                    expect(e.message).toContain("to be called before");
+                    expect(e.message).toContain("but none of them has been called");
                 }
             });
         });
@@ -123,8 +123,8 @@ describe("resetting mocked object", () => {
                     verify(mockedFoo.sumTwoNumbers(2, 3)).calledAfter(mockedFoo.getBar());
                     fail();
                 } catch (e) {
-                    expect(e.message).toContain('to be called after');
-                    expect(e.message).toContain('but none of them has been called');
+                    expect(e.message).toContain("to be called after");
+                    expect(e.message).toContain("but none of them has been called");
                 }
             });
         });

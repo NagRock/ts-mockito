@@ -25,7 +25,7 @@ describe("mocking", () => {
             mockedFoo = mock(SampleAbstractClass);
 
             // then
-            expect(<any>mockedFoo.twoPlusTwo instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.twoPlusTwo as) instanceof MethodToStub).toBe(true);
         });
 
         it("does create own property descriptors on instance", () => {
@@ -48,7 +48,7 @@ describe("mocking", () => {
             // when
 
             // then
-            expect(<any>mockedFoo.sampleString instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.sampleString as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create inherited property descriptors on instance", () => {
@@ -86,7 +86,7 @@ describe("mocking", () => {
             mockedFoo = mock(SampleGeneric);
 
             // then
-            expect(<any>mockedFoo.twoPlusTwo instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.twoPlusTwo as any) instanceof MethodToStub).toBe(true);
         });
 
         it("allows to mock method with generic return type value (with IDE completion)", () => {
@@ -123,7 +123,7 @@ describe("mocking", () => {
             // when
 
             // then
-            expect(<any>mockedFoo.sampleString instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.sampleString as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create inherited property descriptors on instance", () => {
@@ -141,7 +141,7 @@ describe("mocking", () => {
 });
 
 abstract class SampleAbstractClass {
-    dependency: Bar;
+    public dependency: Bar;
 
     public get sampleString(): string {
         return "sampleString";
@@ -167,7 +167,7 @@ interface SampleInterface {
 }
 
 class SampleInterfaceImplementation implements SampleInterface {
-    dependency: Bar;
+    public dependency: Bar;
 
     public sampleMethod(): number {
         return 999;
@@ -175,7 +175,7 @@ class SampleInterfaceImplementation implements SampleInterface {
 }
 
 class SampleGeneric<T> {
-    dependency: Bar;
+    public dependency: Bar;
 
     public get sampleString(): string {
         return "sampleString";
