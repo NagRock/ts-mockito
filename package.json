@@ -8,8 +8,7 @@
     "compile": "rm -rf lib && ./node_modules/.bin/tsc -p ./src",
     "test": "jest",
     "test:watch": "jest --watch",
-    "tslint": "./node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts'",
-    "test:tslint": "./node_modules/tslint/bin/tslint -c test/tslint.json 'test/**/*.ts'"
+    "lint": "./node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
   },
   "author": "kuster.maciej@gmail.com",
   "license": "ISC",
