@@ -25,6 +25,11 @@ import {MethodStubSetter} from "./MethodStubSetter";
 import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
 import {Mocker} from "./Mock";
+import {Spy} from "./Spy";
+
+export function spy<T>(instanceToSpy: T): T {
+    return new Spy(instanceToSpy).getMock();
+}
 
 export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
     return new Mocker(clazz).getMock();
