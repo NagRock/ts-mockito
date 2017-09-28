@@ -61,53 +61,41 @@ export class Mocker {
         return this.methodActions.filter(action => action.methodName === name);
     }
 
-    protected createMethodStubsFromOwnProperties(prototype: any = this.clazz.prototype,
-                                                 recurse: boolean = true): void {
-        if (prototype === Object.prototype) {
-            return;
-        }
-
+    protected createMethodStubsFromOwnProperties(prototype: any = this.clazz.prototype): void {
         try {
-            const names = Object.getOwnPropertyNames(prototype);
-            names.forEach((name: string) => {
-                const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
+            while (prototype !== Object.prototype) {
+                Object.getOwnPropertyNames(prototype).forEach((name: string) => {
+                    const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
 
-                if (!descriptor) {
-                    return;
-                }
+                    if (!descriptor) {
+                        return;
+                    }
 
-                if (descriptor.get) {
-                    this.createPropertyStub(name);
-                } else {
-                    this.createMethodStub(name);
-                }
-            });
+                    if (descriptor.get) {
+                        this.createPropertyStub(name);
+                    } else {
+                        this.createMethodStub(name);
+                    }
+                });
 
-            prototype = prototype.__proto__;
-            this.createMethodStubsFromOwnProperties(prototype);
+                prototype = Object.getPrototypeOf(prototype);
+            }
         } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
         }
     }
 
-    protected createInstanceActionListenersFromOwnPropertyDescriptors(prototype: any = this.clazz.prototype,
-                                                                      recurse: boolean = true): void {
+    protected createInstanceActionListenersFromOwnPropertyDescriptors(prototype: any = this.clazz.prototype): void {
         try {
-            const names = Object.getOwnPropertyNames(prototype);
-            names.forEach((name: string) => {
-                const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
-                if (descriptor && descriptor.get) {
-                    this.createInstancePropertyDescriptorListener(name, descriptor, prototype);
-                }
-            });
+            while (prototype !== Object.prototype) {
+                Object.getOwnPropertyNames(prototype).forEach((name: string) => {
+                    const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
+                    if (descriptor && descriptor.get) {
+                        this.createInstancePropertyDescriptorListener(name, descriptor, prototype);
+                    }
+                });
 
-            if (!recurse) {
-                return;
-            }
-
-            prototype = prototype.__proto__;
-            if (prototype && prototype !== Object.prototype) {
-                this.createInstanceActionListenersFromOwnPropertyDescriptors(prototype);
+                prototype = Object.getPrototypeOf(prototype);
             }
         } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives
@@ -126,21 +114,14 @@ export class Mocker {
         });
     }
 
-    protected createInstanceActionListenersFromOwnPropertyNames(prototype: any = this.clazz.prototype,
-                                                                recurse: boolean = true): void {
+    protected createInstanceActionListenersFromOwnPropertyNames(prototype: any = this.clazz.prototype): void {
         try {
-            const names = Object.getOwnPropertyNames(prototype);
-            names.forEach((name: string) => {
-                this.createInstanceActionListener(name, prototype);
-            });
+            while (prototype !== Object.prototype) {
+                Object.getOwnPropertyNames(prototype).forEach((name: string) => {
+                    this.createInstanceActionListener(name, prototype);
+                });
 
-            if (!recurse) {
-                return;
-            }
-
-            prototype = prototype.__proto__;
-            if (prototype && prototype !== Object.prototype) {
-                this.createInstanceActionListenersFromOwnPropertyNames(prototype);
+                prototype = Object.getPrototypeOf(prototype);
             }
         } catch (error) {
             // es5 can throw an error when getOwnPropertyNames is called on primitives

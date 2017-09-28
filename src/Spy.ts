@@ -10,9 +10,9 @@ export class Spy extends Mocker {
     constructor(instance: any) {
         super(instance.constructor, instance);
 
-        this.createMethodStubsFromOwnProperties(instance, false);
-        this.createInstanceActionListenersFromOwnPropertyDescriptors(instance, false);
-        this.createInstanceActionListenersFromOwnPropertyNames(instance, false);
+        this.createMethodStubsFromOwnProperties(instance);
+        this.createInstanceActionListenersFromOwnPropertyDescriptors(instance);
+        this.createInstanceActionListenersFromOwnPropertyNames(instance);
     }
 
     public reset(): void {
