@@ -11,6 +11,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Strongly typed
 * IDE autocomplete
 * Mock creation (`mock`) (also abstract classes)
+* Spying on real objects (`spy`)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value
 	* `thenThrow` - throw an error
@@ -304,6 +305,31 @@ You can also mock generic classes, but note that generic type is just needed by 
 const mockedFoo: SampleGeneric<SampleInterface> = mock(SampleGeneric);
 const foo: SampleGeneric<SampleInterface> = instance(mockedFoo);
 
+```
+
+### Spying on real objects
+
+You can partially mock an existing instance:
+
+``` typescript
+const foo: Foo = new Foo();
+const spiedFoo = spy(foo);
+
+when(spiedFoo.getBar(3)).thenReturn('one');
+
+console.log(foo.getBar(3)); // 'one'
+console.log(foo.getBaz()); // call to a real method
+```
+
+You can spy on plain objects too:
+
+``` typescript
+const foo = { bar: () => 42 };
+const spiedFoo = spy(foo);
+
+foo.bar();
+
+console.log(capture(spiedFoo.bar).last()); // [42] 
 ```
 
 ### Thanks
