@@ -15,7 +15,8 @@
     ],
     "types": [
       "node",
-      "lodash"
+      "lodash",
+      "jest"
     ]
   }
 }
