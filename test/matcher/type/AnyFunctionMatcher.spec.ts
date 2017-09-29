@@ -1,6 +1,5 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
 import {anyFunction} from "../../../src/ts-mockito";
-import {AnyFunctionMatcher} from "./../../../src/matcher/type/AnyFunctionMatcher";
 
 describe("AnyFunctionMatcher", () => {
 

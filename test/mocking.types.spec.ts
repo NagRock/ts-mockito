@@ -25,7 +25,7 @@ describe("mocking", () => {
             mockedFoo = mock(SampleAbstractClass);
 
             // then
-            expect((mockedFoo.twoPlusTwo as) instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.twoPlusTwo as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create own property descriptors on instance", () => {

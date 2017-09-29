@@ -1,6 +1,5 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
 import {anyOfClass} from "../../../src/ts-mockito";
-import {AnyOfClassMatcher} from "./../../../src/matcher/type/AnyOfClassMatcher";
 
 describe("AnyOfClassMatcher", () => {
 
