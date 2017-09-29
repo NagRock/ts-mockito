@@ -9,11 +9,11 @@ export class BetweenMatcher extends Matcher {
         }
     }
 
-    match(value: any): boolean {
+    public match(value: any): boolean {
         return value >= this.min && value <= this.max;
     }
 
-    toString(): string {
-        return "between(" + this.min + ", " + this.max + ")";
+    public toString(): string {
+        return `between(${this.min}, ${this.max})`;
     }
 }

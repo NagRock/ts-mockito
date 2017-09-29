@@ -1,7 +1,7 @@
-import {Matcher} from "../matcher/type/Matcher";
 import {ArgsToMatchersValidator} from "../matcher/ArgsToMatchersValidator";
-import {MethodStub} from "./MethodStub";
+import {Matcher} from "../matcher/type/Matcher";
 import {AbstractMethodStub} from "./AbstractMethodStub";
+import {MethodStub} from "./MethodStub";
 
 export class CallFunctionMethodStub extends AbstractMethodStub implements MethodStub {
     private validator: ArgsToMatchersValidator = new ArgsToMatchersValidator();

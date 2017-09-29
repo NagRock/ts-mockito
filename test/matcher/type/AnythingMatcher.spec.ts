@@ -1,11 +1,11 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anyNumber, anyString, anything} from "../../../src/ts-mockito";
+import {anything} from "../../../src/ts-mockito";
 
-describe('AnythingMatcher', () => {
-    describe('checking if number matches', () => {
-        it('returns true', () => {
+describe("AnythingMatcher", () => {
+    describe("checking if number matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anything();
+            const testObj: Matcher = anything();
 
             // when
             const result = testObj.match(3);
@@ -15,10 +15,10 @@ describe('AnythingMatcher', () => {
         });
     });
 
-    describe('checking if object matches', () => {
-        it('returns true', () => {
+    describe("checking if object matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anything();
+            const testObj: Matcher = anything();
 
             // when
             const result = testObj.match({});
@@ -28,10 +28,10 @@ describe('AnythingMatcher', () => {
         });
     });
 
-    describe('checking if empty string matches', () => {
-        it('returns true', () => {
+    describe("checking if empty string matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anything();
+            const testObj: Matcher = anything();
 
             // when
             const result = testObj.match("");
@@ -41,10 +41,10 @@ describe('AnythingMatcher', () => {
         });
     });
 
-    describe('checking if sample string matches', () => {
-        it('returns true', () => {
+    describe("checking if sample string matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anything();
+            const testObj: Matcher = anything();
 
             // when
             const result = testObj.match("sampleString");
@@ -54,10 +54,10 @@ describe('AnythingMatcher', () => {
         });
     });
 
-    describe('checking if null matches', () => {
-        it('returns true', () => {
+    describe("checking if null matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anything();
+            const testObj: Matcher = anything();
 
             // when
             const result = testObj.match(null);

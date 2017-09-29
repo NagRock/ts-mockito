@@ -1,12 +1,12 @@
-import {capture, reset, spy, when, verify} from "../src/ts-mockito";
+import {capture, reset, spy, verify, when} from "../src/ts-mockito";
 
 describe("spying on a real object", () => {
     class Real {
-        foo(a: number) {
+        public foo(a: number) {
             return a;
         }
 
-        bar() {
+        public bar() {
             return 2;
         }
 
@@ -18,8 +18,8 @@ describe("spying on a real object", () => {
     describe("calling a mocked method", () => {
         it("delegates a call to the mock", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             when(spiedFoo.bar()).thenReturn(3);
@@ -30,8 +30,8 @@ describe("spying on a real object", () => {
 
         it("executes the real method if arguments don't match", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             when(spiedFoo.foo(1)).thenReturn(42);
@@ -44,7 +44,7 @@ describe("spying on a real object", () => {
     describe("calling a real method", () => {
         it("executes the instance method", () => {
             // given
-            let foo = new Real();
+            const foo = new Real();
 
             // when
             spy(foo);
@@ -57,10 +57,10 @@ describe("spying on a real object", () => {
     describe("calling an object's own method", () => {
         it("delegates a call to the mock", () => {
             // given
-            let foo = {
-                bar: () => 3
+            const foo = {
+                bar: () => 3,
             };
-            let spiedFoo = spy(foo);
+            const spiedFoo = spy(foo);
 
             // when
             when(spiedFoo.bar()).thenReturn(42);
@@ -73,8 +73,8 @@ describe("spying on a real object", () => {
     describe("capturing", () => {
         it("captures a call to the real method", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             foo.bar();
@@ -85,8 +85,8 @@ describe("spying on a real object", () => {
 
         it("captures the call arguments", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             foo.foo(42);
@@ -97,10 +97,10 @@ describe("spying on a real object", () => {
 
         it("captures a call to the own property", () => {
             // given
-            let foo = {
-                bar: (a) => a
+            const foo = {
+                bar: a => a,
             };
-            let spiedFoo = spy(foo);
+            const spiedFoo = spy(foo);
 
             // when
             foo.bar(42);
@@ -113,8 +113,8 @@ describe("spying on a real object", () => {
     describe("verifying calls", () => {
         it("throws an error if number of calls doesn't match", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             foo.bar();
@@ -127,8 +127,8 @@ describe("spying on a real object", () => {
         describe("when foo() is called before bar()", () => {
             it("throws an error if expected foo() to have been called after bar()", () => {
                 // given
-                let foo = new Real();
-                let spiedFoo = spy(foo);
+                const foo = new Real();
+                const spiedFoo = spy(foo);
 
                 // when
                 foo.foo(1);
@@ -140,8 +140,8 @@ describe("spying on a real object", () => {
 
             it("passes if expected foo() to have been before after bar()", () => {
                 // given
-                let foo = new Real();
-                let spiedFoo = spy(foo);
+                const foo = new Real();
+                const spiedFoo = spy(foo);
 
                 // when
                 foo.foo(1);
@@ -156,8 +156,8 @@ describe("spying on a real object", () => {
     describe("resetting", () => {
         it("restores a call to the real method", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             when(spiedFoo.bar()).thenReturn(3);
@@ -169,21 +169,21 @@ describe("spying on a real object", () => {
 
         it("cleans up not owned property descriptors", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             when(spiedFoo.baz).thenReturn(42);
             reset(spiedFoo);
 
             // then
-            expect(Object.getOwnPropertyDescriptor(foo, 'baz')).not.toBeDefined();
+            expect(Object.getOwnPropertyDescriptor(foo, "baz")).not.toBeDefined();
         });
 
         it("restores getter properties", () => {
             // given
-            let foo = new Real();
-            let spiedFoo = spy(foo);
+            const foo = new Real();
+            const spiedFoo = spy(foo);
 
             // when
             when(spiedFoo.baz).thenReturn(42);

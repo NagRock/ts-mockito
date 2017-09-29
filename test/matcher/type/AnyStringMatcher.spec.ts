@@ -1,11 +1,11 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
 import {anyString} from "../../../src/ts-mockito";
 
-describe('AnyStringMatcher', () => {
-    describe('checking if number matches', () => {
-        it('returns false', () => {
+describe("AnyStringMatcher", () => {
+    describe("checking if number matches", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyString();
+            const testObj: Matcher = anyString();
 
             // when
             const result = testObj.match(3);
@@ -15,10 +15,10 @@ describe('AnyStringMatcher', () => {
         });
     });
 
-    describe('checking if object matches', () => {
-        it('returns false', () => {
+    describe("checking if object matches", () => {
+        it("returns false", () => {
             // given
-            let testObj: Matcher = anyString();
+            const testObj: Matcher = anyString();
 
             // when
             const result = testObj.match({});
@@ -28,10 +28,10 @@ describe('AnyStringMatcher', () => {
         });
     });
 
-    describe('checking if empty string matches', () => {
-        it('returns true', () => {
+    describe("checking if empty string matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anyString();
+            const testObj: Matcher = anyString();
 
             // when
             const result = testObj.match("");
@@ -41,10 +41,10 @@ describe('AnyStringMatcher', () => {
         });
     });
 
-    describe('checking if sample string matches', () => {
-        it('returns true', () => {
+    describe("checking if sample string matches", () => {
+        it("returns true", () => {
             // given
-            let testObj: Matcher = anyString();
+            const testObj: Matcher = anyString();
 
             // when
             const result = testObj.match("sampleString");

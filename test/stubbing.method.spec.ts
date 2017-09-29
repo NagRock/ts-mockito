@@ -44,13 +44,13 @@ describe("mocking", () => {
             describe("with two params", () => {
                 it("returns stubbed value if two params matches", () => {
                     // given
-                    let expectedResult = 999;
-                    let firstNumber = 20;
-                    let secondNumber = 30;
+                    const expectedResult = 999;
+                    const firstNumber = 20;
+                    const secondNumber = 30;
                     when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenReturn(expectedResult);
 
                     // when
-                    let result = foo.sumTwoNumbers(firstNumber, secondNumber);
+                    const result = foo.sumTwoNumbers(firstNumber, secondNumber);
 
                     // then
                     expect(result).toEqual(expectedResult);
@@ -58,13 +58,13 @@ describe("mocking", () => {
 
                 it("returns null if first param doesnt match", () => {
                     // given
-                    let expectedResult = 999;
-                    let firstNumber = 20;
-                    let secondNumber = 30;
+                    const expectedResult = 999;
+                    const firstNumber = 20;
+                    const secondNumber = 30;
                     when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenReturn(expectedResult);
 
                     // when
-                    let result = foo.sumTwoNumbers(123, secondNumber);
+                    const result = foo.sumTwoNumbers(123, secondNumber);
 
                     // then
                     expect(result).toBeNull();
@@ -72,13 +72,13 @@ describe("mocking", () => {
 
                 it("returns null if second param doesnt match", () => {
                     // given
-                    let expectedResult = 999;
-                    let firstNumber = 20;
-                    let secondNumber = 30;
+                    const expectedResult = 999;
+                    const firstNumber = 20;
+                    const secondNumber = 30;
                     when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenReturn(expectedResult);
 
                     // when
-                    let result = foo.sumTwoNumbers(firstNumber, 123);
+                    const result = foo.sumTwoNumbers(firstNumber, 123);
 
                     // then
                     expect(result).toBeNull();
@@ -86,13 +86,13 @@ describe("mocking", () => {
 
                 it("returns null if both params doesnt match", () => {
                     // given
-                    let expectedResult = 999;
-                    let firstNumber = 20;
-                    let secondNumber = 30;
+                    const expectedResult = 999;
+                    const firstNumber = 20;
+                    const secondNumber = 30;
                     when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenReturn(expectedResult);
 
                     // when
-                    let result = foo.sumTwoNumbers(123, 321);
+                    const result = foo.sumTwoNumbers(123, 321);
 
                     // then
                     expect(result).toBeNull();
@@ -141,8 +141,8 @@ describe("mocking", () => {
         describe("with stubbed error", () => {
             it("throws given error", () => {
                 // given
-                let sampleValue = 123;
-                let sampleError = new Error("sampleError");
+                const sampleValue = 123;
+                const sampleError = new Error("sampleError");
                 when(mockedFoo.convertNumberToString(sampleValue)).thenThrow(sampleError);
 
                 // when
@@ -161,7 +161,7 @@ describe("mocking", () => {
         describe("with stubbed function call", () => {
             it("calls given function", () => {
                 // given
-                let sampleValue = 123;
+                const sampleValue = 123;
                 let called = false;
                 when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
                     called = true;
@@ -179,7 +179,7 @@ describe("mocking", () => {
             describe("if mocked method is called with different argument", () => {
                 it("dont call given function", () => {
                     // given
-                    let sampleValue = 123;
+                    const sampleValue = 123;
                     let called = false;
                     when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
                         called = true;
@@ -197,14 +197,14 @@ describe("mocking", () => {
         describe("with stubbed function call", () => {
             it("returns value returned by given function", () => {
                 // given
-                let sampleValue = 123;
-                let expectedResult = "valueFromFunction";
+                const sampleValue = 123;
+                const expectedResult = "valueFromFunction";
                 when(mockedFoo.convertNumberToString(sampleValue)).thenCall(() => {
                     return expectedResult;
                 });
 
                 // when
-                let result = foo.convertNumberToString(sampleValue);
+                const result = foo.convertNumberToString(sampleValue);
 
                 // then
                 expect(result).toEqual(expectedResult);
@@ -214,15 +214,15 @@ describe("mocking", () => {
         describe("with stubbed function call", () => {
             it("pass arguments to given function", () => {
                 // given
-                let firstNumber = 5;
-                let secondNumber = 10;
-                let expectedResult = 50;
+                const firstNumber = 5;
+                const secondNumber = 10;
+                const expectedResult = 50;
                 when(mockedFoo.sumTwoNumbers(firstNumber, secondNumber)).thenCall((arg1: number, arg2: number) => {
                     return arg1 * arg2;
                 });
 
                 // when
-                let result = foo.sumTwoNumbers(firstNumber, secondNumber);
+                const result = foo.sumTwoNumbers(firstNumber, secondNumber);
 
                 // then
                 expect(result).toEqual(expectedResult);

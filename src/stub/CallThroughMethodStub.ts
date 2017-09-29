@@ -6,7 +6,7 @@ export class CallThroughMethodStub implements MethodStub {
     constructor(private instance: any, private method: Function) {
     }
 
-    getGroupIndex(): number {
+    public getGroupIndex(): number {
         return -1;
     }
 

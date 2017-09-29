@@ -1,5 +1,5 @@
-import {Foo} from "./utils/Foo";
 import {capture, instance, mock} from "../src/ts-mockito";
+import {Foo} from "./utils/Foo";
 
 describe("capturing method arguments", () => {
     let mockedFoo: Foo;
@@ -49,7 +49,7 @@ describe("capturing method arguments", () => {
                     error = e;
                 }
 
-                //then
+                // then
                 expect(error.message).toContain("Cannot capture arguments");
             });
         });

@@ -1,0 +1,25 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "array-type": false,
+        "arrow-parens": [true, "ban-single-arg-parens"],
+        "interface-name": false,
+        "max-line-length": false,
+        "member-ordering": [true, {"order": "fields-first"}],
+        "no-console": [true, "log"],
+        "no-empty": false,
+        "no-empty-interface": false,
+        "no-bitwise": false,
+        "object-literal-sort-keys": false,
+        "prefer-template": true,
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
+        "ban-types": false,
+        "no-string-literal": false,
+        "max-classes-per-file": false
+    },
+    "rulesDirectory": []
+}

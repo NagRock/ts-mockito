@@ -1,16 +1,16 @@
-import {Matcher} from "./Matcher";
 import * as _ from "lodash";
+import {Matcher} from "./Matcher";
 
 export class AnyStringMatcher extends Matcher {
     constructor() {
         super();
     }
 
-    match(value: any): boolean {
+    public match(value: any): boolean {
         return _.isString(value);
     }
 
-    toString(): string {
+    public toString(): string {
         return "anyString()";
     }
 }

@@ -1,12 +1,12 @@
-import {Matcher} from '../matcher/type/Matcher';
-import {ArgsToMatchersValidator} from '../matcher/ArgsToMatchersValidator';
-import {MethodStub} from './MethodStub';
+import {ArgsToMatchersValidator} from "../matcher/ArgsToMatchersValidator";
+import {Matcher} from "../matcher/type/Matcher";
 import {AbstractMethodStub} from "./AbstractMethodStub";
+import {MethodStub} from "./MethodStub";
 
 export class ReturnValueMethodStub extends AbstractMethodStub implements MethodStub {
     private validator: ArgsToMatchersValidator = new ArgsToMatchersValidator();
 
-    constructor(protected groupIndex:number, private matchers: Array<Matcher>, private returns: any) {
+    constructor(protected groupIndex: number, private matchers: Array<Matcher>, private returns: any) {
         super();
     }
 

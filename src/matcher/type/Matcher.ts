@@ -3,7 +3,7 @@ export class Matcher {
         return false;
     }
 
-    toString(): string {
+    public toString(): string {
         return "";
     }
 }

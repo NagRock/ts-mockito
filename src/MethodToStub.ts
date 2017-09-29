@@ -1,6 +1,6 @@
-import {MethodStubCollection} from './MethodStubCollection';
-import {Matcher} from './matcher/type/Matcher';
-import {Mocker} from './Mock';
+import {Matcher} from "./matcher/type/Matcher";
+import {MethodStubCollection} from "./MethodStubCollection";
+import {Mocker} from "./Mock";
 
 export class MethodToStub {
     constructor(public methodStubCollection: MethodStubCollection,

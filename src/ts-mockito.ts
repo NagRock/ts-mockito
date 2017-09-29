@@ -1,5 +1,3 @@
-import { AnyFunctionMatcher } from './matcher/type/AnyFunctionMatcher';
-import { AnyOfClassMatcher } from './matcher/type/AnyOfClassMatcher';
 import {
     ArgCaptor,
     ArgCaptor1,
@@ -13,7 +11,9 @@ import {
     ArgCaptor8,
     ArgCaptor9,
 } from "./capture/ArgCaptor";
+import {AnyFunctionMatcher} from "./matcher/type/AnyFunctionMatcher";
 import {AnyNumberMatcher} from "./matcher/type/AnyNumberMatcher";
+import {AnyOfClassMatcher} from "./matcher/type/AnyOfClassMatcher";
 import {AnyStringMatcher} from "./matcher/type/AnyStringMatcher";
 import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
 import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
@@ -27,8 +27,8 @@ import {MethodToStub} from "./MethodToStub";
 import {Mocker} from "./Mock";
 import {Spy} from "./Spy";
 
-export function spy<T>(instance: T): T {
-    return new Spy(instance).getMock();
+export function spy<T>(instanceToSpy: T): T {
+    return new Spy(instanceToSpy).getMock();
 }
 
 export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
@@ -43,8 +43,8 @@ export function when<T>(method: T): MethodStubSetter<T> {
     return new MethodStubSetter(method as any);
 }
 
-export function instance<T>(mock: T): T {
-    return (mock as any).__tsmockitoInstance as T;
+export function instance<T>(mockedValue: T): T {
+    return (mockedValue as any).__tsmockitoInstance as T;
 }
 
 export function capture<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6, h: T7, i: T8, j: T9) => any): ArgCaptor10<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>;
@@ -67,12 +67,12 @@ export function capture(method: (...args: any[]) => any): ArgCaptor {
     }
 }
 
-export function reset<T>(mock: T): void {
-    (mock as any).__tsmockitoMocker.reset();
+export function reset<T>(mockedValue: T): void {
+    (mockedValue as any).__tsmockitoMocker.reset();
 }
 
-export function resetCalls<T>(mock: T): void {
-    (mock as any).__tsmockitoMocker.resetCalls();
+export function resetCalls<T>(mockedValue: T): void {
+    (mockedValue as any).__tsmockitoMocker.resetCalls();
 }
 
 export function anyOfClass<T>(expectedClass: { new (...args: any[]): T }): any {

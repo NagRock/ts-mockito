@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
+import * as _ from "lodash";
 import {Mocker} from "./Mock";
-import {MethodStub} from "./stub/MethodStub";
-import {CallThroughMethodStub} from "./stub/CallThroughMethodStub";
 import {RealMethod} from "./spy/RealMethod";
+import {CallThroughMethodStub} from "./stub/CallThroughMethodStub";
+import {MethodStub} from "./stub/MethodStub";
 
 export class Spy extends Mocker {
     private realMethods: { [key: string]: RealMethod };
@@ -10,9 +10,9 @@ export class Spy extends Mocker {
     constructor(instance: any) {
         super(instance.constructor, instance);
 
-        this.createMethodStubsFromOwnProperties(instance, false);
-        this.createInstanceActionListenersFromOwnPropertyDescriptors(instance, false);
-        this.createInstanceActionListenersFromOwnPropertyNames(instance, false);
+        this.createMethodStubsFromOwnProperties(instance);
+        this.createInstanceActionListenersFromOwnPropertyDescriptors(instance);
+        this.createInstanceActionListenersFromOwnPropertyNames(instance);
     }
 
     public reset(): void {
@@ -52,7 +52,7 @@ export class Spy extends Mocker {
         this.realMethods[key] = new RealMethod(descriptor, prototype === this.instance);
         Object.defineProperty(this.instance, key, {
             get: this.createActionListener(key),
-            configurable: true
+            configurable: true,
         });
     }
 
@@ -65,7 +65,7 @@ export class Spy extends Mocker {
             return;
         }
 
-        let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
+        const descriptor = Object.getOwnPropertyDescriptor(prototype, key);
         this.realMethods[key] = new RealMethod(descriptor, prototype === this.instance);
         this.instance[key] = this.createActionListener(key);
     }

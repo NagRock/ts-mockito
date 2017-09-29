@@ -1,9 +1,9 @@
-import {Matcher} from './type/Matcher';
+import {Matcher} from "./type/Matcher";
 
 export class MatchersToStringConverter {
     public convert(matchers: Array<Matcher>): string {
-        let result: string[] = [];
-        for (let matcher of matchers) {
+        const result: string[] = [];
+        for (const matcher of matchers) {
             result.push(matcher.toString());
         }
         return result.join(", ");

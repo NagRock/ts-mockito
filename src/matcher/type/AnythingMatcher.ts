@@ -5,11 +5,11 @@ export class AnythingMatcher extends Matcher {
         super();
     }
 
-    match(value: any): boolean {
+    public match(value: any): boolean {
         return true;
     }
 
-    toString(): string {
+    public toString(): string {
         return "anything()";
     }
 }
