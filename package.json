@@ -26,17 +26,17 @@
     "javascript"
   ],
   "devDependencies": {
-    "@types/jest": "^20.0.8",
-    "@types/lodash": "^4.14.34",
-    "@types/node": "^6.0.38",
-    "jest": "^21.1.0",
-    "ts-helpers": "^1.1.1",
+    "@types/jest": "^21.1.1",
+    "@types/lodash": "^4.14.76",
+    "@types/node": "^8.0.31",
+    "jest": "^21.2.1",
+    "ts-helpers": "^1.1.2",
     "ts-jest": "^21.0.1",
     "tslint": "^5.7.0",
-    "typescript": "^2.4.0"
+    "typescript": "^2.5.3"
   },
   "dependencies": {
-    "lodash": "^4.15.0"
+    "lodash": "^4.17.4"
   },
   "jest": {
     "testEnvironment": "jsdom",
