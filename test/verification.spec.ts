@@ -19,7 +19,7 @@ describe("verifying mocked object", () => {
 
     describe("when no calls are expected", () => {
         describe("and no one occurred", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
 
@@ -33,7 +33,7 @@ describe("verifying mocked object", () => {
         });
 
         describe("and one occurred but with different argument", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
                 foo.convertNumberToString(sampleValue + 321);
@@ -69,7 +69,7 @@ describe("verifying mocked object", () => {
 
     describe("when one call is expected", () => {
         describe("and just one occurred", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
                 foo.convertNumberToString(sampleValue);
@@ -110,7 +110,7 @@ describe("verifying mocked object", () => {
 
     describe("when two calls are expected", () => {
         describe("and just two occurred", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
                 foo.convertNumberToString(sampleValue);
@@ -151,7 +151,7 @@ describe("verifying mocked object", () => {
 
     describe("when three calls are expected", () => {
         describe("and just three occurred", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
                 foo.convertNumberToString(sampleValue);
@@ -196,7 +196,7 @@ describe("verifying mocked object", () => {
 
     describe("when at least two calls are expected", () => {
         describe("but three has occurred", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
                 foo.convertNumberToString(sampleValue);
@@ -234,7 +234,7 @@ describe("verifying mocked object", () => {
 
     describe("when at most two calls are expected", () => {
         describe("but one has occurred", () => {
-            it("doesnt throw error", () => {
+            it("doesn't throw error", () => {
                 // given
                 const sampleValue = 3;
                 foo.convertNumberToString(sampleValue);
@@ -289,7 +289,7 @@ describe("verifying mocked object", () => {
     describe("checking if method has been called before other", () => {
         describe("when both of them are from same object", () => {
             describe("and method with first param has been called before second", () => {
-                it("doesn`t throw error", () => {
+                it("doesn't throw error", () => {
                     // given
                     const firstCallParam = 5;
                     const secondCallParam = 10;
@@ -403,7 +403,7 @@ describe("verifying mocked object", () => {
     describe("checking if method has been called after other", () => {
         describe("when both of them are from same object", () => {
             describe("and method with first param has been called after second", () => {
-                it("doesn`t throw error", () => {
+                it("doesn't throw error", () => {
                     // given
                     const firstCallParam = 5;
                     const secondCallParam = 10;
@@ -518,7 +518,7 @@ describe("verifying mocked object", () => {
     describe("checking if method has been called before other", () => {
         describe("when they are from different objects", () => {
             describe("and method with first param has been called before second", () => {
-                it("doesn`t throw error", () => {
+                it("doesn't throw error", () => {
                     // given
                     const firstCallParam = 5;
                     const secondCallParam = 10;
@@ -632,7 +632,7 @@ describe("verifying mocked object", () => {
     describe("checking if method has been called after other", () => {
         describe("when they are from different objects", () => {
             describe("and method with first param has been called after second", () => {
-                it("doesn`t throw error", () => {
+                it("doesn't throw error", () => {
                     // given
                     const firstCallParam = 5;
                     const secondCallParam = 10;

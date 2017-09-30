@@ -56,7 +56,7 @@ describe("mocking", () => {
                     expect(result).toEqual(expectedResult);
                 });
 
-                it("returns null if first param doesnt match", () => {
+                it("returns null if first param doesn't match", () => {
                     // given
                     const expectedResult = 999;
                     const firstNumber = 20;
@@ -70,7 +70,7 @@ describe("mocking", () => {
                     expect(result).toBeNull();
                 });
 
-                it("returns null if second param doesnt match", () => {
+                it("returns null if second param doesn't match", () => {
                     // given
                     const expectedResult = 999;
                     const firstNumber = 20;
@@ -84,7 +84,7 @@ describe("mocking", () => {
                     expect(result).toBeNull();
                 });
 
-                it("returns null if both params doesnt match", () => {
+                it("returns null if both params doesn't match", () => {
                     // given
                     const expectedResult = 999;
                     const firstNumber = 20;
