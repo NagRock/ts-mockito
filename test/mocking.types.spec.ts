@@ -138,6 +138,20 @@ describe("mocking", () => {
             expect(foo.sampleString).toBe("42");
         });
     });
+
+    describe("mocking object which doesn't inherit from anything", () => {
+        it("does not execute getter or setter code (not throwing null pointer exception)", () => {
+            // given
+
+            // when
+            const EmptyObject = Object.create(null);
+            const mockedObject = mock(EmptyObject);
+            instance(mockedObject);
+
+            // then
+
+        });
+    });
 });
 
 abstract class SampleAbstractClass {

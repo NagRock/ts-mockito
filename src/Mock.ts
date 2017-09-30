@@ -18,15 +18,17 @@ export class Mocker {
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
-        this.createMethodStubsFromOwnProperties();
-        this.createMethodStubsFromPrototypeKeys();
-        this.createMethodStubsFromClassCode();
-        this.createMethodStubsFromFunctionsCode();
-        this.createInstanceActionListenersFromOwnPropertyDescriptors();
-        this.createInstanceActionListenersFromOwnPropertyNames();
-        this.createInstanceActionListenersFromPrototypeKeys();
-        this.createInstanceActionListenersFromClassCode();
-        this.createInstanceActionListenersFromFunctionsCode();
+        if (this.clazz && this.clazz.prototype != null && this.clazz.prototype !== Object.prototype) {
+            this.createMethodStubsFromOwnProperties();
+            this.createMethodStubsFromPrototypeKeys();
+            this.createMethodStubsFromClassCode();
+            this.createMethodStubsFromFunctionsCode();
+            this.createInstanceActionListenersFromOwnPropertyDescriptors();
+            this.createInstanceActionListenersFromOwnPropertyNames();
+            this.createInstanceActionListenersFromPrototypeKeys();
+            this.createInstanceActionListenersFromClassCode();
+            this.createInstanceActionListenersFromFunctionsCode();
+        }
     }
 
     public getMock(): any {
@@ -63,7 +65,7 @@ export class Mocker {
 
     protected createMethodStubsFromOwnProperties(prototype: any = this.clazz.prototype): void {
         try {
-            while (prototype !== Object.prototype) {
+            while (prototype !== Object.prototype && prototype != null) {
                 Object.getOwnPropertyNames(prototype).forEach((name: string) => {
                     const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
 
@@ -87,7 +89,7 @@ export class Mocker {
 
     protected createInstanceActionListenersFromOwnPropertyDescriptors(prototype: any = this.clazz.prototype): void {
         try {
-            while (prototype !== Object.prototype) {
+            while (prototype !== Object.prototype && prototype != null) {
                 Object.getOwnPropertyNames(prototype).forEach((name: string) => {
                     const descriptor = Object.getOwnPropertyDescriptor(prototype, name);
                     if (descriptor && descriptor.get) {
@@ -116,7 +118,7 @@ export class Mocker {
 
     protected createInstanceActionListenersFromOwnPropertyNames(prototype: any = this.clazz.prototype): void {
         try {
-            while (prototype !== Object.prototype) {
+            while (prototype !== Object.prototype && prototype != null) {
                 Object.getOwnPropertyNames(prototype).forEach((name: string) => {
                     this.createInstanceActionListener(name, prototype);
                 });
