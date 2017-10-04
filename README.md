@@ -344,4 +344,7 @@ console.log(capture(spiedFoo.bar).last()); // [42]
 * Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol) 
 * Clickmeeting (http://clickmeeting.com)
 * Michał Stocki (https://github.com/michalstocki)
+* Łukasz Bendykowski (https://github.com/viman)
+* Andrey Ermakov (https://github.com/dreef3)
+* Markus Ende (https://github.com/Markus-Ende)
 * Thomas Hilzendegen (https://github.com/thomashilzendegen)
