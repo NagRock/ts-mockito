@@ -69,7 +69,7 @@ console.log(foo.getBar(999));
 
 ### Stubbing getter value
 
-```
+``` typescript
 // Creating mock
 let mockedFoo:Foo = mock(Foo);
 
