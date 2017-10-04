@@ -87,6 +87,37 @@ describe("verifying mocked object", () => {
             });
         });
 
+        describe("and arguments are optional", () => {
+            describe("but just first one is given", () => {
+                it("throws error", () => {
+                    // given
+                    foo.sampleMethodWithTwoOptionalArguments(5);
+
+                    // when
+                    let error;
+                    try {
+                        verify(mockedFoo.sampleMethodWithTwoOptionalArguments(5, 6)).called();
+                    } catch (e) {
+                        error = e;
+                    }
+                    expect(error).toBeTruthy();
+                });
+            });
+        });
+
+        describe("and arguments are optional", () => {
+            it("verifies call count correctly", () => {
+                // given
+                foo.sampleMethodWithTwoOptionalArguments(5);
+                foo.sampleMethodWithTwoOptionalArguments(5);
+                foo.sampleMethodWithTwoOptionalArguments(5, 6);
+
+                // when
+                verify(mockedFoo.sampleMethodWithTwoOptionalArguments(5)).twice();
+                verify(mockedFoo.sampleMethodWithTwoOptionalArguments(5, 6)).once();
+            });
+        });
+
         describe("but two has occurred", () => {
             it("throws error", () => {
                 // given
