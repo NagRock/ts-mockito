@@ -83,6 +83,12 @@ let foo:Foo = instance(mockedFoo);
 console.log(foo.sampleGetter);
 ```
 
+### Stubbing property values that have no getters
+
+Syntax is the same as with getter values.
+
+Please note, that stubbing properties that don't have getters only works if [Proxy](http://www.ecma-international.org/ecma-262/6.0/#sec-proxy-objects) object is available (ES6).
+
 ### Call count verification
 
 ``` typescript
