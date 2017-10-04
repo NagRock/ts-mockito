@@ -31,7 +31,7 @@ export class Foo {
         return a + b;
     }
 
-    public sampleMethodWithTwoOptionalArguments(a?: number, b?:number): number {
+    public sampleMethodWithTwoOptionalArguments(a?: number, b?: number): number {
         return a + b;
     }
 }
