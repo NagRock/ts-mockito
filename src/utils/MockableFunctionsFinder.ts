@@ -1,4 +1,4 @@
-export class RedundantMethodNameInCodeFinder {
+export class MockableFunctionsFinder {
     private notMockableFunctionNames: string[] = ["hasOwnProperty"];
 
     public find(code: string): {} {
