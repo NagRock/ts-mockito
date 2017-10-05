@@ -195,10 +195,10 @@ describe("spying on a real object", () => {
     });
 
     describe("spying on object which doesn't inherit from anything", () => {
-        let nullObject;
+        let bareObject;
 
         beforeEach(() => {
-            nullObject = Object.create(null, {
+            bareObject = Object.create(null, {
                 someMethod: {
                     writable: true,
                     configurable: true,
@@ -216,7 +216,7 @@ describe("spying on a real object", () => {
             // given
 
             // when
-            spy(nullObject);
+            spy(bareObject);
 
             // then
         });
@@ -225,33 +225,33 @@ describe("spying on a real object", () => {
             // given
 
             // when
-            spy(nullObject);
+            spy(bareObject);
 
             // then
-            expect(nullObject.otherMethod()).toBe(2);
+            expect(bareObject.otherMethod()).toBe(2);
         });
 
         it("delegates a call to the mock", () => {
             // given
-            const spiedNullObject = spy(nullObject);
+            const spiedObject = spy(bareObject);
 
             // when
-            when(spiedNullObject.someMethod()).thenReturn(2);
+            when(spiedObject.someMethod()).thenReturn(2);
 
             // then
-            expect(nullObject.someMethod()).toBe(2);
+            expect(bareObject.someMethod()).toBe(2);
         });
 
         it("delegates a call to the mock for dynamically created function", () => {
             // given
-            nullObject.newMethod = () => true;
-            const spiedNullObject = spy(nullObject);
+            bareObject.newMethod = () => true;
+            const spiedObject = spy(bareObject);
 
             // when
-            when(spiedNullObject.newMethod()).thenReturn(false);
+            when(spiedObject.newMethod()).thenReturn(false);
 
             // then
-            expect(nullObject.newMethod()).toBeFalsy();
+            expect(bareObject.newMethod()).toBeFalsy();
         });
     });
 });

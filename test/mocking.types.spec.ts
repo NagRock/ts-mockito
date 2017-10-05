@@ -142,10 +142,10 @@ describe("mocking", () => {
     describe("mocking object which doesn't inherit from anything", () => {
         it("does not execute getter or setter code (not throwing null pointer exception)", () => {
             // given
+            const BareObject = Object.create(null);
 
             // when
-            const EmptyObject = Object.create(null);
-            const mockedObject = mock(EmptyObject);
+            const mockedObject = mock(BareObject);
             instance(mockedObject);
 
             // then
