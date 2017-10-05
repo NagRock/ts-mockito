@@ -30,4 +30,8 @@ export class Foo {
     public sampleMethodWithOptionalArgument(a: number, b?: number): number {
         return a + b;
     }
+
+    public sampleMethodWithTwoOptionalArguments(a?: number, b?: number): number {
+        return a + b;
+    }
 }

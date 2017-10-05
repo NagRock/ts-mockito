@@ -32,7 +32,23 @@ export class Mocker {
     }
 
     public getMock(): any {
-        return this.mock;
+        if (typeof Proxy === "undefined") {
+            return this.mock;
+        }
+
+        return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+    }
+
+    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): ProxyHandler<any> {
+        return {
+            get: (target: any, name: PropertyKey) => {
+                const hasMethodStub = name in target;
+                if (!hasMethodStub) {
+                    this.createPropertyStub(name.toString());
+                    this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
+                }
+                return target[name];
+        }};
     }
 
     public reset(): void {

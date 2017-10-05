@@ -1,0 +1,63 @@
+import {MethodToStub} from "../src/MethodToStub";
+import {instance, mock, verify, when} from "../src/ts-mockito";
+import {Bar} from "./utils/Bar";
+
+describe("mocking", () => {
+    let mockedFoo: FooWithProperties;
+    let foo: FooWithProperties;
+
+    describe("mocking object with properties (that don't have getters)", () => {
+        it("does create own property descriptors on mock after when is called", () => {
+            // given
+
+            // when
+            mockedFoo = mock(FooWithProperties);
+            when(mockedFoo.sampleNumber).thenReturn(42);
+
+            // then
+            expect((mockedFoo.sampleNumber as any) instanceof MethodToStub).toBe(true);
+        });
+
+        it("does create own property descriptors on instance", () => {
+            // given
+            mockedFoo = mock(FooWithProperties);
+            foo = instance(mockedFoo);
+
+            // when
+            when(mockedFoo.sampleNumber).thenReturn(42);
+
+            // then
+            expect(foo.sampleNumber).toBe(42);
+        });
+
+        it("works with verification if property is stubbed", () => {
+            // given
+            mockedFoo = mock(FooWithProperties);
+            foo = instance(mockedFoo);
+            when(mockedFoo.sampleNumber).thenReturn(42);
+
+            // when
+            const value = foo.sampleNumber;
+
+            // then
+            expect(() => verify(mockedFoo.sampleNumber).once()).not.toThrow();
+        });
+
+        it("works with verification if property is unstubbed", () => {
+            // given
+            mockedFoo = mock(FooWithProperties);
+            foo = instance(mockedFoo);
+
+            // when
+            const value = foo.sampleNumber;
+
+            // then
+            expect(() => verify(mockedFoo.sampleNumber).once()).not.toThrow();
+        });
+    });
+
+});
+
+class FooWithProperties {
+    public readonly sampleNumber: number;
+}

@@ -69,7 +69,7 @@ console.log(foo.getBar(999));
 
 ### Stubbing getter value
 
-```
+``` typescript
 // Creating mock
 let mockedFoo:Foo = mock(Foo);
 
@@ -82,6 +82,12 @@ let foo:Foo = instance(mockedFoo);
 // prints three
 console.log(foo.sampleGetter);
 ```
+
+### Stubbing property values that have no getters
+
+Syntax is the same as with getter values.
+
+Please note, that stubbing properties that don't have getters only works if [Proxy](http://www.ecma-international.org/ecma-262/6.0/#sec-proxy-objects) object is available (ES6).
 
 ### Call count verification
 
@@ -338,4 +344,7 @@ console.log(capture(spiedFoo.bar).last()); // [42]
 * Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol) 
 * Clickmeeting (http://clickmeeting.com)
 * Michał Stocki (https://github.com/michalstocki)
+* Łukasz Bendykowski (https://github.com/viman)
+* Andrey Ermakov (https://github.com/dreef3)
+* Markus Ende (https://github.com/Markus-Ende)
 * Thomas Hilzendegen (https://github.com/thomashilzendegen)
