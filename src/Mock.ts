@@ -6,7 +6,7 @@ import {MethodStub} from "./stub/MethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {strictEqual} from "./ts-mockito";
 import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
-import {traverseObjectOwnProperties, traversePrototypeChain} from "./utils/ObjectTraverseMethods";
+import {traverseObjectOwnProperties, traversePrototypeChain} from "./utils/ObjectTraverseFunctions";
 import {ObjectPropertyCodeRetriever} from "./utils/PrototypeKeyCodeGetter";
 
 export class Mocker {
