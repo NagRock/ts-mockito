@@ -11,8 +11,7 @@ export class Spy extends Mocker {
         super(instance.constructor, instance);
 
         this.createMethodStubsFromOwnProperties(instance);
-        this.createInstanceActionListenersFromOwnPropertyDescriptors(instance);
-        this.createInstanceActionListenersFromOwnPropertyNames(instance);
+        this.createInstanceActionListenersFromOwnProperties(instance);
     }
 
     public reset(): void {
