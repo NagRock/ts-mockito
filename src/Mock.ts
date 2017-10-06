@@ -6,14 +6,14 @@ import {MethodStub} from "./stub/MethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {strictEqual} from "./ts-mockito";
 import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
-import {PrototypeKeyCodeGetter} from "./utils/PrototypeKeyCodeGetter";
+import {ObjectPropertyCodeRetriever} from "./utils/PrototypeKeyCodeGetter";
 
 export class Mocker {
     private methodStubCollections: any = {};
     private methodActions: MethodAction[] = [];
     private mock: any = {};
     private mockableFunctionsFinder = new MockableFunctionsFinder();
-    private subKeysInCodeFinder = new PrototypeKeyCodeGetter();
+    private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
 
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
@@ -184,7 +184,7 @@ export class Mocker {
 
     private createMethodStubsFromFunctionsCode(): void {
         Object.keys(this.clazz.prototype).forEach((key: string) => {
-            const subKeys = this.mockableFunctionsFinder.find(this.subKeysInCodeFinder.get(this.clazz.prototype, key));
+            const subKeys = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(this.clazz.prototype, key));
             Object.keys(subKeys).forEach((subKey: string) => {
                 this.createMethodStub(subKey);
             });
@@ -244,7 +244,7 @@ export class Mocker {
 
     private createInstanceActionListenersFromFunctionsCode(): void {
         Object.keys(this.clazz.prototype).forEach((key: string) => {
-            const subKeys = this.mockableFunctionsFinder.find(this.subKeysInCodeFinder.get(this.clazz.prototype, key));
+            const subKeys = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(this.clazz.prototype, key));
             Object.keys(subKeys).forEach((subKey: string) => {
                 this.createInstanceActionListener(subKey, this.clazz.prototype);
             });
