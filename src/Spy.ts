@@ -3,7 +3,6 @@ import {Mocker} from "./Mock";
 import {RealMethod} from "./spy/RealMethod";
 import {CallThroughMethodStub} from "./stub/CallThroughMethodStub";
 import {MethodStub} from "./stub/MethodStub";
-import {isObjectLike} from "./utils/ObjectTraverseFunctions";
 
 export class Spy extends Mocker {
     private realMethods: { [key: string]: RealMethod };
@@ -11,7 +10,7 @@ export class Spy extends Mocker {
     constructor(instance: any) {
         super(instance.constructor, instance);
 
-        if (isObjectLike(instance)) {
+        if (this.objectTraverser.isObjectLike(instance)) {
             this.processProperties(instance);
         }
     }
