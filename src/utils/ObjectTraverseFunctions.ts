@@ -7,7 +7,11 @@ export function traversePrototypeChain(object: any, callback: (object: any) => v
 }
 
 export function traverseObjectOwnProperties(object: any, callback: (property: string) => void): void {
-    Object.getOwnPropertyNames(object).forEach((name: string) => {
-        callback(name);
-    });
+    try {
+        Object.getOwnPropertyNames(object).forEach((name: string) => {
+            callback(name);
+        });
+    } catch (error) {
+        // es5 can throw an error when getOwnPropertyNames is called on primitives
+    }
 }

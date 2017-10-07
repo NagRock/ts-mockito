@@ -76,22 +76,18 @@ export class Mocker {
     }
 
     protected processProperties(prototype: any = this.clazz.prototype): void {
-        try {
-            traversePrototypeChain(prototype, (proto: any) => {
-                traverseObjectOwnProperties(proto, (name: string) => {
-                    const descriptor = Object.getOwnPropertyDescriptor(proto, name);
-                    if (descriptor.get) {
-                        this.createPropertyStub(name);
-                        this.createInstancePropertyDescriptorListener(name, descriptor, proto);
-                    } else {
-                        this.createMethodStub(name);
-                    }
-                    this.createInstanceActionListener(name, proto);
-                });
+        traversePrototypeChain(prototype, (proto: any) => {
+            traverseObjectOwnProperties(proto, (name: string) => {
+                const descriptor = Object.getOwnPropertyDescriptor(proto, name);
+                if (descriptor.get) {
+                    this.createPropertyStub(name);
+                    this.createInstancePropertyDescriptorListener(name, descriptor, proto);
+                } else {
+                    this.createMethodStub(name);
+                }
+                this.createInstanceActionListener(name, proto);
             });
-        } catch (error) {
-            // es5 can throw an error when getOwnPropertyNames is called on primitives
-        }
+        });
     }
 
     protected createInstancePropertyDescriptorListener(key: string,
