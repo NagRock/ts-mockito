@@ -1,4 +1,9 @@
+import * as _ from "lodash";
+
 export function traversePrototypeChain(object: any, callback: (object: any) => void): void {
+    if (!isObjectLike(object)) {
+        return;
+    }
     let prototype: any = object;
     while (prototype !== null && prototype !== Object.prototype) {
         callback(prototype);
@@ -7,11 +12,14 @@ export function traversePrototypeChain(object: any, callback: (object: any) => v
 }
 
 export function traverseObjectOwnProperties(object: any, callback: (property: string) => void): void {
-    try {
-        Object.getOwnPropertyNames(object).forEach((name: string) => {
-            callback(name);
-        });
-    } catch (error) {
-        // es5 can throw an error when getOwnPropertyNames is called on primitives
+    if (!isObjectLike(object)) {
+        return;
     }
+    Object.getOwnPropertyNames(object).forEach((name: string) => {
+        callback(name);
+    });
+}
+
+export function isObjectLike(object: any): boolean {
+    return _.isObject(object) || _.isObjectLike(object) || _.isFunction(object);
 }

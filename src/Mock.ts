@@ -6,7 +6,7 @@ import {MethodStub} from "./stub/MethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {strictEqual} from "./ts-mockito";
 import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
-import {traverseObjectOwnProperties, traversePrototypeChain} from "./utils/ObjectTraverseFunctions";
+import {isObjectLike, traverseObjectOwnProperties, traversePrototypeChain} from "./utils/ObjectTraverseFunctions";
 import {ObjectPropertyCodeRetriever} from "./utils/PrototypeKeyCodeGetter";
 
 export class Mocker {
@@ -19,10 +19,10 @@ export class Mocker {
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
-        if (this.clazz && this.clazz.prototype != null && this.clazz.prototype !== Object.prototype) {
-            this.processProperties();
-            this.processClassCode();
-            this.processFunctionsCode();
+        if (isObjectLike(this.clazz) && isObjectLike(this.instance)) {
+            this.processProperties(this.clazz.prototype);
+            this.processClassCode(this.clazz);
+            this.processFunctionsCode(this.clazz.prototype);
         }
     }
 
@@ -75,7 +75,7 @@ export class Mocker {
         return this.methodActions.filter(action => action.methodName === name);
     }
 
-    protected processProperties(prototype: any = this.clazz.prototype): void {
+    protected processProperties(prototype: any): void {
         traversePrototypeChain(prototype, (proto: any) => {
             traverseObjectOwnProperties(proto, (name: string) => {
                 const descriptor = Object.getOwnPropertyDescriptor(proto, name);
@@ -124,9 +124,9 @@ export class Mocker {
         return new ReturnValueMethodStub(-1, [], null);
     }
 
-    private processClassCode(): void {
-        traversePrototypeChain(this.clazz, (proto: any) => {
-            const functionNames = this.mockableFunctionsFinder.find(proto.toString());
+    private processClassCode(clazz: any): void {
+        traversePrototypeChain(clazz, (proto: any) => {
+            const functionNames = this.mockableFunctionsFinder.find(Object.prototype.toString.call(proto));
             functionNames.forEach((functionName: string) => {
                 this.createMethodStub(functionName);
                 this.createInstanceActionListener(functionName, proto);
@@ -134,8 +134,8 @@ export class Mocker {
         });
     }
 
-    private processFunctionsCode(): void {
-        traversePrototypeChain(this.clazz.prototype, (proto: any) => {
+    private processFunctionsCode(prototype: any): void {
+        traversePrototypeChain(prototype, (proto: any) => {
             traverseObjectOwnProperties(proto, (propertyName: string) => {
                 const functionNames = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(proto, propertyName));
                 functionNames.forEach((functionName: string) => {
