@@ -1,12 +1,12 @@
 export class MockableFunctionsFinder {
     private notMockableFunctionNames: string[] = ["hasOwnProperty"];
 
-    public find(code: string): {} {
-        const result: any = {};
+    public find(code: string): string[] {
+        const result: string[] = [];
         this.getSubCodes(code).forEach((subCode: string) => {
             this.getMethodNames(subCode).forEach((methodName: string) => {
                 if (this.isMockable(methodName)) {
-                    result[methodName] = true;
+                    result.push(methodName);
                 }
             });
         });

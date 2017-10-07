@@ -10,9 +10,9 @@ describe("MockableFunctionsFinder", () => {
             const result = new MockableFunctionsFinder().find(code);
 
             // then
-            expect(result["log"]).toBeTruthy();
-            expect(result["toString"]).toBeTruthy();
-            expect(result["anonymousMethod"]).toBeTruthy();
+            expect(result).toContain("log");
+            expect(result).toContain("toString");
+            expect(result).toContain("anonymousMethod");
         });
 
         it("should not find hasOwnProperty as it should not be mocked (because its used by mockito to evaluate properties)", () => {

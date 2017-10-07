@@ -125,19 +125,23 @@ export class Mocker {
     }
 
     private processClassCode(): void {
-        const subKeys = this.mockableFunctionsFinder.find(this.clazz.toString());
-        traverseObjectOwnProperties(subKeys, (subKey: string) => {
-            this.createMethodStub(subKey);
-            this.createInstanceActionListener(subKey, this.clazz.prototype);
+        traversePrototypeChain(this.clazz, (proto: any) => {
+            const functionNames = this.mockableFunctionsFinder.find(proto.toString());
+            functionNames.forEach((functionName: string) => {
+                this.createMethodStub(functionName);
+                this.createInstanceActionListener(functionName, proto);
+            });
         });
     }
 
     private processFunctionsCode(): void {
-        traverseObjectOwnProperties(this.clazz.prototype, (key: string) => {
-            const subKeys = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(this.clazz.prototype, key));
-            traverseObjectOwnProperties(subKeys, (subKey: string) => {
-                this.createMethodStub(subKey);
-                this.createInstanceActionListener(subKey, this.clazz.prototype);
+        traversePrototypeChain(this.clazz.prototype, (proto: any) => {
+            traverseObjectOwnProperties(proto, (propertyName: string) => {
+                const functionNames = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(proto, propertyName));
+                functionNames.forEach((functionName: string) => {
+                    this.createMethodStub(functionName);
+                    this.createInstanceActionListener(functionName, this.clazz.prototype);
+                });
             });
         });
     }
