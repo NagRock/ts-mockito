@@ -126,7 +126,7 @@ export class Mocker {
     }
 
     private processClassCode(clazz: any): void {
-        this.objectTraverser.traversePrototypeChain(clazz, (proto: any) => {
+        this.objectTraverser.traverseClassInheritanceChain(clazz, (proto: any) => {
             const functionNames = this.mockableFunctionsFinder.find(Object.prototype.toString.call(proto));
             functionNames.forEach((functionName: string) => {
                 this.createMethodStub(functionName);
