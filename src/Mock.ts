@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import {Matcher} from "./matcher/type/Matcher";
 import {MethodAction} from "./MethodAction";
 import {MethodStubCollection} from "./MethodStubCollection";
@@ -20,7 +21,7 @@ export class Mocker {
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
-        if (this.objectTraverser.isObjectLike(this.clazz) && this.objectTraverser.isObjectLike(this.instance)) {
+        if (_.isObject(this.clazz) && _.isObject(this.instance)) {
             this.processProperties(this.clazz.prototype);
             this.processClassCode(this.clazz);
             this.processFunctionsCode(this.clazz.prototype);

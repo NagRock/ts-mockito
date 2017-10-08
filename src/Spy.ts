@@ -10,7 +10,7 @@ export class Spy extends Mocker {
     constructor(instance: any) {
         super(instance.constructor, instance);
 
-        if (this.objectTraverser.isObjectLike(instance)) {
+        if (_.isObject(instance)) {
             this.processProperties(instance);
         }
     }

@@ -13,7 +13,7 @@ export class ObjectTraverser {
     }
 
     public traversePrototypeChain(object: any, callback: (object: any) => void): void {
-        if (!this.isObjectLike(object)) {
+        if (!_.isObject(object)) {
             return;
         }
         let prototype: any = object;
@@ -24,15 +24,11 @@ export class ObjectTraverser {
     }
 
     public traverseObjectOwnProperties(object: any, callback: (property: string) => void): void {
-        if (!this.isObjectLike(object)) {
+        if (!_.isObject(object)) {
             return;
         }
         Object.getOwnPropertyNames(object).forEach((name: string) => {
             callback(name);
         });
-    }
-
-    public isObjectLike(object: any): boolean {
-        return _.isObject(object) || _.isObjectLike(object) || _.isFunction(object);
     }
 }
