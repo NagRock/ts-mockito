@@ -48,6 +48,11 @@
       "ts",
       "js",
       "json"
+    ],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "html",
+      "json"
     ]
   }
 }
