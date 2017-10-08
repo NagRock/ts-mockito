@@ -9,3 +9,9 @@ install:
 script:
   - "npm test"
   - "npm run lint"
+
+before_install:
+  - pip install --user codecov
+
+after_success:
+  - codecov
