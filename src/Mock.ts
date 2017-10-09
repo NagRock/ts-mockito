@@ -77,17 +77,17 @@ export class Mocker {
         return this.methodActions.filter(action => action.methodName === name);
     }
 
-    protected processProperties(prototype: any): void {
-        this.objectInspector.getObjectPrototypes(prototype).forEach((object: any) => {
-            this.objectInspector.getObjectOwnPropertyNames(object).forEach((name: string) => {
-                const descriptor = Object.getOwnPropertyDescriptor(object, name);
+    protected processProperties(object: any): void {
+        this.objectInspector.getObjectPrototypes(object).forEach((obj: any) => {
+            this.objectInspector.getObjectOwnPropertyNames(obj).forEach((name: string) => {
+                const descriptor = Object.getOwnPropertyDescriptor(obj, name);
                 if (descriptor.get) {
                     this.createPropertyStub(name);
-                    this.createInstancePropertyDescriptorListener(name, descriptor, object);
+                    this.createInstancePropertyDescriptorListener(name, descriptor, obj);
                 } else {
                     this.createMethodStub(name);
                 }
-                this.createInstanceActionListener(name, object);
+                this.createInstanceActionListener(name, obj);
             });
         });
     }
@@ -135,10 +135,10 @@ export class Mocker {
         });
     }
 
-    private processFunctionsCode(prototype: any): void {
-        this.objectInspector.getObjectPrototypes(prototype).forEach((object: any) => {
-            this.objectInspector.getObjectOwnPropertyNames(object).forEach((propertyName: string) => {
-                const functionNames = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(object, propertyName));
+    private processFunctionsCode(object: any): void {
+        this.objectInspector.getObjectPrototypes(object).forEach((obj: any) => {
+            this.objectInspector.getObjectOwnPropertyNames(obj).forEach((propertyName: string) => {
+                const functionNames = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(obj, propertyName));
                 functionNames.forEach((functionName: string) => {
                     this.createMethodStub(functionName);
                     this.createInstanceActionListener(functionName, this.clazz.prototype);
