@@ -13,7 +13,7 @@ export class MockableFunctionsFinder {
         return result;
     }
 
-    public isMockable(name: string): boolean {
+    private isMockable(name: string): boolean {
         return this.notMockableFunctionNames.indexOf(name) < 0;
     }
 
