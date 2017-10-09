@@ -49,6 +49,7 @@
       "js",
       "json"
     ],
+    "mapCoverage": true,
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.ts"
