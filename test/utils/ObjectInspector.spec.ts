@@ -2,8 +2,8 @@ import * as _ from "lodash";
 import {ObjectInspector} from "../../src/utils/ObjectInspector";
 
 describe("ObjectInspector", () => {
-    describe("Traversing prototype chain", () => {
-        it("calls given callback for each object from prototype chain", () => {
+    describe("Providing prototype chain", () => {
+        it("provides all objects from prototype chain as an array", () => {
             // given
             let methodNames: string[] = [];
 
@@ -18,7 +18,7 @@ describe("ObjectInspector", () => {
             expect(methodNames).toContain("sampleBoolean");
         });
 
-        it("doesn't call given callback for non objects", () => {
+        it("provides an empty array for non object passed (doesn't throw an exception)", () => {
             // given
             let called = false;
 
@@ -32,8 +32,8 @@ describe("ObjectInspector", () => {
         });
     });
 
-    describe("Traversing object own properties", () => {
-        it("calls given callback for each object's property", () => {
+    describe("Providing object own properties", () => {
+        it("provides all object properties as an array", () => {
             // given
             let propertyNames: string[] = [];
 
@@ -47,7 +47,7 @@ describe("ObjectInspector", () => {
             expect(propertyNames).toContain("sampleBoolean");
         });
 
-        it("doesn't call given callback for non objects", () => {
+        it("provides an empty array for non object passed (doesn't throw en excpetion)", () => {
             // given
             let called = false;
 
