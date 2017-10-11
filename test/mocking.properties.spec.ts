@@ -1,6 +1,5 @@
 import {MethodToStub} from "../src/MethodToStub";
 import {instance, mock, verify, when} from "../src/ts-mockito";
-import {Bar} from "./utils/Bar";
 
 describe("mocking", () => {
     let mockedFoo: FooWithProperties;

@@ -25,7 +25,7 @@ describe("mocking", () => {
             mockedFoo = mock(SampleAbstractClass);
 
             // then
-            expect((mockedFoo.twoPlusTwo as) instanceof MethodToStub).toBe(true);
+            expect((mockedFoo.twoPlusTwo as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create own property descriptors on instance", () => {
@@ -136,6 +136,20 @@ describe("mocking", () => {
 
             // then
             expect(foo.sampleString).toBe("42");
+        });
+    });
+
+    describe("mocking object which doesn't inherit from anything", () => {
+        it("does not execute getter or setter code (not throwing null pointer exception)", () => {
+            // given
+            const bareObject = Object.create(null);
+
+            // when
+            const mockedObject = mock(bareObject);
+            instance(mockedObject);
+
+            // then
+
         });
     });
 });

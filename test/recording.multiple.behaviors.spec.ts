@@ -29,7 +29,7 @@ describe("recording multiple behaviors", () => {
         });
     });
 
-    describe("when one of behaviors doesnt match", () => {
+    describe("when one of behaviors doesn't match", () => {
         it("is skipped", () => {
             // given
             const sampleValue = 3;

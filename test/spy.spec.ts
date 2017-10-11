@@ -193,4 +193,65 @@ describe("spying on a real object", () => {
             expect(foo.baz).toBe(3);
         });
     });
+
+    describe("spying on object which doesn't inherit from anything", () => {
+        let bareObject;
+
+        beforeEach(() => {
+            bareObject = Object.create(null, {
+                someMethod: {
+                    writable: true,
+                    configurable: true,
+                    value: () => 1,
+                },
+                otherMethod: {
+                    writable: true,
+                    configurable: true,
+                    value: () => 2,
+                },
+            });
+        });
+
+        it("can be spied (doesn't throw an exception)", () => {
+            // given
+
+            // when
+            spy(bareObject);
+
+            // then
+        });
+
+        it("executes the instance method", () => {
+            // given
+
+            // when
+            spy(bareObject);
+
+            // then
+            expect(bareObject.otherMethod()).toBe(2);
+        });
+
+        it("delegates a call to the mock", () => {
+            // given
+            const spiedObject = spy(bareObject);
+
+            // when
+            when(spiedObject.someMethod()).thenReturn(2);
+
+            // then
+            expect(bareObject.someMethod()).toBe(2);
+        });
+
+        it("delegates a call to the mock for dynamically created function", () => {
+            // given
+            bareObject.newMethod = () => true;
+            const spiedObject = spy(bareObject);
+
+            // when
+            when(spiedObject.newMethod()).thenReturn(false);
+
+            // then
+            expect(bareObject.newMethod()).toBeFalsy();
+        });
+    });
 });

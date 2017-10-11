@@ -1,18 +1,18 @@
-import {RedundantMethodNameInCodeFinder} from "../../src/utils/RedundantMethodNameInCodeFinder";
+import {MockableFunctionsFinder} from "../../src/utils/MockableFunctionsFinder";
 
-describe("RedundantMethodNameInCodeFinder", () => {
+describe("MockableFunctionsFinder", () => {
     describe("searching for method names in code", () => {
         it("returns all called and defined functions", () => {
             // given
             const code = getSampleCode();
 
             // when
-            const result = new RedundantMethodNameInCodeFinder().find(code);
+            const result = new MockableFunctionsFinder().find(code);
 
             // then
-            expect(result["log"]).toBeTruthy();
-            expect(result["toString"]).toBeTruthy();
-            expect(result["anonymousMethod"]).toBeTruthy();
+            expect(result).toContain("log");
+            expect(result).toContain("toString");
+            expect(result).toContain("anonymousMethod");
         });
 
         it("should not find hasOwnProperty as it should not be mocked (because its used by mockito to evaluate properties)", () => {
@@ -20,7 +20,7 @@ describe("RedundantMethodNameInCodeFinder", () => {
             const code = getSampleCode();
 
             // when
-            const result = new RedundantMethodNameInCodeFinder().find(code);
+            const result = new MockableFunctionsFinder().find(code);
 
             // then
             expect(result["hasOwnProperty"] instanceof Function).toBeTruthy();

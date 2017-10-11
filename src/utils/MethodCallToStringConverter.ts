@@ -1,11 +1,9 @@
-import {MatchersToStringConverter} from "../matcher/MatchersToStringConverter";
+import {Matcher} from "../matcher/type/Matcher";
 import {MethodToStub} from "../MethodToStub";
 
 export class MethodCallToStringConverter {
-    private matchersToStringConverter: MatchersToStringConverter = new MatchersToStringConverter();
-
     public convert(method: MethodToStub): string {
-        const matchersAsString = this.matchersToStringConverter.convert(method.matchers);
-        return `${method.name}(${matchersAsString})" `;
+        const stringifiedMatchers = method.matchers.map((matcher: Matcher) => matcher.toString()).join(", ");
+        return `${method.name}(${stringifiedMatchers})" `;
     }
 }

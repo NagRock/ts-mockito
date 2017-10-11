@@ -2,7 +2,6 @@ import * as _ from "lodash";
 import {Matcher} from "./Matcher";
 
 export class AnyFunctionMatcher extends Matcher {
-
     constructor() {
         super();
     }

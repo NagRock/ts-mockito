@@ -14,7 +14,7 @@ describe("ReturnValueMethodStub", () => {
             expect(result).toBeTruthy();
         });
 
-        it("returns false when arg doesnt match", () => {
+        it("returns false when arg doesn't match", () => {
             // given
             const testObj: ReturnValueMethodStub = new ReturnValueMethodStub(0, [strictEqual(10)], 50);
 
@@ -40,7 +40,7 @@ describe("ReturnValueMethodStub", () => {
             expect(result).toBeTruthy();
         });
 
-        it("returns false when first arg doesnt match", () => {
+        it("returns false when first arg doesn't match", () => {
             // given
             const firstValue = 10;
             const secondValue = 20;
@@ -53,7 +53,7 @@ describe("ReturnValueMethodStub", () => {
             expect(result).toBeFalsy();
         });
 
-        it("returns false when second arg doesnt match", () => {
+        it("returns false when second arg doesn't match", () => {
             // given
             const firstValue = 10;
             const secondValue = 20;
@@ -66,7 +66,7 @@ describe("ReturnValueMethodStub", () => {
             expect(result).toBeFalsy();
         });
 
-        it("returns false when both args doesnt match", () => {
+        it("returns false when both args doesn't match", () => {
             // given
             const firstValue = 10;
             const secondValue = 20;

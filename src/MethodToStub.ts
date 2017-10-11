@@ -4,7 +4,7 @@ import {Mocker} from "./Mock";
 
 export class MethodToStub {
     constructor(public methodStubCollection: MethodStubCollection,
-                public matchers: Array<Matcher>,
+                public matchers: Matcher[],
                 public mocker: Mocker,
                 public name: string) {
     }
