@@ -5,7 +5,6 @@ export class MethodCallToStringConverter {
     private matchersToStringConverter: MatchersToStringConverter = new MatchersToStringConverter();
 
     public convert(method: MethodToStub): string {
-        const matchersAsString = this.matchersToStringConverter.convert(method.matchers);
-        return `${method.name}(${matchersAsString})" `;
+        return `${method.name}(${this.matchersToStringConverter.convert(method.matchers)})" `;
     }
 }
