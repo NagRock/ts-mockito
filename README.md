@@ -1,4 +1,4 @@
-# ts-mockito [![build badge](https://travis-ci.org/NagRock/ts-mockito.svg?branch=master)](https://travis-ci.org/NagRock/ts-mockito)
+# ts-mockito [![build badge](https://travis-ci.org/NagRock/ts-mockito.svg?branch=master)](https://travis-ci.org/NagRock/ts-mockito) [![codecov](https://codecov.io/gh/NagRock/ts-mockito/branch/master/graph/badge.svg)](https://codecov.io/gh/NagRock/ts-mockito)
 
 Mocking library for TypeScript inspired by http://mockito.org/
 
