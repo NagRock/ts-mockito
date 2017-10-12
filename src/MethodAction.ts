@@ -4,7 +4,7 @@ export class MethodAction {
     private static globalCallIndex: number = 0;
     private callIndex: number;
 
-    constructor(public methodName: string, public args: Array<any>) {
+    constructor(public methodName: string, public args: any[]) {
         this.callIndex = ++MethodAction.globalCallIndex;
     }
 
@@ -14,15 +14,7 @@ export class MethodAction {
         if (!methodNameMatch || !argumentsCountMatch) {
             return false;
         }
-        let allValid = true;
-        let index: number = 0;
-        for (const arg of this.args) {
-            if (matchers[index] && !matchers[index].match(arg)) {
-                allValid = false;
-            }
-            index++;
-        }
-        return allValid;
+        return matchers.every((matcher: Matcher, index: number) => matcher.match(this.args[index]));
     }
 
     public getCallIndex(): number {
