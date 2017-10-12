@@ -9,7 +9,9 @@ export class MethodAction {
     }
 
     public isApplicable(methodName: string, matchers: Matcher[]): boolean {
-        if (this.methodName !== methodName || this.args.length !== matchers.length) {
+        const methodNameMatch = this.methodName === methodName;
+        const argumentsCountMatch = this.args.length === matchers.length;
+        if (!methodNameMatch || !argumentsCountMatch) {
             return false;
         }
         return matchers.every((matcher: Matcher, index: number) => matcher.match(this.args[index]));
