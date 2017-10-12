@@ -4,25 +4,15 @@ export class MethodAction {
     private static globalCallIndex: number = 0;
     private callIndex: number;
 
-    constructor(public methodName: string, public args: Array<any>) {
+    constructor(public methodName: string, public args: any[]) {
         this.callIndex = ++MethodAction.globalCallIndex;
     }
 
     public isApplicable(methodName: string, matchers: Matcher[]): boolean {
-        const methodNameMatch = this.methodName === methodName;
-        const argumentsCountMatch = this.args.length === matchers.length;
-        if (!methodNameMatch || !argumentsCountMatch) {
+        if (this.methodName !== methodName || this.args.length !== matchers.length) {
             return false;
         }
-        let allValid = true;
-        let index: number = 0;
-        for (const arg of this.args) {
-            if (matchers[index] && !matchers[index].match(arg)) {
-                allValid = false;
-            }
-            index++;
-        }
-        return allValid;
+        return matchers.every((matcher: Matcher, index: number) => matcher.match(this.args[index]));
     }
 
     public getCallIndex(): number {
