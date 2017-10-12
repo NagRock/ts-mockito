@@ -55,8 +55,7 @@
       "src/**/*.ts"
     ],
     "coverageReporters": [
-      "lcov",
-      "html"
+      "lcov"
     ]
   }
 }
