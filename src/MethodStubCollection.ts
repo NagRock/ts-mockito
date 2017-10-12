@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import {MethodStub} from "./stub/MethodStub";
 
 export class MethodStubCollection {
@@ -8,60 +9,36 @@ export class MethodStubCollection {
     }
 
     public getLastMatchingGroupIndex(args): number {
-        for (let i = this.items.length - 1; i >= 0; i--) {
-            const item = this.items[i];
-            if (item.isApplicable(args)) {
-                return item.getGroupIndex();
-            }
-        }
-        return -1;
+        const matchingGroup = _.clone(this.items).reverse().find((item: MethodStub) => item.isApplicable(args));
+        return matchingGroup ? matchingGroup.getGroupIndex() : -1;
     }
 
     public getFirstMatchingFromGroupAndRemoveIfNotLast(groupIndex: number, args: any[]): MethodStub {
-        const index = this.getFirstMatchingIndexFromGroup(groupIndex, args);
         const result = this.getFirstMatchingFromGroup(groupIndex, args);
-        if (index > -1 && this.getItemsCountInGroup(groupIndex) > 1) {
-            this.items.splice(index, 1);
-        }
+        this.removeIfNotLast(groupIndex, args);
         return result;
     }
 
     public hasMatchingInAnyGroup(args: any[]): boolean {
-        for (const item of this.items) {
-            if (item.isApplicable(args)) {
-                return true;
-            }
+        return this.items.some((item: MethodStub) => item.isApplicable(args));
+    }
+
+    private removeIfNotLast(groupIndex: number, args: any[]): void {
+        const index = this.getFirstMatchingIndexFromGroup(groupIndex, args);
+        if (index > -1 && this.getItemsCountInGroup(groupIndex) > 1) {
+            this.items.splice(index, 1);
         }
-        return false;
     }
 
     private getFirstMatchingFromGroup(groupIndex: number, args: any[]): MethodStub {
-        for (const item of this.items) {
-            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
-                return item;
-            }
-        }
-        return null;
+        return this.items.find((item: MethodStub) => item.getGroupIndex() === groupIndex && item.isApplicable(args));
     }
 
     private getFirstMatchingIndexFromGroup(groupIndex: number, args: any[]): number {
-        let index = 0;
-        for (const item of this.items) {
-            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
-                return index;
-            }
-            index++;
-        }
-        return -1;
+        return this.items.findIndex((item: MethodStub) => item.getGroupIndex() === groupIndex && item.isApplicable(args));
     }
 
     private getItemsCountInGroup(groupIndex: number): number {
-        let result = 0;
-        for (const item of this.items) {
-            if (item.getGroupIndex() === groupIndex) {
-                result++;
-            }
-        }
-        return result;
+        return this.items.filter((item: MethodStub) => item.getGroupIndex() === groupIndex).length;
     }
 }

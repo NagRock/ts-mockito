@@ -104,7 +104,7 @@ describe("recording multiple behaviors", () => {
     });
 
     describe("when return values are mixed with throw errors", () => {
-        it("uses one by on and repeat last one infinitely", () => {
+        it("uses one by one and repeat last one infinitely", () => {
             // given
             const sampleValue = 3;
             const firstMatchingStubResult = "first";
