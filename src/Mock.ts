@@ -8,7 +8,7 @@ import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {strictEqual} from "./ts-mockito";
 import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
 import {ObjectInspector} from "./utils/ObjectInspector";
-import {ObjectPropertyCodeRetriever} from "./utils/PrototypeKeyCodeGetter";
+import {ObjectPropertyCodeRetriever} from "./utils/ObjectPropertyCodeRetriever";
 
 export class Mocker {
     protected objectInspector = new ObjectInspector();
