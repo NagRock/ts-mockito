@@ -5,9 +5,11 @@
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
   "scripts": {
-    "compile": "rm -rf lib && ./node_modules/.bin/tsc -p ./src",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "compile": "rm -rf lib && ./node_modules/.bin/tsc",
+    "test": "./node_modules/.bin/jest",
+    "test:watch": "./node_modules/.bin/jest --watch",
+    "test:karma": "npm run compile && ./node_modules/.bin/karma start --single-run",
+    "test:karma:watch": "npm run compile && ./node_modules/.bin/karma start",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
   },
   "author": "kuster.maciej@gmail.com",
@@ -26,6 +28,7 @@
     "javascript"
   ],
   "devDependencies": {
+    "@types/jasmine": "^2.6.0",
     "@types/jest": "^21.1.1",
     "@types/lodash": "^4.14.76",
     "@types/node": "^8.0.31",
@@ -33,7 +36,15 @@
     "ts-helpers": "^1.1.2",
     "ts-jest": "^21.0.1",
     "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "awesome-typescript-loader": "^3.2.3",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-typescript": "^3.0.7"
   },
   "dependencies": {
     "lodash": "^4.17.4"

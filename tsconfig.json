@@ -1,13 +1,13 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
+    "baseUrl": ".",
+    "outDir": "./lib",
     "module": "commonjs",
+    "target": "es5",
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
-    "outDir": "lib",
     "declaration": true,
     "lib": [
       "es5",
@@ -17,7 +17,14 @@
     "types": [
       "node",
       "lodash",
-      "jest"
+      "jasmine"
     ]
-  }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./test/**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules", "./dist", "**/*.d.ts"
+  ]
 }
