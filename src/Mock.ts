@@ -36,7 +36,7 @@ export class Mocker {
         return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
     }
 
-    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): ProxyHandler<any> {
+    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): any {
         return {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target;
