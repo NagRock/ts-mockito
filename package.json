@@ -8,8 +8,8 @@
     "compile": "rm -rf lib && ./node_modules/.bin/tsc",
     "test": "./node_modules/.bin/jest",
     "test:watch": "./node_modules/.bin/jest --watch",
-    "test:karma": "npm run compile && ./node_modules/.bin/karma start --single-run",
-    "test:karma:watch": "npm run compile && ./node_modules/.bin/karma start",
+    "test:karma": "./node_modules/.bin/karma start --single-run",
+    "test:karma:watch": "./node_modules/.bin/karma start",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
   },
   "author": "kuster.maciej@gmail.com",
