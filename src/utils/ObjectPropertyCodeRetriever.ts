@@ -12,6 +12,6 @@ export class ObjectPropertyCodeRetriever {
         if (descriptor.set) {
             accessorsCodes.push(descriptor.set.toString());
         }
-        return accessorsCodes.join(" ") || object[propertyName].toString();
+        return accessorsCodes.join(" ") || String(object[propertyName]);
     }
 }

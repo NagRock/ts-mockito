@@ -7,6 +7,9 @@ describe("ObjectPropertyCodeRetriever", () => {
 
         beforeEach(() => {
             object = {
+                undefinedProperty: undefined,
+                nullProperty: null,
+                nanProperty: NaN,
                 stringProperty: "stringProperty",
                 booleanProperty: true,
                 testMethod: () => true,
@@ -20,9 +23,12 @@ describe("ObjectPropertyCodeRetriever", () => {
         });
 
         it("Provides code of given existing property", () => {
+            expect(objectPropertyCodeRetriever.get(object, "undefinedProperty")).toBe("undefined");
+            expect(objectPropertyCodeRetriever.get(object, "nullProperty")).toBe("null");
+            expect(objectPropertyCodeRetriever.get(object, "nanProperty")).toBe("NaN");
             expect(objectPropertyCodeRetriever.get(object, "stringProperty")).toBe("stringProperty");
             expect(objectPropertyCodeRetriever.get(object, "booleanProperty")).toBe("true");
-            expect(objectPropertyCodeRetriever.get(object, "testMethod")).toBe("function () {return true;}");
+            expect(objectPropertyCodeRetriever.get(object, "testMethod")).toMatch(/function \(\)/);
         });
 
         it("Provides code of given existing property accessors", () => {
