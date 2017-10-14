@@ -1,6 +1,6 @@
 {
   "name": "ts-mockito",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Mocking library for TypeScript",
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
