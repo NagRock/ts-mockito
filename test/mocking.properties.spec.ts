@@ -5,6 +5,10 @@ describe("mocking", () => {
     let mockedFoo: FooWithProperties;
     let foo: FooWithProperties;
 
+    if (!/PhantomJS/.test((window as any).Proxy)) {
+        pending("Testing browser doesn't support Proxy.");
+    }
+
     describe("mocking object with properties (that don't have getters)", () => {
         it("does create own property descriptors on mock after when is called", () => {
             // given

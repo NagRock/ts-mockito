@@ -7,7 +7,7 @@ install:
   - "npm install"
 
 script:
-  - "npm test"
+  - "npm test:ci"
   - "npm run lint"
 
 before_install:

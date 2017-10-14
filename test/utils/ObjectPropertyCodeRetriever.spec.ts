@@ -13,11 +13,11 @@ describe("ObjectPropertyCodeRetriever", () => {
                 stringProperty: "stringProperty",
                 booleanProperty: true,
                 testMethod: () => true,
-                get someValue() {
-                    return true;
+                get someValue(): string {
+                    return "someValue";
                 },
-                set someValue(newValue: boolean) {
-                    // nothing here
+                set someValue(newValue: string) {
+                    console.info("someValue set");
                 },
             };
         });
@@ -32,8 +32,8 @@ describe("ObjectPropertyCodeRetriever", () => {
         });
 
         it("Provides code of given existing property accessors", () => {
-            expect(objectPropertyCodeRetriever.get(object, "someValue")).toMatch(/get someValue\(\)./);
-            expect(objectPropertyCodeRetriever.get(object, "someValue")).toMatch(/set someValue\(newValue\)/);
+            expect(objectPropertyCodeRetriever.get(object, "someValue")).toMatch(/return "someValue"/);
+            expect(objectPropertyCodeRetriever.get(object, "someValue")).toMatch(/console\.info\("someValue set"\)/);
         });
 
         it("Returns empty string when checking non existent property", () => {
