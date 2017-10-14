@@ -1,25 +1,38 @@
 module.exports = function (config) {
-    config.set({
-
-        basePath: "./",
+    var _config = {
 
         frameworks: ["jasmine", "karma-typescript"],
 
         files: [
-            { pattern: "src/**/*.ts" }
+            "node_modules/babel-polyfill/dist/polyfill.js",
+            "./src/**/*.ts",
+            "./test/**/*.ts"
         ],
-
-        karmaTypescriptConfig: {
-            tsconfig: "./tsconfig.json"
-        },
 
         preprocessors: {
             "**/*.ts": ["karma-typescript"]
         },
 
-        reporters: ["progress", "karma-typescript"],
+        karmaTypescriptConfig: {
+            bundlerOptions: {
+                entrypoints: /\.spec\.(ts|tsx)$/
+            },
 
-        browsers: ["Chrome"]
+            tsconfig: "./tsconfig.json"
+        },
 
-    });
+        reporters: ["progress", "mocha"],
+
+        browsers: ["Chrome"],
+
+        mochaReporter: {
+            output: 'minimal'
+        },
+
+        logLevel: config.LOG_INFO,
+        autoWatch: true,
+        singleRun: false
+    };
+
+    config.set(_config);
 };

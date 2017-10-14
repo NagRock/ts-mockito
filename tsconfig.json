@@ -1,11 +1,9 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./lib",
     "module": "commonjs",
-    "target": "es5",
     "moduleResolution": "node",
+    "target": "es5",
     "removeComments": true,
     "sourceMap": true,
     "declaration": true,
@@ -19,12 +17,5 @@
       "lodash",
       "jasmine"
     ]
-  },
-  "include": [
-    "./src/**/*.ts",
-    "./test/**/*.ts"
-  ],
-  "exclude": [
-    "./node_modules", "./dist", "**/*.d.ts"
-  ]
+  }
 }
