@@ -1,5 +1,5 @@
 module.exports = function (config) {
-    var _config = {
+    config.set({
 
         frameworks: ["jasmine", "karma-typescript"],
 
@@ -32,7 +32,5 @@ module.exports = function (config) {
         logLevel: config.LOG_INFO,
         autoWatch: true,
         singleRun: false
-    };
-
-    config.set(_config);
+    });
 };
