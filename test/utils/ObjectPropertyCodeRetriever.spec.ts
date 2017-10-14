@@ -26,7 +26,7 @@ describe("ObjectPropertyCodeRetriever", () => {
             expect(objectPropertyCodeRetriever.get(object, "undefinedProperty")).toBe("undefined");
             expect(objectPropertyCodeRetriever.get(object, "nullProperty")).toBe("null");
             expect(objectPropertyCodeRetriever.get(object, "nanProperty")).toBe("NaN");
-            expect(objectPropertyCodeRetriever.get(object, "stringProperty")).toBe("stringPrsoperty");
+            expect(objectPropertyCodeRetriever.get(object, "stringProperty")).toBe("stringProperty");
             expect(objectPropertyCodeRetriever.get(object, "booleanProperty")).toBe("true");
             expect(objectPropertyCodeRetriever.get(object, "testMethod")).toMatch(/function \(\)/);
         });
