@@ -5,7 +5,7 @@ describe("mocking", () => {
     let mockedFoo: FooWithProperties;
     let foo: FooWithProperties;
 
-    if (!/PhantomJS/.test((window as any).Proxy)) {
+    if (typeof Proxy === "undefined") {
         pending("Testing browser doesn't support Proxy.");
     }
 
