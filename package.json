@@ -13,7 +13,6 @@
     "test:jest:watch": "jest --watch",
     "test:karma": "./node_modules/.bin/karma start karma.conf.js --single-run",
     "test:karma:watch": "./node_modules/.bin/karma start karma.conf.js",
-    "test:ci": "npm run test:coverage && ./node_modules/.bin/karma start karma.conf.js --single-run --browsers 'PhantomJS,ChromeHeadless'",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
   },
   "author": "kuster.maciej@gmail.com",
