@@ -12,16 +12,16 @@ export class MethodStubSetter<T> {
     }
 
     public thenReturn(...rest: T[]): this {
-        for (const value of rest) {
+        rest.forEach(value => {
             this.methodToStub.methodStubCollection.add(new ReturnValueMethodStub(this.groupIndex, this.methodToStub.matchers, value));
-        }
+        });
         return this;
     }
 
     public thenThrow(...rest: Error[]): this {
-        for (const error of rest) {
+        rest.forEach(error => {
             this.methodToStub.methodStubCollection.add(new ThrowErrorMethodStub(this.groupIndex, this.methodToStub.matchers, error));
-        }
+        });
         return this;
     }
 
