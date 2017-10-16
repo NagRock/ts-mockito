@@ -117,7 +117,5 @@ export function strictEqual(expectedValue: any): Matcher {
     return new StrictEqualMatcher(expectedValue);
 }
 
-// add a default export for intermediate apps
-
-import * as myself from './ts-mockito'; // import this file into itself
-export default myself;
+import * as mockito from "./ts-mockito";
+export default mockito;
