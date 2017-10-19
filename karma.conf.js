@@ -15,7 +15,10 @@ module.exports = function (config) {
 
         karmaTypescriptConfig: {
             bundlerOptions: {
-                entrypoints: /\.spec\.(ts|tsx)$/
+                entrypoints: /\.spec\.(ts|tsx)$/,
+                resolve: {
+                    directories: ["src", "node_modules"]
+                }
             },
 
             tsconfig: "./tsconfig.json"

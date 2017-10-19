@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "../lib",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "removeComments": true,
+    "sourceMap": true,
+    "declaration": true,
+    "lib": [
+      "es5",
+      "es6",
+      "dom"
+    ],
+    "types": [
+      "node",
+      "lodash",
+      "jasmine"
+    ]
+  }
+}
