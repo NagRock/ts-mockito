@@ -116,3 +116,6 @@ export function notNull(): any {
 export function strictEqual(expectedValue: any): Matcher {
     return new StrictEqualMatcher(expectedValue);
 }
+
+import * as mockito from "./ts-mockito";
+export default mockito;
