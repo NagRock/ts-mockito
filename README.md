@@ -44,8 +44,8 @@ foo.getBar(3);
 foo.getBar(5);
 
 // Explicit, readable verification
-verify(fooMock.getBar(3)).called();
-verify(fooMock.getBar(5)).called();
+verify(mockedFoo.getBar(3)).called();
+verify(mockedFoo.getBar(5)).called();
 ```
 
 ### Stubbing method calls
