@@ -32,7 +32,6 @@ export class Mocker {
         if (typeof Proxy === "undefined") {
             return this.mock;
         }
-
         return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
     }
 
