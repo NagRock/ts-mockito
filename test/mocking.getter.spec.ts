@@ -75,6 +75,19 @@ describe("mocking", () => {
             // then
         });
     });
+
+    describe("mocking object with getter and setter of same name allows both", () => {
+       it("does not throw assigning value to read only getter when using set property", () => {
+           // given
+           mockedFoo = mock(FooWithGetterAndSetter);
+           foo = instance(mockedFoo);
+
+           // when
+           foo.twoPlusTwo = 7;
+
+           // then
+       });
+    });
 });
 
 abstract class SampleAbstractClass {
