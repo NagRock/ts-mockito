@@ -84,11 +84,10 @@ export class Mocker {
                     this.createPropertyStub(name);
                     this.createInstancePropertyDescriptorListener(name, descriptor, obj);
                     this.createInstanceActionListener(name, obj);
-                } else if(typeof descriptor.value === "function") {
+                } else if (typeof descriptor.value === "function") {
                     this.createMethodStub(name);
                     this.createInstanceActionListener(name, obj);
-                }
-                else {
+                } else {
                     object[name] = descriptor.value;
                 }
             });
