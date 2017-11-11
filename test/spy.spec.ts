@@ -2,6 +2,8 @@ import {capture, reset, spy, verify, when} from "../src/ts-mockito";
 
 describe("spying on a real object", () => {
     class Real {
+        public b = 11;
+
         public foo(a: number) {
             return a;
         }
@@ -67,6 +69,19 @@ describe("spying on a real object", () => {
 
             // then
             expect(foo.bar()).toBe(42);
+        });
+    });
+
+    describe("access to a real object property", () => {
+        it("get instance property", () => {
+          // given
+          const foo = new Real();
+
+          // when
+          spy(foo);
+
+          // then
+          expect(foo.b).toBe(11);
         });
     });
 
