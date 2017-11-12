@@ -17,6 +17,10 @@ describe("spying on a real object", () => {
         }
     }
 
+    function RealFn() {
+
+    }
+
     describe("calling a mocked method", () => {
         it("delegates a call to the mock", () => {
             // given
@@ -69,6 +73,16 @@ describe("spying on a real object", () => {
 
             // then
             expect(foo.bar()).toBe(42);
+        });
+    });
+
+    describe("spying functions", () => {
+        it("should not mock function.prototype methods", () => {
+          // when
+          spy(RealFn);
+
+          expect(RealFn.bind).toBe(Function.prototype.bind);
+          expect(RealFn.apply).toBe(Function.prototype.apply);
         });
     });
 
