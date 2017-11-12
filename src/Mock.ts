@@ -88,7 +88,7 @@ export class Mocker {
                     this.createMethodStub(name);
                     this.createInstanceActionListener(name, obj);
                 } else {
-                    object[name] = descriptor.value;
+                    // no need to reassign properties
                 }
             });
         });
