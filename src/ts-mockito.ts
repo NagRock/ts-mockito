@@ -117,5 +117,23 @@ export function strictEqual(expectedValue: any): Matcher {
     return new StrictEqualMatcher(expectedValue);
 }
 
-import * as mockito from "./ts-mockito";
-export default mockito;
+// Export default object with all members (ember-browserify doesn't support named exports).
+export default {
+    spy,
+    mock,
+    verify,
+    when,
+    instance,
+    capture,
+    reset,
+    resetCalls,
+    anyOfClass,
+    anyFunction,
+    anyNumber,
+    anyString,
+    anything,
+    between,
+    deepEqual,
+    notNull,
+    strictEqual,
+};
