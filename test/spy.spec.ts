@@ -2,6 +2,8 @@ import {capture, reset, spy, verify, when} from "../src/ts-mockito";
 
 describe("spying on a real object", () => {
     class Real {
+        public b = 11;
+
         public foo(a: number) {
             return a;
         }
@@ -13,6 +15,10 @@ describe("spying on a real object", () => {
         get baz() {
             return 3;
         }
+    }
+
+    function RealFn() {
+
     }
 
     describe("calling a mocked method", () => {
@@ -67,6 +73,29 @@ describe("spying on a real object", () => {
 
             // then
             expect(foo.bar()).toBe(42);
+        });
+    });
+
+    describe("spying functions", () => {
+        it("should not mock function.prototype methods", () => {
+          // when
+          spy(RealFn);
+
+          expect(RealFn.bind).toBe(Function.prototype.bind);
+          expect(RealFn.apply).toBe(Function.prototype.apply);
+        });
+    });
+
+    describe("access to a real object property", () => {
+        it("get instance property", () => {
+          // given
+          const foo = new Real();
+
+          // when
+          spy(foo);
+
+          // then
+          expect(foo.b).toBe(11);
         });
     });
 
