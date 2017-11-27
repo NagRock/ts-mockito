@@ -152,6 +152,17 @@ describe("mocking", () => {
 
         });
     });
+
+    describe("stub an object with array as function parameter", () => {
+        it("returns the value defined in stub", () => {
+            const mockedObject = mock(SampleWithArrayParameter);
+
+            when(mockedObject.sampleMethod(["id"])).thenReturn("bla");
+
+            const sampleWithArray = instance(mockedObject);
+            expect(sampleWithArray.sampleMethod(["id"])).toBe("bla");
+        });
+    });
 });
 
 abstract class SampleAbstractClass {
@@ -209,5 +220,11 @@ class SampleGeneric<T> {
 
     public getGenericTypedValue(): T {
         return null;
+    }
+}
+
+class SampleWithArrayParameter {
+    public sampleMethod(value: string[]): string {
+        return "default";
     }
 }
