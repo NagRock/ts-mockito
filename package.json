@@ -16,7 +16,7 @@
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
   },
   "author": "kuster.maciej@gmail.com",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/NagRock/ts-mockito"
