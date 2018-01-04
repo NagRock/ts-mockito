@@ -34,4 +34,8 @@ export class Foo {
     public sampleMethodWithTwoOptionalArguments(a?: number, b?: number): number {
         return a + b;
     }
+
+    public sampleMethodReturningPromise(value: string): Promise<string> {
+        return Promise.resolve(value);
+    }
 }

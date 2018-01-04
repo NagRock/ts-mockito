@@ -158,6 +158,42 @@ describe("mocking", () => {
             });
         });
 
+        describe("with stubbed promise resolve", () => {
+            it("resolves with given value", done => {
+                // given
+                const sampleValue = "abc";
+                const expectedResult = "def";
+                when(mockedFoo.sampleMethodReturningPromise(sampleValue)).thenResolve(expectedResult);
+
+                // when
+                foo.sampleMethodReturningPromise(sampleValue)
+                    .then(value => {
+                        // then
+                        expect(value).toEqual(expectedResult);
+                        done();
+                    })
+                    .catch(err => done.fail(err));
+            });
+        });
+
+        describe("with stubbed promise rejection", () => {
+            it("rejects with given error", done => {
+                // given
+                const sampleValue = "abc";
+                const sampleError = new Error("sampleError");
+                when(mockedFoo.sampleMethodReturningPromise(sampleValue)).thenReject(sampleError);
+
+                // when
+                foo.sampleMethodReturningPromise(sampleValue)
+                    .then(value => done.fail())
+                    .catch(err => {
+                        // then
+                        expect(err.message).toEqual("sampleError");
+                        done();
+                    });
+            });
+        });
+
         describe("with stubbed function call", () => {
             it("calls given function", () => {
                 // given
