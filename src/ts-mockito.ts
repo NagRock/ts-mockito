@@ -34,7 +34,18 @@ export function spy<T>(instanceToSpy: T): T {
 }
 
 export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
-    return new Mocker(clazz).getMock();
+    return new Mocker(clazz, false).getMock();
+}
+
+export function imock<T>(): T {
+    class Empty {}
+    const mockedValue = new Mocker(Empty, true).getMock();
+
+    if (typeof Proxy === "undefined") {
+        return mockedValue;
+    }
+    const tsmockitoMocker = mockedValue.__tsmockitoMocker;
+    return new Proxy(mockedValue, tsmockitoMocker.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
 }
 
 export function verify<T>(method: T): MethodStubVerificator<T> {
@@ -128,6 +139,7 @@ export function objectContaining(expectedValue: Object): any {
 export default {
     spy,
     mock,
+    imock,
     verify,
     when,
     instance,
