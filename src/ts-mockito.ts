@@ -41,8 +41,10 @@ export function verify<T>(method: T): MethodStubVerificator<T> {
     return new MethodStubVerificator(method as any);
 }
 
-export function when<T>(method: T): MethodStubSetter<T> {
-    return new MethodStubSetter(method as any);
+export function when<T>(method: Promise<T>): MethodStubSetter<Promise<T>, T, any>;
+export function when<T>(method: T): MethodStubSetter<T>;
+export function when<T>(method: any): any {
+    return new MethodStubSetter(method);
 }
 
 export function instance<T>(mockedValue: T): T {
