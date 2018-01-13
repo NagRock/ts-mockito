@@ -5,7 +5,7 @@ import {ResolvePromiseMethodStub} from "./stub/ResolvePromiseMethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {ThrowErrorMethodStub} from "./stub/ThrowErrorMethodStub";
 
-export class MethodStubSetter<T> {
+export class MethodStubSetter<T, ResolveType = void, RejectType = void> {
     private static globalGroupIndex: number = 0;
     private groupIndex: number;
 
@@ -32,14 +32,14 @@ export class MethodStubSetter<T> {
         return this;
     }
 
-    public thenResolve(...rest: any[]): this {
+    public thenResolve(...rest: ResolveType[]): this {
         rest.forEach(value => {
             this.methodToStub.methodStubCollection.add(new ResolvePromiseMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         });
         return this;
     }
 
-    public thenReject(...rest: any[]): this {
+    public thenReject(...rest: RejectType[]): this {
         rest.forEach(value => {
             this.methodToStub.methodStubCollection.add(new RejectPromiseMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         });
