@@ -157,17 +157,28 @@ describe("mocking", () => {
         let mockedFoo: SampleInterface;
         let foo: SampleInterface;
 
-        it("can create interface mock", () => {
-            // given
+        if (typeof Proxy === "undefined") {
+            it("throws when creating interface mock", () => {
+                // given
 
-            // when
-            mockedFoo = imock();
-            foo = instance(mockedFoo);
+                // when
 
-            // then
-        });
+                // then
+                expect(() => imock()).toThrow();
+            });
+        }
 
         if (typeof Proxy !== "undefined") {
+
+            it("can create interface mock", () => {
+                // given
+
+                // when
+                mockedFoo = imock();
+                foo = instance(mockedFoo);
+
+                // then
+            });
 
             it("can verify call count", () => {
                 // given

@@ -42,7 +42,7 @@ export function imock<T>(): T {
     const mockedValue = new Mocker(Empty, true).getMock();
 
     if (typeof Proxy === "undefined") {
-        return mockedValue;
+        throw new Error("Mocking of interfaces requires support for Proxy objects");
     }
     const tsmockitoMocker = mockedValue.__tsmockitoMocker;
     return new Proxy(mockedValue, tsmockitoMocker.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
