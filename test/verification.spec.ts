@@ -1,4 +1,4 @@
-import {instance, mock, verify} from "../src/ts-mockito";
+import {instance, mock, verify, when} from "../src/ts-mockito";
 import {MethodCallToStringConverter} from "../src/utils/MethodCallToStringConverter";
 import {Bar} from "./utils/Bar";
 import {Foo} from "./utils/Foo";
@@ -772,6 +772,59 @@ describe("verifying mocked object", () => {
                     expect(firstCallMsgIndex).toBeLessThan(secondCallMsgIndex);
                 });
             });
+        });
+    });
+
+    describe("with timeout", () => {
+        it("should succeed if call already happend", async () => {
+            // given
+            foo.getBar();
+
+            // when
+            await verify(mockedFoo.getBar()).timeout(10000);
+
+            // then
+            verify(mockedFoo.getBar()).once();
+        });
+
+        it("should wait for call to happen", async () => {
+            // given
+            setTimeout(() => foo.getBar(), 10);
+
+            // when
+            await verify(mockedFoo.getBar()).timeout(10000);
+
+            // then
+            verify(mockedFoo.getBar()).once();
+        });
+
+        it("should fail if call does not happen", async () => {
+            // given
+
+            // when
+            let error;
+            try {
+                await verify(mockedFoo.getBar()).timeout(10);
+            } catch (e) {
+                error = e;
+            }
+
+            // then
+            expect(error.message).toContain("to be called within");
+        });
+
+        it("should not alter call expectations", async () => {
+            // given
+            let result: string;
+            when(mockedFoo.getBar()).thenReturn("abc");
+            setTimeout(() => result = foo.getBar(), 10);
+
+            // when
+            await verify(mockedFoo.getBar()).timeout(10000);
+
+            // then
+            expect(result).toEqual("abc");
+            verify(mockedFoo.getBar()).once();
         });
     });
 });
