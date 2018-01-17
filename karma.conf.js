@@ -26,10 +26,21 @@ module.exports = function (config) {
 
         reporters: ["progress", "mocha"],
 
-        browsers: ["ChromeHeadless", "PhantomJS"],
+        browsers: ["CustomChromeHeadless", "PhantomJS"],
 
         mochaReporter: {
             output: 'minimal'
+        },
+
+        customLaunchers: {
+            'CustomChromeHeadless': {
+                base: 'ChromeHeadless',
+                flags: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ],
+                debug: true
+            }
         },
 
         logLevel: config.LOG_INFO,
