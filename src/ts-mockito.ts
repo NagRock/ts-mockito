@@ -21,6 +21,7 @@ import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
 import {Matcher} from "./matcher/type/Matcher";
 import {MatchingStringMatcher} from "./matcher/type/MatchingStringMatcher";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
+import {ObjectContainingMatcher} from "./matcher/type/ObjectContainingMatcher";
 import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 import {MethodStubSetter} from "./MethodStubSetter";
 import {MethodStubVerificator} from "./MethodStubVerificator";
@@ -32,7 +33,7 @@ export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T })): T {
+export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
     return new Mocker(clazz).getMock();
 }
 
@@ -120,6 +121,10 @@ export function strictEqual(expectedValue: any): Matcher {
 
 export function match(expectedValue: RegExp | string): Matcher {
     return new MatchingStringMatcher(expectedValue);
+}
+
+export function objectContaining(expectedValue: Object): Matcher {
+    return new ObjectContainingMatcher(expectedValue);
 }
 
 import * as mockito from "./ts-mockito";
