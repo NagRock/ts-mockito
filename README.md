@@ -17,7 +17,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `thenThrow` - throw an error
 	* `thenCall` - call custom method
 * Checking if methods were called with given arguments (`verify`)
-	* `anything`, `notNull`, `anyString`, `anyOfClass` etc. - for more flexible comparision
+	* `anything`, `notNull`, `anyString`, `anyOfClass`, `not` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 	* `calledBefore`, `calledAfter` - allows call order verification
 * Resetting mock (`reset`, `resetCalls`)
@@ -105,13 +105,15 @@ foo.getBar(2);
 foo.getBar(3);
 
 // Call count verification
-verify(mockedFoo.getBar(1)).once();               // was called with arg === 1 only once
-verify(mockedFoo.getBar(2)).twice();              // was called with arg === 2 exactly two times
-verify(mockedFoo.getBar(between(2, 3))).thrice(); // was called with arg beween 2-3 exactly three times
-verify(mockedFoo.getBar(anyNumber()).times(4);     // was called with any number arg exactly four times
-verify(mockedFoo.getBar(2)).atLeast(2);           // was called with arg === 2 min two times
-verify(mockedFoo.getBar(1)).atMost(1);           // was called with arg === 1 max one time
-verify(mockedFoo.getBar(4)).never();              // was never called with arg === 4
+verify(mockedFoo.getBar(1)).once();                     // was called with arg === 1 only once
+verify(mockedFoo.getBar(2)).twice();                    // was called with arg === 2 exactly two times
+verify(mockedFoo.getBar(strictEqual(2).not())).once(); // was called with anything except 2 once
+verify(mockedFoo.getBar(between(2, 3))).thrice();       // was called with arg beween 2-3 exactly three times
+verify(mockedFoo.getBar(anyNumber()).times(4);          // was called with any number arg exactly four times
+verify(mockedFoo.getBar(anyNumber.not()).times(4);     // was called with anything but not a number exactly four times
+verify(mockedFoo.getBar(2)).atLeast(2);                // was called with arg === 2 min two times
+verify(mockedFoo.getBar(1)).atMost(1);                 // was called with arg === 1 max one time
+verify(mockedFoo.getBar(4)).never();                   // was never called with arg === 4
 ```
 
 ### Call order verification
@@ -159,7 +161,7 @@ let mockedFoo:Foo = mock(Foo);
 let foo:Foo = instance(mockedFoo);
 
 when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, arg2:number) => {
-    return arg1 * arg2; 
+    return arg1 * arg2;
 });
 
 // prints '50' because we've changed sum method implementation to multiply!
@@ -335,13 +337,13 @@ const spiedFoo = spy(foo);
 
 foo.bar();
 
-console.log(capture(spiedFoo.bar).last()); // [42] 
+console.log(capture(spiedFoo.bar).last()); // [42]
 ```
 
 ### Thanks
 
-* Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
-* Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol) 
+* Szczepan Faber (https://www.linkedin.com/in/szczepiq)
+* Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol)
 * Clickmeeting (http://clickmeeting.com)
 * Michał Stocki (https://github.com/michalstocki)
 * Łukasz Bendykowski (https://github.com/viman)
