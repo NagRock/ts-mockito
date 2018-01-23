@@ -10,7 +10,7 @@ describe("BetweenMatcher", () => {
         });
 
         describe("when given value is lower than min", () => {
-            it("returns true", () => {
+            it("returns false", () => {
                 // when
                 const result = testObj.match(4);
                 const notResult = testObj.not().match(4);
