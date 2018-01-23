@@ -47,12 +47,7 @@ export function when<T>(method: T): MethodStubSetter<T> {
 
 export function instance<T>(mockedValue: T): T {
     const tsmockitoInstance = (mockedValue as any).__tsmockitoInstance as T;
-    if (typeof Proxy === "undefined") {
-        return tsmockitoInstance;
-    }
-
-    const tsmockitoMocker = (mockedValue as any).__tsmockitoMocker as Mocker;
-    return new Proxy(tsmockitoInstance as any, tsmockitoMocker.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+    return tsmockitoInstance;
 }
 
 export function capture<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6, h: T7, i: T8, j: T9) => any): ArgCaptor10<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>;
