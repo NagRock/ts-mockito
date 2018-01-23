@@ -10,8 +10,8 @@ describe("instance", () => {
             mockedFoo = mock(Foo);
 
             // when
-            let firstFooInstance = instance(mockedFoo);
-            let secondFooInstance = instance(mockedFoo);
+            const firstFooInstance = instance(mockedFoo);
+            const secondFooInstance = instance(mockedFoo);
 
             // then
             expect(firstFooInstance).toBe(secondFooInstance);
