@@ -6,14 +6,14 @@ export class StrictEqualMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return this.expectedValue === value;
+        return this.reverseResult(this.expectedValue === value);
     }
 
     public toString(): string {
         if (this.expectedValue instanceof Array) {
-            return `strictEqual([${this.expectedValue}])`;
+            return `${this.prefix}strictEqual([${this.expectedValue}])`;
         } else {
-            return `strictEqual(${this.expectedValue})`;
+            return `${this.prefix}strictEqual(${this.expectedValue})`;
         }
     }
 }

@@ -11,9 +11,11 @@ describe("DeepEqualMatcher", () => {
 
             // when
             const result = testObj.match(secondValue);
+            const notResult = testObj.not().match(secondValue);
 
             // then
             expect(result).toBeTruthy();
+            expect(notResult).toBeFalsy();
         });
     });
 
@@ -26,9 +28,11 @@ describe("DeepEqualMatcher", () => {
 
             // when
             const result = testObj.match(secondValue);
+            const notResult = testObj.not().match(secondValue);
 
             // then
             expect(result).toBeTruthy();
+            expect(notResult).toBeFalsy();
         });
     });
 
@@ -41,9 +45,11 @@ describe("DeepEqualMatcher", () => {
 
             // when
             const result = testObj.match(secondValue);
+            const notResult = testObj.not().match(secondValue);
 
             // then
             expect(result).toBeTruthy();
+            expect(notResult).toBeFalsy();
         });
     });
 
@@ -56,9 +62,11 @@ describe("DeepEqualMatcher", () => {
 
             // when
             const result = testObj.match(secondValue);
+            const notResult = testObj.not().match(secondValue);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 
@@ -71,9 +79,11 @@ describe("DeepEqualMatcher", () => {
 
             // when
             const result = testObj.match(secondValue);
+            const notResult = testObj.not().match(secondValue);
 
             // then
             expect(result).toBeTruthy();
+            expect(notResult).toBeFalsy();
         });
 
         it("returns false if matcher returns false", () => {
@@ -84,9 +94,11 @@ describe("DeepEqualMatcher", () => {
 
             // when
             const result = testObj.match(secondValue);
+            const notResult = testObj.not().match(secondValue);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 });

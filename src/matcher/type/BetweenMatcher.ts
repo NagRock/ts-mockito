@@ -10,10 +10,10 @@ export class BetweenMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return value >= this.min && value <= this.max;
+        return this.reverseResult(value >= this.min && value <= this.max);
     }
 
     public toString(): string {
-        return `between(${this.min}, ${this.max})`;
+        return `${this.prefix}between(${this.min}, ${this.max})`;
     }
 }

@@ -7,10 +7,10 @@ export class AnyStringMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return _.isString(value);
+        return this.reverseResult(_.isString(value));
     }
 
     public toString(): string {
-        return "anyString()";
+        return `${this.prefix}anyString()`;
     }
 }

@@ -9,9 +9,11 @@ describe("StrictEqualMatcher", () => {
 
             // when
             const result = testObj.match(5);
+            const notResult = testObj.not().match(5);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 
@@ -22,9 +24,11 @@ describe("StrictEqualMatcher", () => {
 
             // when
             const result = testObj.match(0);
+            const notResult = testObj.not().match(0);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 
@@ -35,9 +39,11 @@ describe("StrictEqualMatcher", () => {
 
             // when
             const result = testObj.match(1);
+            const notResult = testObj.not().match(1);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 
@@ -48,9 +54,11 @@ describe("StrictEqualMatcher", () => {
 
             // when
             const result = testObj.match("5");
+            const notResult = testObj.not().match("5");
 
             // then
             expect(result).toBeTruthy();
+            expect(notResult).toBeFalsy();
         });
     });
 });

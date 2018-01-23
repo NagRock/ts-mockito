@@ -2,37 +2,42 @@ import {Matcher} from "../../../src/matcher/type/Matcher";
 import {anyOfClass} from "../../../src/ts-mockito";
 
 describe("AnyOfClassMatcher", () => {
+    let testObj: Matcher;
 
     class Car {
         constructor() {
         }
     }
 
+    beforeEach(() => {
+        testObj = anyOfClass(Car);
+    });
+
     describe("checking if class matches", () => {
         it("returns true", () => {
-            // given
-            const testObj: Matcher = anyOfClass(Car);
             const value = new Car();
 
             // when
             const result = testObj.match(value);
+            const notResult = testObj.not().match(value);
 
             // then
             expect(result).toBeTruthy();
+            expect(notResult).toBeFalsy();
         });
     });
 
     describe("checking if null matches", () => {
         it("returns false", () => {
-            // given
-            const testObj: Matcher = anyOfClass(Car);
             const value = null;
 
             // when
             const result = testObj.match(value);
+            const notResult = testObj.not().match(value);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 
@@ -49,28 +54,26 @@ describe("AnyOfClassMatcher", () => {
 
     describe("checking if different classes match", () => {
         it("returns false", () => {
-            // given
-            const testObj: Matcher = anyOfClass(Car);
             const value = "a string";
 
             // when
             const result = testObj.match(value);
+            const notResult = testObj.not().match(value);
 
             // then
             expect(result).toBeFalsy();
+            expect(notResult).toBeTruthy();
         });
     });
 
     describe("checking if toString works", () => {
         it("returns 'anyOfClass(Car)'", () => {
-            // given
-            const testObj: Matcher = anyOfClass(Car);
-
-            // when
             const result = testObj.toString();
+            const notResult = testObj.not().toString();
 
             // then
             expect(result).toEqual("anyOfClass(Car)");
+            expect(notResult).toEqual("not().anyOfClass(Car)");
         });
     });
 });

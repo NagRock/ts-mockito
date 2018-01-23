@@ -6,10 +6,10 @@ export class AnythingMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return true;
+        return this.reverseResult(true);
     }
 
     public toString(): string {
-        return "anything()";
+        return `${this.prefix}anything()`;
     }
 }

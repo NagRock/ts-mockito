@@ -3,10 +3,10 @@ import {Matcher} from "./Matcher";
 
 export class NotNullMatcher extends Matcher {
     public match(value: any): boolean {
-        return !_.isNull(value);
+        return this.reverseResult(!_.isNull(value));
     }
 
     public toString(): string {
-        return "notNull()";
+        return `${this.prefix}notNull()`;
     }
 }
