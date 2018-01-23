@@ -107,10 +107,11 @@ foo.getBar(3);
 // Call count verification
 verify(mockedFoo.getBar(1)).once();                     // was called with arg === 1 only once
 verify(mockedFoo.getBar(2)).twice();                    // was called with arg === 2 exactly two times
-verify(mockedFoo.getBar(strictEqual(2).not())).once(); // was called with anything except 2 once
+verify(mockedFoo.getBar(not().strictEqual(2))).once();  // was called with anything except 2 once
 verify(mockedFoo.getBar(between(2, 3))).thrice();       // was called with arg beween 2-3 exactly three times
 verify(mockedFoo.getBar(anyNumber()).times(4);          // was called with any number arg exactly four times
-verify(mockedFoo.getBar(anyNumber.not()).times(4);     // was called with anything but not a number exactly four times
+verify(mockedFoo.getBar(not().anyNumber).times(4);     // was called with anything but not a number exactly four times
+verify(mockedFoo.matchString(/param\d+/)).once();     // was once called with arg matching regexp
 verify(mockedFoo.getBar(2)).atLeast(2);                // was called with arg === 2 min two times
 verify(mockedFoo.getBar(1)).atMost(1);                 // was called with arg === 1 max one time
 verify(mockedFoo.getBar(4)).never();                   // was never called with arg === 4

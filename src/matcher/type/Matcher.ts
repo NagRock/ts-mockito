@@ -1,7 +1,5 @@
-import * as _ from "lodash";
-
 export class Matcher {
-    public isNot: boolean = false;
+    private isNot: boolean = false;
 
     public match(...values: any[]): boolean {
         return this.reverseResult(false);
@@ -11,10 +9,9 @@ export class Matcher {
         return `${this.prefix}`;
     }
 
-    public not() {
-        const newMatcher = _.cloneDeep(this);
-        newMatcher.isNot = true;
-        return newMatcher;
+    public reverse() {
+        this.isNot = true;
+        return this;
     }
 
     protected get prefix(): string {

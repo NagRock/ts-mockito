@@ -1,18 +1,20 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anyNumber} from "../../../src/ts-mockito";
+import {anyNumber, not} from "../../../src/ts-mockito";
 
 describe("AnyNumberMatcher", () => {
     let testObj: Matcher;
+    let notTestObj: Matcher;
 
     beforeEach(() => {
         testObj = anyNumber();
+        notTestObj = not().anyNumber();
     });
 
     describe("checking if positive number is matching", () => {
         it("returns true", () => {
             // when
             const result = testObj.match(3);
-            const notResult = testObj.not().match(3);
+            const notResult = notTestObj.match(3);
 
             // then
             expect(result).toBeTruthy();
@@ -24,7 +26,7 @@ describe("AnyNumberMatcher", () => {
         it("returns true", () => {
             // when
             const result = testObj.match(-3);
-            const notResult = testObj.not().match(-3);
+            const notResult = notTestObj.match(-3);
 
             // then
             expect(result).toBeTruthy();
@@ -36,7 +38,7 @@ describe("AnyNumberMatcher", () => {
         it("returns true", () => {
             // when
             const result = testObj.match(0);
-            const notResult = testObj.not().match(0);
+            const notResult = notTestObj.match(0);
 
             // then
             expect(result).toBeTruthy();
@@ -48,7 +50,7 @@ describe("AnyNumberMatcher", () => {
         it("returns false", () => {
             // when
             const result = testObj.match("5");
-            const notResult = testObj.not().match("5");
+            const notResult = notTestObj.match("5");
 
             // then
             expect(result).toBeFalsy();
@@ -60,7 +62,7 @@ describe("AnyNumberMatcher", () => {
         it("returns false", () => {
             // when
             const result = testObj.match({});
-            const notResult = testObj.not().match({});
+            const notResult = notTestObj.match({});
 
             // then
             expect(result).toBeFalsy();

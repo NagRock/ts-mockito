@@ -1,8 +1,9 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anyOfClass} from "../../../src/ts-mockito";
+import {anyOfClass, not} from "../../../src/ts-mockito";
 
 describe("AnyOfClassMatcher", () => {
     let testObj: Matcher;
+    let notTestObj: Matcher;
 
     class Car {
         constructor() {
@@ -11,6 +12,7 @@ describe("AnyOfClassMatcher", () => {
 
     beforeEach(() => {
         testObj = anyOfClass(Car);
+        notTestObj = not().anyOfClass(Car);
     });
 
     describe("checking if class matches", () => {
@@ -19,7 +21,7 @@ describe("AnyOfClassMatcher", () => {
 
             // when
             const result = testObj.match(value);
-            const notResult = testObj.not().match(value);
+            const notResult = notTestObj.match(value);
 
             // then
             expect(result).toBeTruthy();
@@ -33,7 +35,7 @@ describe("AnyOfClassMatcher", () => {
 
             // when
             const result = testObj.match(value);
-            const notResult = testObj.not().match(value);
+            const notResult = notTestObj.match(value);
 
             // then
             expect(result).toBeFalsy();
@@ -52,13 +54,13 @@ describe("AnyOfClassMatcher", () => {
         });
     });
 
-    describe("checking if different classes match", () => {
+    describe("checking if different classes matchString", () => {
         it("returns false", () => {
             const value = "a string";
 
             // when
             const result = testObj.match(value);
-            const notResult = testObj.not().match(value);
+            const notResult = notTestObj.match(value);
 
             // then
             expect(result).toBeFalsy();
@@ -69,7 +71,7 @@ describe("AnyOfClassMatcher", () => {
     describe("checking if toString works", () => {
         it("returns 'anyOfClass(Car)'", () => {
             const result = testObj.toString();
-            const notResult = testObj.not().toString();
+            const notResult = notTestObj.toString();
 
             // then
             expect(result).toEqual("anyOfClass(Car)");

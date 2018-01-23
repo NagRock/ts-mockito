@@ -1,18 +1,20 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anything} from "../../../src/ts-mockito";
+import {anything, not} from "../../../src/ts-mockito";
 
 describe("AnythingMatcher", () => {
     let testObj: Matcher;
+    let notTestObj: Matcher;
 
     beforeEach(() => {
         testObj = anything();
+        notTestObj = not().anything();
     });
 
     describe("checking if number matches", () => {
         it("returns true", () => {
             // when
             const result = testObj.match(3);
-            const notResult = testObj.not().match(3);
+            const notResult = notTestObj.match(3);
 
             // then
             expect(result).toBeTruthy();
@@ -24,7 +26,7 @@ describe("AnythingMatcher", () => {
         it("returns true", () => {
             // when
             const result = testObj.match({});
-            const notResult = testObj.not().match({});
+            const notResult = notTestObj.match({});
 
             // then
             expect(result).toBeTruthy();
@@ -36,7 +38,7 @@ describe("AnythingMatcher", () => {
         it("returns true", () => {
             // when
             const result = testObj.match("");
-            const notResult = testObj.not().match("");
+            const notResult = notTestObj.match("");
 
             // then
             expect(result).toBeTruthy();
@@ -48,7 +50,7 @@ describe("AnythingMatcher", () => {
         it("returns true", () => {
             // when
             const result = testObj.match("sampleString");
-            const notResult = testObj.not().match("sampleString");
+            const notResult = notTestObj.match("sampleString");
 
             // then
             expect(result).toBeTruthy();
@@ -60,7 +62,7 @@ describe("AnythingMatcher", () => {
         it("returns true", () => {
             // when
             const result = testObj.match(null);
-            const notResult = testObj.not().match(null);
+            const notResult = notTestObj.match(null);
 
             // then
             expect(result).toBeTruthy();

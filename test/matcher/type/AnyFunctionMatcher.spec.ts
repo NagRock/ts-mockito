@@ -1,18 +1,20 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anyFunction} from "../../../src/ts-mockito";
+import {anyFunction, not} from "../../../src/ts-mockito";
 
 describe("AnyFunctionMatcher", () => {
     let testObj: Matcher;
+    let notTestObj: Matcher;
 
     beforeEach(() => {
         testObj = anyFunction();
+        notTestObj = not().anyFunction();
     });
 
     describe("checking if function is function", () => {
         it("returns true", () => {
             // when
             const result = testObj.match(() => "arbitrary return value");
-            const notResult = testObj.not().match(() => "arbitrary return value");
+            const notResult = notTestObj.match(() => "arbitrary return value");
 
             // then
             expect(result).toBeTruthy();
@@ -24,7 +26,7 @@ describe("AnyFunctionMatcher", () => {
         it("returns false", () => {
             // when
             const result = testObj.match("some string");
-            const notResult = testObj.not().match("some string");
+            const notResult = notTestObj.match("some string");
 
             // then
             expect(result).toBeFalsy();
@@ -36,7 +38,7 @@ describe("AnyFunctionMatcher", () => {
         it("returns false", () => {
             // when
             const result = testObj.match(5);
-            const notResult = testObj.not().match(5);
+            const notResult = notTestObj.match(5);
 
             // then
             expect(result).toBeFalsy();
@@ -48,7 +50,7 @@ describe("AnyFunctionMatcher", () => {
         it("returns false", () => {
             // when
             const result = testObj.match({prop1: "prop1Value"});
-            const notResult = testObj.not().match({prop1: "prop1Value"});
+            const notResult = notTestObj.match({prop1: "prop1Value"});
 
             // then
             expect(result).toBeFalsy();
@@ -60,7 +62,7 @@ describe("AnyFunctionMatcher", () => {
         it("returns 'anyFunction()'", () => {
             // when
             const result = testObj.toString();
-            const notResult = testObj.not().toString();
+            const notResult = notTestObj.toString();
 
             // then
             expect(result).toEqual("anyFunction()");

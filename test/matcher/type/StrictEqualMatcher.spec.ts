@@ -1,15 +1,16 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {strictEqual} from "../../../src/ts-mockito";
+import {not, strictEqual} from "../../../src/ts-mockito";
 
 describe("StrictEqualMatcher", () => {
     describe("checking if string representation of number matches with number", () => {
         it("returns false", () => {
             // given
             const testObj: Matcher = strictEqual("5");
+            const notTestObj: Matcher = not().strictEqual("5");
 
             // when
             const result = testObj.match(5);
-            const notResult = testObj.not().match(5);
+            const notResult = notTestObj.match(5);
 
             // then
             expect(result).toBeFalsy();
@@ -21,10 +22,11 @@ describe("StrictEqualMatcher", () => {
         it("returns false", () => {
             // given
             const testObj: Matcher = strictEqual(false);
+            const notTestObj: Matcher = not().strictEqual(false);
 
             // when
             const result = testObj.match(0);
-            const notResult = testObj.not().match(0);
+            const notResult = notTestObj.match(0);
 
             // then
             expect(result).toBeFalsy();
@@ -36,10 +38,11 @@ describe("StrictEqualMatcher", () => {
         it("returns false", () => {
             // given
             const testObj: Matcher = strictEqual(true);
+            const notTestObj: Matcher = not().strictEqual(true);
 
             // when
             const result = testObj.match(1);
-            const notResult = testObj.not().match(1);
+            const notResult = notTestObj.match(1);
 
             // then
             expect(result).toBeFalsy();
@@ -51,10 +54,11 @@ describe("StrictEqualMatcher", () => {
         it("returns true", () => {
             // given
             const testObj: Matcher = strictEqual("5");
+            const notTestObj: Matcher = not().strictEqual("5");
 
             // when
             const result = testObj.match("5");
-            const notResult = testObj.not().match("5");
+            const notResult = notTestObj.match("5");
 
             // then
             expect(result).toBeTruthy();

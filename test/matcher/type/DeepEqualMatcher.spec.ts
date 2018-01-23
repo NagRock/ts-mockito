@@ -1,5 +1,5 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
-import {anyString, deepEqual} from "../../../src/ts-mockito";
+import {anyString, deepEqual, not} from "../../../src/ts-mockito";
 
 describe("DeepEqualMatcher", () => {
     describe("checking if two different instances of same number matches", () => {
@@ -8,10 +8,11 @@ describe("DeepEqualMatcher", () => {
             const firstValue = 3;
             const secondValue = 3;
             const testObj: Matcher = deepEqual(firstValue);
+            const notTestObj: Matcher = not().deepEqual(firstValue);
 
             // when
             const result = testObj.match(secondValue);
-            const notResult = testObj.not().match(secondValue);
+            const notResult = notTestObj.match(secondValue);
 
             // then
             expect(result).toBeTruthy();
@@ -25,10 +26,11 @@ describe("DeepEqualMatcher", () => {
             const firstValue = "sampleString";
             const secondValue = "sampleString";
             const testObj: Matcher = deepEqual(firstValue);
+            const notTestObj: Matcher = not().deepEqual(firstValue);
 
             // when
             const result = testObj.match(secondValue);
-            const notResult = testObj.not().match(secondValue);
+            const notResult = notTestObj.match(secondValue);
 
             // then
             expect(result).toBeTruthy();
@@ -42,10 +44,11 @@ describe("DeepEqualMatcher", () => {
             const firstValue = {a: 1, b: {c: 2}};
             const secondValue = {a: 1, b: {c: 2}};
             const testObj: Matcher = deepEqual(firstValue);
+            const notTestObj: Matcher = not().deepEqual(firstValue);
 
             // when
             const result = testObj.match(secondValue);
-            const notResult = testObj.not().match(secondValue);
+            const notResult = notTestObj.match(secondValue);
 
             // then
             expect(result).toBeTruthy();
@@ -59,10 +62,11 @@ describe("DeepEqualMatcher", () => {
             const firstValue = {a: 1, b: {c: 2}};
             const secondValue = {a: 1, b: {c: 99999}};
             const testObj: Matcher = deepEqual(firstValue);
+            const notTestObj: Matcher = not().deepEqual(firstValue);
 
             // when
             const result = testObj.match(secondValue);
-            const notResult = testObj.not().match(secondValue);
+            const notResult = notTestObj.match(secondValue);
 
             // then
             expect(result).toBeFalsy();
@@ -76,10 +80,11 @@ describe("DeepEqualMatcher", () => {
             const firstValue = {a: 1, b: anyString()};
             const secondValue = {a: 1, b: "2"};
             const testObj: Matcher = deepEqual(firstValue);
+            const notTestObj: Matcher = not().deepEqual(firstValue);
 
             // when
             const result = testObj.match(secondValue);
-            const notResult = testObj.not().match(secondValue);
+            const notResult = notTestObj.match(secondValue);
 
             // then
             expect(result).toBeTruthy();
@@ -91,10 +96,11 @@ describe("DeepEqualMatcher", () => {
             const firstValue = {a: 1, b: anyString()};
             const secondValue = {a: 1, b: 2};
             const testObj: Matcher = deepEqual(firstValue);
+            const notTestObj: Matcher = not().deepEqual(firstValue);
 
             // when
             const result = testObj.match(secondValue);
-            const notResult = testObj.not().match(secondValue);
+            const notResult = notTestObj.match(secondValue);
 
             // then
             expect(result).toBeFalsy();

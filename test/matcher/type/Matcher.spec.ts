@@ -6,12 +6,13 @@ export function xor(a: boolean, b: boolean): boolean {
 
 describe("Matcher", () => {
     const testObj: Matcher = new Matcher();
+    const notTestObj: Matcher = (new Matcher()).reverse();
 
-    describe("not", () => {
+    describe("reverse", () => {
         it("returns opposite value", () => {
             // when
             const result = testObj.match(null);
-            const notResult = testObj.not().match(null);
+            const notResult = notTestObj.match(null);
 
             // then
             expect(xor(result, notResult)).toBeFalsy();
@@ -20,7 +21,7 @@ describe("Matcher", () => {
         it("returns toString with 'not' prepended", () => {
             // when
             const result = testObj.toString();
-            const notResult = testObj.not().toString();
+            const notResult = notTestObj.toString();
 
             // then
             expect(`not().${result}`).toEqual(notResult);
