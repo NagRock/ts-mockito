@@ -9,9 +9,11 @@ describe("MatchingStringMatcher", () => {
             it("returns true", () => {
                 // when
                 const result = testObj.match("a123");
+                const notResult = testObj.not().match("a123");
 
                 // then
                 expect(result).toBeTruthy();
+                expect(notResult).toBeFalsy();
             });
         });
 
@@ -19,9 +21,11 @@ describe("MatchingStringMatcher", () => {
             it("returns false", () => {
                 // when
                 const result = testObj.match("123");
+                const notResult = testObj.not().match("123");
 
                 // then
                 expect(result).toBeFalsy();
+                expect(notResult).toBeTruthy();
             });
         });
     });

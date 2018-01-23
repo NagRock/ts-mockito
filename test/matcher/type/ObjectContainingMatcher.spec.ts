@@ -9,17 +9,21 @@ describe("ObjectContainingMatcher", () => {
             it("returns true", () => {
                 // when
                 const result = testObj.match({a: "a", b: {c: "c", d: {}}});
+                const notResult = testObj.not().match({a: "a", b: {c: "c", d: {}}});
 
                 // then
                 expect(result).toBeTruthy();
+                expect(notResult).toBeFalsy();
             });
 
             it("returns true", () => {
                 // when
                 const result = testObj.match({b: {c: "c", d: {}}});
+                const notResult = testObj.not().match({b: {c: "c", d: {}}});
 
                 // then
                 expect(result).toBeTruthy();
+                expect(notResult).toBeFalsy();
             });
         });
 
@@ -27,9 +31,11 @@ describe("ObjectContainingMatcher", () => {
             it("returns false", () => {
                 // when
                 const result = testObj.match({b: {c: "c"}});
+                const notResult = testObj.not().match({b: {c: "c"}});
 
                 // then
                 expect(result).toBeFalsy();
+                expect(notResult).toBeTruthy();
             });
         });
     });

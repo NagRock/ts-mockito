@@ -6,10 +6,10 @@ export class MatchingStringMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return value.match(this.expectedValue);
+        return this.reverseResult(value.match(this.expectedValue));
     }
 
     public toString(): string {
-        return `match(${this.expectedValue})`;
+        return `${this.prefix}match(${this.expectedValue})`;
     }
 }
