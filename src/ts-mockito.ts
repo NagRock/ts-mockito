@@ -19,7 +19,9 @@ import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
 import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
 import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
 import {Matcher} from "./matcher/type/Matcher";
+import {MatchingStringMatcher} from "./matcher/type/MatchingStringMatcher";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
+import {ObjectContainingMatcher} from "./matcher/type/ObjectContainingMatcher";
 import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 import {MethodStubSetter} from "./MethodStubSetter";
 import {MethodStubVerificator} from "./MethodStubVerificator";
@@ -112,5 +114,14 @@ export function strictEqual(expectedValue: any): Matcher {
     return new StrictEqualMatcher(expectedValue);
 }
 
+export function match(expectedValue: RegExp | string): Matcher {
+    return new MatchingStringMatcher(expectedValue);
+}
+
+export function objectContaining(expectedValue: Object): Matcher {
+    return new ObjectContainingMatcher(expectedValue);
+}
+
 import * as mockito from "./ts-mockito";
+
 export default mockito;
