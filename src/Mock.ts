@@ -19,16 +19,15 @@ export class Mocker {
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
 
     constructor(private clazz: any, protected instance: any = {}) {
-        if (typeof Proxy !== "undefined") {
-            this.instance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
-        }
-
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
         if (_.isObject(this.clazz) && _.isObject(this.instance)) {
             this.processProperties(this.clazz.prototype);
             this.processClassCode(this.clazz);
             this.processFunctionsCode(this.clazz.prototype);
+        }
+        if (typeof Proxy !== "undefined") {
+            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
         }
     }
 
