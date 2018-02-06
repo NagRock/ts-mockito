@@ -54,7 +54,7 @@ describe("AnyOfClassMatcher", () => {
         });
     });
 
-    describe("checking if different classes matchString", () => {
+    describe("checking if different classes match", () => {
         it("returns false", () => {
             const value = "a string";
 

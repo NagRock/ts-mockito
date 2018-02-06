@@ -6,7 +6,7 @@ import {AnythingMatcher} from "./AnythingMatcher";
 import {BetweenMatcher} from "./BetweenMatcher";
 import {DeepEqualMatcher} from "./DeepEqualMatcher";
 import {Matcher} from "./Matcher";
-import {MatchStringMatcher} from "./MatchStringMatcher";
+import {MatchStringMatcher} from "./MatchMatcher";
 import {NotNullMatcher} from "./NotNullMatcher";
 import {ObjectContainingMatcher} from "./ObjectContainingMatcher";
 import {StrictEqualMatcher} from "./StrictEqualMatcher";
@@ -49,7 +49,7 @@ export class Not {
         return (new StrictEqualMatcher(expectedValue)).reverse();
     }
 
-    public matchString(expectedValue: string | RegExp): Matcher {
+    public match(expectedValue: string | RegExp): Matcher {
         return (new MatchStringMatcher(expectedValue)).reverse();
     }
 

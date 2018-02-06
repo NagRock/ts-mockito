@@ -19,7 +19,7 @@ import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
 import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
 import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
 import {Matcher} from "./matcher/type/Matcher";
-import {MatchStringMatcher} from "./matcher/type/MatchStringMatcher";
+import {MatchStringMatcher} from "./matcher/type/MatchMatcher";
 import {Not} from "./matcher/type/Not";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
 import {ObjectContainingMatcher} from "./matcher/type/ObjectContainingMatcher";
@@ -115,7 +115,7 @@ export function strictEqual(expectedValue: any): Matcher {
     return new StrictEqualMatcher(expectedValue);
 }
 
-export function matchString(expectedValue: RegExp | string): Matcher {
+export function match(expectedValue: RegExp | string): Matcher {
     return new MatchStringMatcher(expectedValue);
 }
 

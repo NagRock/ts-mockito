@@ -27,11 +27,11 @@ describe("BetweenMatcher", () => {
             it("returns true", () => {
                 // when
                 const result = testObj.match(5);
-                // const notResult = notTestObj.matchString(5);
+                const notResult = notTestObj.match(5);
 
                 // then
                 expect(result).toBeTruthy();
-                // expect(notResult).toBeFalsy();
+                expect(notResult).toBeFalsy();
             });
         });
 
