@@ -1,6 +1,6 @@
 import {Matcher} from "./Matcher";
 
-export class MatchStringMatcher extends Matcher {
+export class MatchMatcher extends Matcher {
     constructor(private expectedValue: any) {
         super();
     }
