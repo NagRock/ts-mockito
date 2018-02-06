@@ -1,6 +1,6 @@
 /**
  * Looking for all function calls and declarations and provides an array of their names. The mechanism is greedy
- * and tries to match as many function names as it can find and not only those of inspecting class.
+ * and tries to matchString as many function names as it can find and not only those of inspecting class.
  *
  * Matching occurrences are:
  *     - [.]functionName(

@@ -9,10 +9,10 @@ export class AnyOfClassMatcher<T> extends Matcher {
     }
 
     public match(value: any): boolean {
-        return value instanceof this.expectedClass;
+        return this.reverseResult(value instanceof this.expectedClass);
     }
 
     public toString() {
-        return `anyOfClass(${this.expectedClass["name"]})`;
+        return `${this.prefix}anyOfClass(${this.expectedClass["name"]})`;
     }
 }

@@ -7,10 +7,10 @@ export class ObjectContainingMatcher extends Matcher {
     }
 
     public match(value: Object): boolean {
-        return _.isMatch(value, this.expectedValue);
+        return this.reverseResult(_.isMatch(value, this.expectedValue));
     }
 
     public toString(): string {
-        return `objectContaining(${this.expectedValue})`;
+        return `${this.prefix}objectContaining(${this.expectedValue})`;
     }
 }

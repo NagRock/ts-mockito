@@ -7,10 +7,10 @@ export class AnyFunctionMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return _.isFunction(value);
+        return this.reverseResult(_.isFunction(value));
     }
 
     public toString(): string {
-        return "anyFunction()";
+        return `${this.prefix}anyFunction()`;
     }
 }

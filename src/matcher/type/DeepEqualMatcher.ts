@@ -7,7 +7,7 @@ export class DeepEqualMatcher extends Matcher {
     }
 
     public match(value: any): boolean {
-        return _.isEqualWith(this.expectedValue, value,
+        const result = _.isEqualWith(this.expectedValue, value,
             (expected: any, actual: any): boolean => {
                 if (expected instanceof Matcher) {
                     return expected.match(actual);
@@ -15,13 +15,14 @@ export class DeepEqualMatcher extends Matcher {
 
                 return undefined;
             });
+        return this.reverseResult(result);
     }
 
     public toString(): string {
         if (this.expectedValue instanceof Array) {
-            return `deepEqual([${this.expectedValue}])`;
+            return `${this.prefix}deepEqual([${this.expectedValue}])`;
         } else {
-            return `deepEqual(${this.expectedValue})`;
+            return `${this.prefix}deepEqual(${this.expectedValue})`;
         }
     }
 }
