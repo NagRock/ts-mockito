@@ -7,7 +7,7 @@ describe("MatchingMatcher", () => {
         const notTestObj: Matcher = not().match(/\w123/);
 
         describe("when given value matches regexp", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match("a123");
                 const notResult = notTestObj.match("a123");
@@ -19,7 +19,7 @@ describe("MatchingMatcher", () => {
         });
 
         describe("when given value doesn\'t match regexp", () => {
-            it("returns false", () => {
+            it("returns false for original matcher and true for not().", () => {
                 // when
                 const result = testObj.match("123");
                 const notResult = notTestObj.match("123");

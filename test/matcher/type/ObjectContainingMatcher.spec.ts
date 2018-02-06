@@ -7,7 +7,7 @@ describe("ObjectContainingMatcher", () => {
         const notTestObj: Matcher = not().objectContaining({b: {c: "c", d: {}}});
 
         describe("when given value contains given object", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match({a: "a", b: {c: "c", d: {}}});
                 const notResult = notTestObj.match({a: "a", b: {c: "c", d: {}}});
@@ -17,7 +17,7 @@ describe("ObjectContainingMatcher", () => {
                 expect(notResult).toBeFalsy();
             });
 
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match({b: {c: "c", d: {}}});
                 const notResult = notTestObj.match({b: {c: "c", d: {}}});
@@ -29,7 +29,7 @@ describe("ObjectContainingMatcher", () => {
         });
 
         describe("when given value doesn't contain given object", () => {
-            it("returns false", () => {
+            it("returns false for original matcher and true for not().", () => {
                 // when
                 const result = testObj.match({b: {c: "c"}});
                 const notResult = notTestObj.match({b: {c: "c"}});

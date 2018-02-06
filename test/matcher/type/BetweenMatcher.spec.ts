@@ -12,7 +12,7 @@ describe("BetweenMatcher", () => {
         });
 
         describe("when given value is lower than min", () => {
-            it("returns false", () => {
+            it("returns false for original matcher and true for not().", () => {
                 // when
                 const result = testObj.match(4);
                 const notResult = notTestObj.match(4);
@@ -24,7 +24,7 @@ describe("BetweenMatcher", () => {
         });
 
         describe("when given value is equal to min ", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match(5);
                 const notResult = notTestObj.match(5);
@@ -36,7 +36,7 @@ describe("BetweenMatcher", () => {
         });
 
         describe("when given value is equal grater then min but lower than max", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match(7);
                 const notResult = notTestObj.match(7);
@@ -48,7 +48,7 @@ describe("BetweenMatcher", () => {
         });
 
         describe("when given value is equal to max", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match(10);
                 const notResult = notTestObj.match(10);
@@ -60,7 +60,7 @@ describe("BetweenMatcher", () => {
         });
 
         describe("when given value is greater than max", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // when
                 const result = testObj.match(11);
                 const notResult = notTestObj.match(11);

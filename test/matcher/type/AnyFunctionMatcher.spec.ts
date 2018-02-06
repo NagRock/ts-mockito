@@ -11,7 +11,7 @@ describe("AnyFunctionMatcher", () => {
     });
 
     describe("checking if function is function", () => {
-        it("returns true", () => {
+        it("returns true for original matcher and false for not().", () => {
             // when
             const result = testObj.match(() => "arbitrary return value");
             const notResult = notTestObj.match(() => "arbitrary return value");
@@ -23,7 +23,7 @@ describe("AnyFunctionMatcher", () => {
     });
 
     describe("checking if string is function", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
             // when
             const result = testObj.match("some string");
             const notResult = notTestObj.match("some string");
@@ -35,7 +35,7 @@ describe("AnyFunctionMatcher", () => {
     });
 
     describe("checking if number is function", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
             // when
             const result = testObj.match(5);
             const notResult = notTestObj.match(5);
@@ -47,7 +47,7 @@ describe("AnyFunctionMatcher", () => {
     });
 
     describe("checking if object is function", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
             // when
             const result = testObj.match({prop1: "prop1Value"});
             const notResult = notTestObj.match({prop1: "prop1Value"});
@@ -62,10 +62,16 @@ describe("AnyFunctionMatcher", () => {
         it("returns 'anyFunction()'", () => {
             // when
             const result = testObj.toString();
-            const notResult = notTestObj.toString();
 
             // then
             expect(result).toEqual("anyFunction()");
+        });
+
+        it("returns 'not().anyFunction()' for .not() matcher", () => {
+            // when
+            const notResult = notTestObj.toString();
+
+            // then
             expect(notResult).toEqual("not().anyFunction()");
         });
     });

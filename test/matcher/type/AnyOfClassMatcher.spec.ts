@@ -16,7 +16,7 @@ describe("AnyOfClassMatcher", () => {
     });
 
     describe("checking if class matches", () => {
-        it("returns true", () => {
+        it("returns true for original matcher and false for not().", () => {
             const value = new Car();
 
             // when
@@ -30,7 +30,7 @@ describe("AnyOfClassMatcher", () => {
     });
 
     describe("checking if null matches", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
             const value = null;
 
             // when
@@ -55,7 +55,7 @@ describe("AnyOfClassMatcher", () => {
     });
 
     describe("checking if different classes match", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
             const value = "a string";
 
             // when
@@ -71,10 +71,15 @@ describe("AnyOfClassMatcher", () => {
     describe("checking if toString works", () => {
         it("returns 'anyOfClass(Car)'", () => {
             const result = testObj.toString();
-            const notResult = notTestObj.toString();
 
             // then
             expect(result).toEqual("anyOfClass(Car)");
+        });
+
+        it("returns 'not().anyOfClass(Car)' for .not() matcher", () => {
+            const notResult = notTestObj.toString();
+
+            // then
             expect(notResult).toEqual("not().anyOfClass(Car)");
         });
     });

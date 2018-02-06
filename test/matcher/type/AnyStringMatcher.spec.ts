@@ -11,7 +11,7 @@ describe("AnyStringMatcher", () => {
     });
 
     describe("checking if number matches", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
             // when
             const result = testObj.match(3);
             const notResult = notTestObj.match(3);
@@ -23,7 +23,7 @@ describe("AnyStringMatcher", () => {
     });
 
     describe("checking if object matches", () => {
-        it("returns false", () => {
+        it("returns false for original matcher and true for not().", () => {
 
             // when
             const result = testObj.match({});
@@ -36,7 +36,7 @@ describe("AnyStringMatcher", () => {
     });
 
     describe("checking if empty string matches", () => {
-        it("returns true", () => {
+        it("returns true for original matcher and false for not().", () => {
             // when
             const result = testObj.match("");
             const notResult = notTestObj.match("");
@@ -48,7 +48,7 @@ describe("AnyStringMatcher", () => {
     });
 
     describe("checking if sample string matches", () => {
-        it("returns true", () => {
+        it("returns true for original matcher and false for not().", () => {
             // when
             const result = testObj.match("sampleString");
             const notResult = notTestObj.match("sampleString");
