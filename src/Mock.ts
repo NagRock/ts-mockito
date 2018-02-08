@@ -26,6 +26,9 @@ export class Mocker {
             this.processClassCode(this.clazz);
             this.processFunctionsCode(this.clazz.prototype);
         }
+        if (typeof Proxy !== "undefined") {
+            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        }
     }
 
     public getMock(): any {
