@@ -110,15 +110,15 @@ export function notNull(): any {
     return new NotNullMatcher() as any;
 }
 
-export function strictEqual(expectedValue: any): Matcher {
+export function strictEqual(expectedValue: any): any {
     return new StrictEqualMatcher(expectedValue);
 }
 
-export function match(expectedValue: RegExp | string): Matcher {
+export function match(expectedValue: RegExp | string): any {
     return new MatchingStringMatcher(expectedValue);
 }
 
-export function objectContaining(expectedValue: Object): Matcher {
+export function objectContaining(expectedValue: Object): any {
     return new ObjectContainingMatcher(expectedValue);
 }
 
