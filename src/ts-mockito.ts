@@ -18,9 +18,9 @@ import {AnyStringMatcher} from "./matcher/type/AnyStringMatcher";
 import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
 import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
 import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
-import {Matcher} from "./matcher/type/Matcher";
-import {MatchingStringMatcher} from "./matcher/type/MatchingStringMatcher";
+import {MatchMatcher} from "./matcher/type/MatchMatcher";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
+import {NotOperator} from "./matcher/type/NotOperator";
 import {ObjectContainingMatcher} from "./matcher/type/ObjectContainingMatcher";
 import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 import {MethodStubSetter} from "./MethodStubSetter";
@@ -33,7 +33,7 @@ export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
+export function mock<T>(clazz: {new(...args: any[]): T; } | (Function & {prototype: T})): T {
     return new Mocker(clazz).getMock();
 }
 
@@ -46,8 +46,7 @@ export function when<T>(method: T): MethodStubSetter<T> {
 }
 
 export function instance<T>(mockedValue: T): T {
-    const tsmockitoInstance = (mockedValue as any).__tsmockitoInstance as T;
-    return tsmockitoInstance;
+    return (mockedValue as any).__tsmockitoInstance as T;
 }
 
 export function capture<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(method: (a: T0, b: T1, c: T2, d: T3, e: T4, f: T5, g: T6, h: T7, i: T8, j: T9) => any): ArgCaptor10<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>;
@@ -78,7 +77,7 @@ export function resetCalls<T>(mockedValue: T): void {
     (mockedValue as any).__tsmockitoMocker.resetCalls();
 }
 
-export function anyOfClass<T>(expectedClass: { new (...args: any[]): T }): any {
+export function anyOfClass<T>(expectedClass: {new (...args: any[]): T}): any {
     return new AnyOfClassMatcher(expectedClass) as any;
 }
 
@@ -110,16 +109,20 @@ export function notNull(): any {
     return new NotNullMatcher() as any;
 }
 
-export function strictEqual(expectedValue: any): Matcher {
+export function strictEqual(expectedValue: any): any {
     return new StrictEqualMatcher(expectedValue);
 }
 
-export function match(expectedValue: RegExp | string): Matcher {
-    return new MatchingStringMatcher(expectedValue);
+export function match(expectedValue: RegExp | string): any {
+    return new MatchMatcher(expectedValue);
 }
 
-export function objectContaining(expectedValue: Object): Matcher {
+export function objectContaining(expectedValue: Object): any {
     return new ObjectContainingMatcher(expectedValue);
+}
+
+export function not(): NotOperator {
+    return new NotOperator();
 }
 
 import * as mockito from "./ts-mockito";

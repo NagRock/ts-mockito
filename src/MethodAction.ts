@@ -14,7 +14,7 @@ export class MethodAction {
         if (!methodNameMatch || !argumentsCountMatch) {
             return false;
         }
-        return matchers.every((matcher: Matcher, index: number) => matcher.match(this.args[index]));
+        return matchers.every((matcher: Matcher, index: number) => matcher.isMatching(this.args[index]));
     }
 
     public getCallIndex(): number {

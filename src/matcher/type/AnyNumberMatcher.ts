@@ -6,7 +6,7 @@ export class AnyNumberMatcher extends Matcher {
         super();
     }
 
-    public match(value: any): boolean {
+    public isMatching(value: any): boolean {
         return _.isNumber(value);
     }
 

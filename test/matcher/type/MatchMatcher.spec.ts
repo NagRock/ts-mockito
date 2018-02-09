@@ -1,7 +1,7 @@
 import {Matcher} from "../../../src/matcher/type/Matcher";
 import {match, not} from "../../../src/ts-mockito";
 
-describe("MatchingStringMatcher", () => {
+describe("MatchingMatcher", () => {
     describe("checking if value matches given regexp", () => {
         const testObj: Matcher = match(/\w123/);
         const notTestObj: Matcher = not().match(/\w123/);
