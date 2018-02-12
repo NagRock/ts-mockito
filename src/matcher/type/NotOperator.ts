@@ -22,7 +22,7 @@ export class NotOperator extends Matcher {
     }
 
     public toString(): string {
-        const matcherRepresentation = this.matcher ? `.${this.matcher.toString()}` : '';
+        const matcherRepresentation = this.matcher ? `.${this.matcher.toString()}` : "";
         return `not()${matcherRepresentation}`;
     }
 
