@@ -22,7 +22,8 @@ export class NotOperator extends Matcher {
     }
 
     public toString(): string {
-        return `not().${this.matcher.toString()}`;
+        const matcherRepresentation = this.matcher ? `.${this.matcher.toString()}` : '';
+        return `not()${matcherRepresentation}`;
     }
 
     public anyOfClass<T>(expectedClass: {new (...args: any[]): T}): Matcher {
