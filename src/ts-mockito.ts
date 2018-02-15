@@ -122,6 +122,6 @@ export function objectContaining(expectedValue: Object): Matcher {
     return new ObjectContainingMatcher(expectedValue);
 }
 
-import * as mockito from "./ts-mockito";
+import mockito = require("./ts-mockito");
 
 export default mockito;
