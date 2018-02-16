@@ -26,6 +26,9 @@ export class Mocker {
             this.processClassCode(this.clazz);
             this.processFunctionsCode(this.clazz.prototype);
         }
+        if (typeof Proxy !== "undefined") {
+            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        }
     }
 
     public getMock(): any {
@@ -83,10 +86,13 @@ export class Mocker {
                 if (descriptor.get) {
                     this.createPropertyStub(name);
                     this.createInstancePropertyDescriptorListener(name, descriptor, obj);
-                } else {
+                    this.createInstanceActionListener(name, obj);
+                } else if (typeof descriptor.value === "function") {
                     this.createMethodStub(name);
+                    this.createInstanceActionListener(name, obj);
+                } else {
+                    // no need to reassign properties
                 }
-                this.createInstanceActionListener(name, obj);
             });
         });
     }
