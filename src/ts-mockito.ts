@@ -142,5 +142,5 @@ export default {
     notNull,
     strictEqual,
     match,
-    objectContaining
+    objectContaining,
 };
