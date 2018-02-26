@@ -122,6 +122,25 @@ export function objectContaining(expectedValue: Object): Matcher {
     return new ObjectContainingMatcher(expectedValue);
 }
 
-import * as mockito from "./ts-mockito";
-
-export default mockito;
+// Export default object with all members (ember-browserify doesn't support named exports).
+export default {
+    spy,
+    mock,
+    verify,
+    when,
+    instance,
+    capture,
+    reset,
+    resetCalls,
+    anyOfClass,
+    anyFunction,
+    anyNumber,
+    anyString,
+    anything,
+    between,
+    deepEqual,
+    notNull,
+    strictEqual,
+    match,
+    objectContaining,
+};
