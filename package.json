@@ -32,7 +32,7 @@
   ],
   "devDependencies": {
     "@types/jasmine": "^2.6.0",
-    "@types/lodash": "^4.14.78",
+    "@types/lodash": "^4.14.104",
     "@types/node": "^8.0.46",
     "babel-polyfill": "^6.26.0",
     "jasmine-core": "^2.8.0",
@@ -53,7 +53,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.5"
   },
   "jest": {
     "testEnvironment": "jsdom",
