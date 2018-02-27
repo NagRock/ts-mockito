@@ -148,4 +148,5 @@ export default {
     strictEqual,
     match,
     objectContaining,
+    not,
 };
