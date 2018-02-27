@@ -16,6 +16,8 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `thenReturn` - return value
 	* `thenThrow` - throw an error
 	* `thenCall` - call custom method
+	* `thenResolve` - resolve promise
+	* `thenReject` - rejects promise
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString`, `anyOfClass`, `not` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
@@ -167,6 +169,17 @@ when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, a
 
 // prints '50' because we've changed sum method implementation to multiply!
 console.log(foo.sumTwoNumbers(5, 10));
+```
+
+### Resolving / rejecting promises
+
+You can also stub method to resolve / reject promise
+
+``` typescript
+let mockedFoo:Foo = mock(Foo);
+
+when(mockedFoo.fetchData("a")).thenResolve({id: "a", value: "Hello world"});
+when(mockedFoo.fetchData("b")).thenReject(new Error("b does not exist"));
 ```
 
 ### Resetting mock calls
@@ -351,3 +364,4 @@ console.log(capture(spiedFoo.bar).last()); // [42]
 * Andrey Ermakov (https://github.com/dreef3)
 * Markus Ende (https://github.com/Markus-Ende)
 * Thomas Hilzendegen (https://github.com/thomashilzendegen)
+* Johan Blumenberg (https://github.com/johanblumenberg)

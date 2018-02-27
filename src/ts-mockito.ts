@@ -41,8 +41,10 @@ export function verify<T>(method: T): MethodStubVerificator<T> {
     return new MethodStubVerificator(method as any);
 }
 
-export function when<T>(method: T): MethodStubSetter<T> {
-    return new MethodStubSetter(method as any);
+export function when<T>(method: Promise<T>): MethodStubSetter<Promise<T>, T, any>;
+export function when<T>(method: T): MethodStubSetter<T>;
+export function when<T>(method: any): any {
+    return new MethodStubSetter(method);
 }
 
 export function instance<T>(mockedValue: T): T {
@@ -125,6 +127,25 @@ export function not(): NotOperator {
     return new NotOperator();
 }
 
-import * as mockito from "./ts-mockito";
-
-export default mockito;
+// Export default object with all members (ember-browserify doesn't support named exports).
+export default {
+    spy,
+    mock,
+    verify,
+    when,
+    instance,
+    capture,
+    reset,
+    resetCalls,
+    anyOfClass,
+    anyFunction,
+    anyNumber,
+    anyString,
+    anything,
+    between,
+    deepEqual,
+    notNull,
+    strictEqual,
+    match,
+    objectContaining,
+};
