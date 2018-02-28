@@ -133,7 +133,7 @@ export class Mocker {
 
     private processClassCode(clazz: any): void {
         const classCode = typeof clazz.toString !== "undefined" ? clazz.toString() : "";
-        const functionNames = this.mockableFunctionsFinder.find(classCode);
+        const functionNames = this.mockableFunctionsFinder.filter(classCode)[0];
         functionNames.forEach((functionName: string) => {
             this.createMethodStub(functionName);
             this.createInstanceActionListener(functionName, this.clazz.prototype);
@@ -143,7 +143,7 @@ export class Mocker {
     private processFunctionsCode(object: any): void {
         this.objectInspector.getObjectPrototypes(object).forEach((obj: any) => {
             this.objectInspector.getObjectOwnPropertyNames(obj).forEach((propertyName: string) => {
-                const functionNames = this.mockableFunctionsFinder.find(this.objectPropertyCodeRetriever.get(obj, propertyName));
+                const functionNames = this.mockableFunctionsFinder.filter(this.objectPropertyCodeRetriever.get(obj, propertyName))[0];
                 functionNames.forEach((functionName: string) => {
                     this.createMethodStub(functionName);
                     this.createInstanceActionListener(functionName, this.clazz.prototype);
