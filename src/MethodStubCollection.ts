@@ -35,13 +35,13 @@ export class MethodStubCollection {
     }
 
     private getFirstMatchingIndexFromGroup(groupIndex: number, args: any[]): number {
-		for (let i = 0; i < this.items.length; i++) {
-			const item = this.items[i];
-			if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
-				return i;
-			}
-		}
-		return -1;
+        for (let i = 0; i < this.items.length; i++) {
+            const item = this.items[i];
+            if (item.getGroupIndex() === groupIndex && item.isApplicable(args)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private getItemsCountInGroup(groupIndex: number): number {
