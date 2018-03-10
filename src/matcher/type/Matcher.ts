@@ -1,5 +1,5 @@
 export class Matcher {
-    public match(value: any): boolean {
+    public isMatching(value: any): boolean {
         return false;
     }
 

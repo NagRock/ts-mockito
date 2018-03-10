@@ -8,7 +8,7 @@ export class AnyOfClassMatcher<T> extends Matcher {
         }
     }
 
-    public match(value: any): boolean {
+    public isMatching(value: any): boolean {
         return value instanceof this.expectedClass;
     }
 

@@ -9,7 +9,7 @@ export class BetweenMatcher extends Matcher {
         }
     }
 
-    public match(value: any): boolean {
+    public isMatching(value: any): boolean {
         return value >= this.min && value <= this.max;
     }
 

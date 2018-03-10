@@ -6,7 +6,7 @@ export class ObjectContainingMatcher extends Matcher {
         super();
     }
 
-    public match(value: Object): boolean {
+    public isMatching(value: Object): boolean {
         return _.isMatch(value, this.expectedValue);
     }
 

@@ -4,7 +4,7 @@ import {strictEqual} from "../src/ts-mockito";
 describe("MethodAction", () => {
     describe("checking if method with matchers is applicable", () => {
         describe("when all matchers match", () => {
-            it("returns true", () => {
+            it("returns true for original matcher and false for not().", () => {
                 // given
                 const methodName = "sampleMethodName";
                 const firstArg = 5;
@@ -19,7 +19,7 @@ describe("MethodAction", () => {
             });
         });
         describe("when one matcher doesn`t match", () => {
-            it("returns false", () => {
+            it("returns false for original matcher and true for not().", () => {
                 // given
                 const methodName = "sampleMethodName";
                 const firstArg = 5;

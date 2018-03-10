@@ -5,6 +5,6 @@ export class ArgsToMatchersValidator {
         if (matchers.length !== args.length) {
             return false;
         }
-        return matchers.every((matcher: Matcher, index: number) => matcher.match(args[index]));
+        return matchers.every((matcher: Matcher, index: number) => matcher.isMatching(args[index]));
     }
 }

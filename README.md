@@ -19,7 +19,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `thenResolve` - resolve promise
 	* `thenReject` - rejects promise
 * Checking if methods were called with given arguments (`verify`)
-	* `anything`, `notNull`, `anyString`, `anyOfClass` etc. - for more flexible comparision
+	* `anything`, `notNull`, `anyString`, `anyOfClass`, `not` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
 	* `calledBefore`, `calledAfter` - allows call order verification
 * Resetting mock (`reset`, `resetCalls`)
@@ -107,13 +107,16 @@ foo.getBar(2);
 foo.getBar(3);
 
 // Call count verification
-verify(mockedFoo.getBar(1)).once();               // was called with arg === 1 only once
-verify(mockedFoo.getBar(2)).twice();              // was called with arg === 2 exactly two times
-verify(mockedFoo.getBar(between(2, 3))).thrice(); // was called with arg beween 2-3 exactly three times
-verify(mockedFoo.getBar(anyNumber()).times(4);     // was called with any number arg exactly four times
-verify(mockedFoo.getBar(2)).atLeast(2);           // was called with arg === 2 min two times
-verify(mockedFoo.getBar(1)).atMost(1);           // was called with arg === 1 max one time
-verify(mockedFoo.getBar(4)).never();              // was never called with arg === 4
+verify(mockedFoo.getBar(1)).once();                    // was called with arg === 1 only once
+verify(mockedFoo.getBar(2)).twice();                   // was called with arg === 2 exactly two times
+verify(mockedFoo.getBar(not().strictEqual(2))).once(); // was called with anything except 2 once
+verify(mockedFoo.getBar(between(2, 3))).thrice();      // was called with arg beween 2-3 exactly three times
+verify(mockedFoo.getBar(anyNumber()).times(4);         // was called with any number arg exactly four times
+verify(mockedFoo.getBar(not().anyNumber()).times(4);   // was called with anything but not a number exactly four times
+verify(mockedFoo.match(/param\d+/)).once();            // was once called with arg matching regexp
+verify(mockedFoo.getBar(2)).atLeast(2);                // was called with arg === 2 min two times
+verify(mockedFoo.getBar(1)).atMost(1);                 // was called with arg === 1 max one time
+verify(mockedFoo.getBar(4)).never();                   // was never called with arg === 4
 ```
 
 ### Call order verification
@@ -132,9 +135,9 @@ foo.getBar(1);
 bar.getFoo(2);
 
 // Call order verification
-verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(2));    // foo.getBar(1) has been called before bar.getFoo(2)
-verify(mockedBar.getFoo(2)).calledAfter(mockedFoo.getBar(1));    // bar.getFoo(2) has been called before foo.getBar(1)
-verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(999999));    // throws error (mockedBar.getFoo(999999) has never been called)
+verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(2));      // foo.getBar(1) has been called before bar.getFoo(2)
+verify(mockedBar.getFoo(2)).calledAfter(mockedFoo.getBar(1));       // bar.getFoo(2) has been called before foo.getBar(1)
+verify(mockedFoo.getBar(1)).calledBefore(mockedBar.getFoo(999999)); // throws error (mockedBar.getFoo(999999) has never been called)
 ```
 
 ### Throwing errors
@@ -161,7 +164,7 @@ let mockedFoo:Foo = mock(Foo);
 let foo:Foo = instance(mockedFoo);
 
 when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, arg2:number) => {
-    return arg1 * arg2; 
+    return arg1 * arg2;
 });
 
 // prints '50' because we've changed sum method implementation to multiply!
@@ -238,8 +241,8 @@ foo.sumTwoNumbers(1, 2);
 
 // Check first arg captor values
 const [firstArg, secondArg] = capture(mockedFoo.sumTwoNumbers).last();
-console.log(firstArg);    // prints 1
-console.log(secondArg);    // prints 2
+console.log(firstArg);  // prints 1
+console.log(secondArg); // prints 2
 ```
 
 You can also get other calls using `first()`, `second()`, `byCallIndex(3)` and more...
@@ -337,7 +340,7 @@ const spiedFoo = spy(foo);
 when(spiedFoo.getBar(3)).thenReturn('one');
 
 console.log(foo.getBar(3)); // 'one'
-console.log(foo.getBaz()); // call to a real method
+console.log(foo.getBaz());  // call to a real method
 ```
 
 You can spy on plain objects too:
@@ -348,16 +351,16 @@ const spiedFoo = spy(foo);
 
 foo.bar();
 
-console.log(capture(spiedFoo.bar).last()); // [42] 
+console.log(capture(spiedFoo.bar).last()); // [42]
 ```
 
 ### Thanks
 
-* Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
-* Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol) 
+* Szczepan Faber (https://www.linkedin.com/in/szczepiq)
+* Sebastian Konkol (https://www.linkedin.com/in/sebastiankonkol)
 * Clickmeeting (http://clickmeeting.com)
 * Michał Stocki (https://github.com/michalstocki)
-* Łukasz Bendykowski (https://github.com/viman)
+* Łukasz Bendykowski (https://github.com/bendykowski)
 * Andrey Ermakov (https://github.com/dreef3)
 * Markus Ende (https://github.com/Markus-Ende)
 * Thomas Hilzendegen (https://github.com/thomashilzendegen)

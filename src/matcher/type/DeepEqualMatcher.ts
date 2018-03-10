@@ -6,11 +6,11 @@ export class DeepEqualMatcher extends Matcher {
         super();
     }
 
-    public match(value: any): boolean {
+    public isMatching(value: any): boolean {
         return _.isEqualWith(this.expectedValue, value,
             (expected: any, actual: any): boolean => {
                 if (expected instanceof Matcher) {
-                    return expected.match(actual);
+                    return expected.isMatching(actual);
                 }
 
                 return undefined;
