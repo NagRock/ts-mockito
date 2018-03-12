@@ -10,22 +10,22 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 * Strongly typed
 * IDE autocomplete
-* Mock creation (`mock`) (also abstract classes)
-* Spying on real objects (`spy`)
+* Mock creation (`mock`) (also abstract classes) [#example](#basics)
+* Spying on real objects (`spy`) [#example](#spying-on-real-objects)
 * Changing mock behavior (`when`) via:
-	* `thenReturn` - return value
-	* `thenThrow` - throw an error
-	* `thenCall` - call custom method
-	* `thenResolve` - resolve promise
-	* `thenReject` - rejects promise
+	* `thenReturn` - return value [#example](#stubbing-method-calls)
+	* `thenThrow` - throw an error [#example](#throwing-errors)
+	* `thenCall` - call custom method [#example](#custom-function)
+	* `thenResolve` - resolve promise [example](#resolving--rejecting-promises)
+	* `thenReject` - rejects promise [example](#resolving--rejecting-promises)
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString`, `anyOfClass` etc. - for more flexible comparision
-	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification
-	* `calledBefore`, `calledAfter` - allows call order verification
-* Resetting mock (`reset`, `resetCalls`)
-* Capturing arguments passed to method (`capture`)
-* Recording multiple behaviors
-* Readable error messages (ex. 'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).')
+	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification [#example](#call-count-verification)
+	* `calledBefore`, `calledAfter` - allows call order verification [#example](#call-order-verification)
+* Resetting mock (`reset`, `resetCalls`) [#example](#resetting-mock-calls), [#example](#resetting-mock)
+* Capturing arguments passed to method (`capture`) [#example](#capturing-method-arguments)
+* Recording multiple behaviors [#example](#recording-multiple-behaviors)
+* Readable error messages (ex. `'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).'`)
 
 ## Installation
 
