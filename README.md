@@ -16,8 +16,8 @@ Mocking library for TypeScript inspired by http://mockito.org/
 	* `thenReturn` - return value [#example](#stubbing-method-calls)
 	* `thenThrow` - throw an error [#example](#throwing-errors)
 	* `thenCall` - call custom method [#example](#custom-function)
-	* `thenResolve` - resolve promise [example](#resolving--rejecting-promises)
-	* `thenReject` - rejects promise [example](#resolving--rejecting-promises)
+	* `thenResolve` - resolve promise [#example](#resolving--rejecting-promises)
+	* `thenReject` - rejects promise [#example](#resolving--rejecting-promises)
 * Checking if methods were called with given arguments (`verify`)
 	* `anything`, `notNull`, `anyString`, `anyOfClass` etc. - for more flexible comparision
 	* `once`, `twice`, `times`, `atLeast` etc. - allows call count verification [#example](#call-count-verification)
