@@ -105,7 +105,6 @@ foo.getBar(1);
 foo.getBar(2);
 foo.getBar(2);
 foo.getBar(3);
-foo.getBar({ foo: "bar" });
 
 // Call count verification
 verify(mockedFoo.getBar(1)).once();               // was called with arg === 1 only once
@@ -115,10 +114,6 @@ verify(mockedFoo.getBar(anyNumber()).times(4);     // was called with any number
 verify(mockedFoo.getBar(2)).atLeast(2);           // was called with arg === 2 min two times
 verify(mockedFoo.getBar(1)).atMost(1);           // was called with arg === 1 max one time
 verify(mockedFoo.getBar(4)).never();              // was never called with arg === 4
-
-// Was called with object only once
-// Use deepEqual to verify objects
-verify(mockedFoo.getBar(deepEqual({ foo: "bar" }))).called(); 
 ```
 
 ### Call order verification
@@ -172,6 +167,25 @@ when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, a
 // prints '50' because we've changed sum method implementation to multiply!
 console.log(foo.sumTwoNumbers(5, 10));
 ```
+
+### Using matchers to verify
+
+DeepEqualMatcher to compare objects
+
+``` typescript
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// Some calls
+foo.getBar({ foo: "bar" });
+
+// Use deepEqual to verify objects
+verify(mockedFoo.getBar(deepEqual({ foo: "bar" }))).called();    // Was called with object only once
+```
+
 
 ### Resolving / rejecting promises
 
