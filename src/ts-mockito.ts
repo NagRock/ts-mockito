@@ -48,7 +48,6 @@ export function mockFn<T = (...args: any[]) => any>(cb?: T): T {
     return mocker as any;
 }
 
-
 export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
@@ -148,6 +147,7 @@ export function objectContaining(expectedValue: Object): Matcher {
 export default {
     spy,
     mock,
+    mockFn,
     verify,
     when,
     instance,
