@@ -29,6 +29,26 @@ import {MethodToStub} from "./MethodToStub";
 import {Mocker} from "./Mock";
 import {Spy} from "./Spy";
 
+class MockFn {
+    public call(...args: any[]): any {}
+}
+
+export function mockFn<T = (...args: any[]) => any>(cb?: T): T {
+    const fnMock = mock(MockFn);
+    const mockInstance = instance(fnMock);
+    function call(...args: any[]) {
+        return mockInstance.call(...args);
+    }
+
+    const mocker = fnMock.call;
+
+    (mocker as any).__tsmockitoInstance = call;
+    (mocker as any).__tsmockitoMocker = (fnMock as any).__tsmockitoMocker;
+
+    return mocker as any;
+}
+
+
 export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
