@@ -33,6 +33,10 @@ export class MethodStubSetter<T, ResolveType = void, RejectType = void> {
     }
 
     public thenResolve(...rest: ResolveType[]): this {
+        // Resolves undefined if no resolve values are given.
+        if (rest.length === 0) {
+            rest.push(undefined);
+        }
         rest.forEach(value => {
             this.methodToStub.methodStubCollection.add(new ResolvePromiseMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         });

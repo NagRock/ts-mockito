@@ -193,6 +193,26 @@ describe("mocking", () => {
                     })
                     .catch(err => done.fail(err));
             });
+
+            it("resolves void promise", done => {
+                when(mockedFoo.sampleMethodReturningVoidPromise("abc")).thenResolve(undefined);
+
+                foo.sampleMethodReturningVoidPromise("abc")
+                    .then(() => {
+                        done();
+                    })
+                    .catch(err => done.fail(err));
+            });
+
+            it("resolves void promise without arguments", done => {
+                when(mockedFoo.sampleMethodReturningVoidPromise("abc")).thenResolve();
+
+                foo.sampleMethodReturningVoidPromise("abc")
+                    .then(() => {
+                        done();
+                    })
+                    .catch(err => done.fail(err));
+            });
         });
 
         describe("with stubbed promise rejection", () => {
