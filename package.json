@@ -36,7 +36,7 @@
     "@types/node": "^8.0.46",
     "babel-polyfill": "^6.26.0",
     "jasmine-core": "^2.8.0",
-    "jest": "^22.4.2",
+    "jest": "^22.4.3",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
