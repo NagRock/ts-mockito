@@ -112,6 +112,10 @@ export function notNull(): any {
     return new NotNullMatcher() as any;
 }
 
+export function matchString(expectedValue: RegExp | string): any {
+    return new MatchingStringMatcher(expectedValue) as any;
+}
+
 export function strictEqual(expectedValue: any): Matcher {
     return new StrictEqualMatcher(expectedValue);
 }
