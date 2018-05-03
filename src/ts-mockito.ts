@@ -146,6 +146,7 @@ export default {
     between,
     deepEqual,
     notNull,
+    matchString,
     strictEqual,
     match,
     objectContaining,
