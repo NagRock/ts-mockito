@@ -42,4 +42,8 @@ export class Foo {
     public sampleMethodReturningVoidPromise(value: string): Promise<void> {
         return Promise.resolve();
     }
+
+    public sampleMethodReturningObjectPromise(value: string): Promise<Foo> {
+        return Promise.resolve(this);
+    }
 }

@@ -29,7 +29,7 @@ export class Mocker {
             this.processFunctionsCode(this.clazz.prototype);
         }
         if (typeof Proxy !== "undefined") {
-            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters("instance"));
         }
     }
 
@@ -37,17 +37,20 @@ export class Mocker {
         if (typeof Proxy === "undefined") {
             return this.mock;
         }
-        return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters("expectation"));
     }
 
-    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): any {
+    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(origin: "instance" | "expectation"): any {
         return {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target;
                 if (!hasMethodStub) {
                     if (this.mock.__tsmockitoInterface) {
-                        this.createMethodStub(name.toString());
-                        this.createInstanceActionListener(name.toString(), {});
+                        if (origin !== "instance" || name !== "then") {
+                            // Don't make this mock object instance look like a Promise instance by mistake, if someone is checking
+                            this.createMethodStub(name.toString());
+                            this.createInstanceActionListener(name.toString(), {});
+                        }
                     } else {
                         this.createPropertyStub(name.toString());
                         this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
