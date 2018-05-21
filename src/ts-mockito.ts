@@ -26,20 +26,22 @@ import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 import {MethodStubSetter} from "./MethodStubSetter";
 import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
-import {Mocker} from "./Mock";
+import {Mocker, MockPropertyPolicy} from "./Mock";
 import {Spy} from "./Spy";
+
+export {MockPropertyPolicy} from "./Mock";
 
 export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
-    return new Mocker(clazz, false).getMock();
+export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }), policy: MockPropertyPolicy = MockPropertyPolicy.StubAsProperty ): T {
+    return new Mocker(clazz, policy).getMock();
 }
 
-export function imock<T>(): T {
+export function imock<T>(policy: MockPropertyPolicy = MockPropertyPolicy.StubAsMethod): T {
     class Empty {}
-    const mockedValue = new Mocker(Empty, true).getMock();
+    const mockedValue = new Mocker(Empty, policy).getMock();
 
     if (typeof Proxy === "undefined") {
         throw new Error("Mocking of interfaces requires support for Proxy objects");
@@ -157,4 +159,5 @@ export default {
     strictEqual,
     match,
     objectContaining,
+    MockPropertyPolicy,
 };

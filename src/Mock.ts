@@ -10,6 +10,12 @@ import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
 import {ObjectInspector} from "./utils/ObjectInspector";
 import {ObjectPropertyCodeRetriever} from "./utils/ObjectPropertyCodeRetriever";
 
+export enum MockPropertyPolicy {
+    StubAsProperty,
+    StubAsMethod,
+    Throw,
+}
+
 export class Mocker {
     protected objectInspector = new ObjectInspector();
     private methodStubCollections: any = {};
@@ -18,8 +24,8 @@ export class Mocker {
     private mockableFunctionsFinder = new MockableFunctionsFinder();
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
 
-    constructor(private clazz: any, intf: boolean, protected instance: any = {}) {
-        this.mock.__tsmockitoInterface = intf;
+    constructor(private clazz: any, policy: MockPropertyPolicy, protected instance: any = {}) {
+        this.mock.__policy = policy;
 
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
@@ -45,15 +51,25 @@ export class Mocker {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target;
                 if (!hasMethodStub) {
-                    if (this.mock.__tsmockitoInterface) {
+                    if (this.mock.__policy === MockPropertyPolicy.StubAsMethod) {
                         if (origin !== "instance" || name !== "then") {
                             // Don't make this mock object instance look like a Promise instance by mistake, if someone is checking
                             this.createMethodStub(name.toString());
                             this.createInstanceActionListener(name.toString(), {});
                         }
-                    } else {
+                    } else if (this.mock.__policy === MockPropertyPolicy.StubAsProperty) {
                         this.createPropertyStub(name.toString());
                         this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
+                    } else if (this.mock.__policy === MockPropertyPolicy.Throw) {
+                        if (origin === "instance") {
+                            throw new Error(`Trying to read property ${name.toString()} from a mock object, which was not expected.`);
+                        } else {
+                            // TODO: Assuming it is a property, not a function. Fix this...
+                            this.createPropertyStub(name.toString());
+                            this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
+                        }
+                    } else {
+                        throw new Error("Invalid MockPolicy value");
                     }
                 }
                 return target[name];

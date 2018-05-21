@@ -1,5 +1,5 @@
 import {MethodToStub} from "../src/MethodToStub";
-import {imock, instance, mock, verify, when} from "../src/ts-mockito";
+import {imock, instance, mock, MockPropertyPolicy, verify, when} from "../src/ts-mockito";
 import {Bar} from "./utils/Bar";
 
 describe("mocking", () => {
@@ -153,7 +153,7 @@ describe("mocking", () => {
         });
     });
 
-    describe("mocking an interface", () => {
+    describe("mocking an interface with methods", () => {
         let mockedFoo: SampleInterface;
         let foo: SampleInterface;
 
@@ -206,6 +206,85 @@ describe("mocking", () => {
                 verify(mockedFoo.sampleMethod()).called();
                 expect(result).toBe(5);
             });
+
+            it("can return default value from actions with no setup", () => {
+                // given
+                mockedFoo = imock();
+                foo = instance(mockedFoo);
+
+                // when
+                const result = foo.sampleMethod();
+
+                // then
+                verify(mockedFoo.sampleMethod()).called();
+                expect(result).toBe(null);
+            });
+        }
+    });
+
+    describe("mock an interface with properties", () => {
+        let mockedFoo: SamplePropertyInterface;
+        let foo: SamplePropertyInterface;
+
+        if (typeof Proxy !== "undefined") {
+            it("can setup call actions", () => {
+                // given
+                mockedFoo = imock(MockPropertyPolicy.StubAsProperty);
+                foo = instance(mockedFoo);
+                when(mockedFoo.foo).thenReturn("value");
+
+                // when
+                const result = foo.foo;
+
+                // then
+                verify(mockedFoo.foo).called();
+                expect(result).toBe("value");
+            });
+
+            it("can return default value from actions with no setup", () => {
+                // given
+                mockedFoo = imock(MockPropertyPolicy.StubAsProperty);
+                foo = instance(mockedFoo);
+
+                // when
+                const result = foo.foo;
+
+                // then
+                verify(mockedFoo.foo).called();
+                expect(result).toBe(null);
+            });
+        }
+    });
+
+    describe("mock an interface with default policy to throw", () => {
+        let mockedFoo: SamplePropertyInterface;
+        let foo: SamplePropertyInterface;
+
+        if (typeof Proxy !== "undefined") {
+            it("can setup call actions", () => {
+                // given
+                mockedFoo = imock(MockPropertyPolicy.Throw);
+                foo = instance(mockedFoo);
+                when(mockedFoo.foo).thenReturn("value");
+
+                // when
+                const result = foo.foo;
+
+                // then
+                verify(mockedFoo.foo).called();
+                expect(result).toBe("value");
+            });
+
+            it("can throw from actions with no setup", () => {
+                // given
+                mockedFoo = imock(MockPropertyPolicy.Throw);
+                foo = instance(mockedFoo);
+
+                // when
+                expect(() => foo.foo).toThrow();
+
+                // then
+            });
         }
     });
 });
@@ -234,6 +313,11 @@ interface SampleInterface {
     dependency: Bar;
 
     sampleMethod(): number;
+}
+
+interface SamplePropertyInterface {
+    foo: string;
+    bar: number;
 }
 
 class SampleInterfaceImplementation implements SampleInterface {

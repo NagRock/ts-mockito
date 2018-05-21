@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import {Mocker} from "./Mock";
+import {Mocker, MockPropertyPolicy} from "./Mock";
 import {RealMethod} from "./spy/RealMethod";
 import {CallThroughMethodStub} from "./stub/CallThroughMethodStub";
 import {MethodStub} from "./stub/MethodStub";
@@ -8,7 +8,7 @@ export class Spy extends Mocker {
     private realMethods: { [key: string]: RealMethod };
 
     constructor(instance: any) {
-        super(instance.constructor, false, instance);
+        super(instance.constructor, MockPropertyPolicy.StubAsProperty, instance);
 
         if (_.isObject(instance)) {
             this.processProperties(instance);
