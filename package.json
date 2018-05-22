@@ -8,7 +8,7 @@
     "compile": "rm -rf 'lib/*' && ./node_modules/.bin/tsc -p ./src",
     "test": "npm run test:jest && npm run test:karma",
     "test:watch": "npm run test:jest:watch",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --maxWorkers=4",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch",
     "test:karma": "./node_modules/.bin/karma start karma.conf.js --single-run",
