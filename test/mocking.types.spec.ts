@@ -100,7 +100,7 @@ describe("mocking", () => {
             const result = foo.getGenericTypedValue();
 
             // then
-            expect(expectedResult).toEqual(result);
+            expect(result).toEqual(expectedResult);
         });
 
         it("does create own property descriptors on instance", () => {
@@ -223,21 +223,21 @@ describe("mocking", () => {
     });
 
     describe("mock an interface with properties", () => {
-        let mockedFoo: SamplePropertyInterface;
-        let foo: SamplePropertyInterface;
+        let mockedFoo: SampleInterface;
+        let foo: SampleInterface;
 
         if (typeof Proxy !== "undefined") {
             it("can setup call actions", () => {
                 // given
                 mockedFoo = imock(MockPropertyPolicy.StubAsProperty);
                 foo = instance(mockedFoo);
-                when(mockedFoo.foo).thenReturn("value");
+                when(mockedFoo.sampleProperty).thenReturn("value");
 
                 // when
-                const result = foo.foo;
+                const result = foo.sampleProperty;
 
                 // then
-                verify(mockedFoo.foo).called();
+                verify(mockedFoo.sampleProperty).called();
                 expect(result).toBe("value");
             });
 
@@ -247,31 +247,31 @@ describe("mocking", () => {
                 foo = instance(mockedFoo);
 
                 // when
-                const result = foo.foo;
+                const result = foo.sampleProperty;
 
                 // then
-                verify(mockedFoo.foo).called();
+                verify(mockedFoo.sampleProperty).called();
                 expect(result).toBe(null);
             });
         }
     });
 
     describe("mock an interface with default policy to throw", () => {
-        let mockedFoo: SamplePropertyInterface;
-        let foo: SamplePropertyInterface;
+        let mockedFoo: SampleInterface;
+        let foo: SampleInterface;
 
         if (typeof Proxy !== "undefined") {
             it("can setup call actions", () => {
                 // given
                 mockedFoo = imock(MockPropertyPolicy.Throw);
                 foo = instance(mockedFoo);
-                when(mockedFoo.foo).thenReturn("value");
+                when(mockedFoo.sampleProperty).thenReturn("value");
 
                 // when
-                const result = foo.foo;
+                const result = foo.sampleProperty;
 
                 // then
-                verify(mockedFoo.foo).called();
+                verify(mockedFoo.sampleProperty).called();
                 expect(result).toBe("value");
             });
 
@@ -281,9 +281,30 @@ describe("mocking", () => {
                 foo = instance(mockedFoo);
 
                 // when
-                expect(() => foo.foo).toThrow();
+                expect(() => foo.sampleProperty).toThrow();
 
                 // then
+            });
+        }
+    });
+
+    describe("mock an interface with both properties and methods", () => {
+        let mockedFoo: SampleInterface;
+        let foo: SampleInterface;
+
+        if (typeof Proxy !== "undefined") {
+            it("can setup call actions on methods", () => {
+                // given
+                mockedFoo = imock(MockPropertyPolicy.StubAsProperty);
+                foo = instance(mockedFoo);
+                when(mockedFoo.sampleMethod()).thenReturn(5);
+
+                // when
+                const result = foo.sampleMethod();
+
+                // then
+                verify(mockedFoo.sampleMethod()).called();
+                expect(result).toBe(5);
             });
         }
     });
@@ -312,16 +333,15 @@ abstract class SampleAbstractClass {
 interface SampleInterface {
     dependency: Bar;
 
-    sampleMethod(): number;
-}
+    sampleProperty: string;
 
-interface SamplePropertyInterface {
-    foo: string;
-    bar: number;
+    sampleMethod(): number;
 }
 
 class SampleInterfaceImplementation implements SampleInterface {
     public dependency: Bar;
+
+    public sampleProperty: "999";
 
     public sampleMethod(): number {
         return 999;
