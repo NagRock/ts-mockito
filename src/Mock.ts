@@ -17,6 +17,7 @@ export class Mocker {
     private mock: any = {};
     private mockableFunctionsFinder = new MockableFunctionsFinder();
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
+    private excludedPropertyNames: string[] = ["hasOwnProperty"];
 
     constructor(private clazz: any, protected instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
@@ -82,6 +83,9 @@ export class Mocker {
     protected processProperties(object: any): void {
         this.objectInspector.getObjectPrototypes(object).forEach((obj: any) => {
             this.objectInspector.getObjectOwnPropertyNames(obj).forEach((name: string) => {
+                if (this.excludedPropertyNames.indexOf(name) >= 0) {
+                    return;
+                }
                 const descriptor = Object.getOwnPropertyDescriptor(obj, name);
                 if (descriptor.get) {
                     this.createPropertyStub(name);

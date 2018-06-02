@@ -64,6 +64,20 @@ describe("mocking", () => {
         });
     });
 
+    describe("mocking class with hasOwnProperty", () => {
+        let mockedFoo: SampleClassWithHasOwnProperty;
+
+        it("does not attempt to mock hasOwnProperty (which would throw)", () => {
+            // given
+
+            // when
+            mockedFoo = mock(SampleClassWithHasOwnProperty);
+
+            // then
+
+        });
+    });
+
     describe("mocking generic class", () => {
         let mockedFoo: SampleGeneric<SampleInterface>;
         let foo: SampleGeneric<SampleInterface>;
@@ -171,6 +185,12 @@ abstract class SampleAbstractClass {
 
     public set twoPlusTwo(value: number) {
         this.dependency.sumTwoNumbers(value, 0);
+    }
+}
+
+class SampleClassWithHasOwnProperty {
+    public hasOwnProperty(name: string): boolean {
+        return Object.prototype.hasOwnProperty.call(this, name);
     }
 }
 
