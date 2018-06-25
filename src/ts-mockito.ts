@@ -116,16 +116,16 @@ export function matchString(expectedValue: RegExp | string): any {
     return new MatchingStringMatcher(expectedValue) as any;
 }
 
-export function strictEqual(expectedValue: any): Matcher {
-    return new StrictEqualMatcher(expectedValue);
+export function strictEqual(expectedValue: any): any {
+    return new StrictEqualMatcher(expectedValue) as any;
 }
 
-export function match(expectedValue: RegExp | string): Matcher {
-    return new MatchingStringMatcher(expectedValue);
+export function match(expectedValue: RegExp | string): any {
+    return new MatchingStringMatcher(expectedValue) as any;
 }
 
-export function objectContaining(expectedValue: Object): Matcher {
-    return new ObjectContainingMatcher(expectedValue);
+export function objectContaining(expectedValue: Object): any {
+    return new ObjectContainingMatcher(expectedValue) as any;
 }
 
 // Export default object with all members (ember-browserify doesn't support named exports).

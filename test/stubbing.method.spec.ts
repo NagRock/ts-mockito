@@ -174,6 +174,45 @@ describe("mocking", () => {
                     })
                     .catch(err => done.fail(err));
             });
+
+            it("resolves with multiple values", done => {
+                when(mockedFoo.sampleMethodReturningPromise("abc")).thenResolve("one", "two", "three");
+
+                foo.sampleMethodReturningPromise("abc")
+                    .then(value => {
+                        expect(value).toEqual("one");
+                        return foo.sampleMethodReturningPromise("abc");
+                    })
+                    .then(value => {
+                        expect(value).toEqual("two");
+                        return foo.sampleMethodReturningPromise("abc");
+                    })
+                    .then(value => {
+                        expect(value).toEqual("three");
+                        done();
+                    })
+                    .catch(err => done.fail(err));
+            });
+
+            it("resolves void promise", done => {
+                when(mockedFoo.sampleMethodReturningVoidPromise("abc")).thenResolve(undefined);
+
+                foo.sampleMethodReturningVoidPromise("abc")
+                    .then(() => {
+                        done();
+                    })
+                    .catch(err => done.fail(err));
+            });
+
+            it("resolves void promise without arguments", done => {
+                when(mockedFoo.sampleMethodReturningVoidPromise("abc")).thenResolve();
+
+                foo.sampleMethodReturningVoidPromise("abc")
+                    .then(() => {
+                        done();
+                    })
+                    .catch(err => done.fail(err));
+            });
         });
 
         describe("with stubbed promise rejection", () => {

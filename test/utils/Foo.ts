@@ -38,4 +38,8 @@ export class Foo {
     public sampleMethodReturningPromise(value: string): Promise<string> {
         return Promise.resolve(value);
     }
+
+    public sampleMethodReturningVoidPromise(value: string): Promise<void> {
+        return Promise.resolve();
+    }
 }
