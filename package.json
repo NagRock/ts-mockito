@@ -56,9 +56,14 @@
     "lodash": "^4.17.5"
   },
   "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.test.json"
+      }
+    },
     "testEnvironment": "jsdom",
     "transform": {
-      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.ts$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|\\.(spec))\\.(ts|js)$",
     "moduleFileExtensions": [
