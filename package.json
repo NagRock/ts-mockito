@@ -8,7 +8,7 @@
     "compile": "rm -rf 'lib/*' && ./node_modules/.bin/tsc -p ./src",
     "test": "npm run test:jest && npm run test:karma",
     "test:watch": "npm run test:jest:watch",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --maxWorkers=4",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch",
     "test:karma": "./node_modules/.bin/karma start karma.conf.js --single-run",
@@ -36,7 +36,7 @@
     "@types/node": "^8.0.46",
     "babel-polyfill": "^6.26.0",
     "jasmine-core": "^2.8.0",
-    "jest": "^21.2.1",
+    "jest": "^22.4.3",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
@@ -45,10 +45,10 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-typescript": "^3.0.8",
     "karma-typescript-preprocessor": "^0.3.1",
-    "phantomjs": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.16",
     "puppeteer": "^0.12.0",
     "ts-helpers": "^1.1.2",
-    "ts-jest": "^21.1.3",
+    "ts-jest": "^22.4.1",
     "tslint": "^5.7.0",
     "typescript": "^2.7.2"
   },
@@ -71,7 +71,6 @@
       "js",
       "json"
     ],
-    "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.ts"
     ],
