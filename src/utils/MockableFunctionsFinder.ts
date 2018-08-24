@@ -7,9 +7,10 @@
  *     - [.]functionName = (
  *     - [.]functionName = function(
  *     - [.]functionName = function otherName(
+ *     - [.]functionName = async .
  */
 export class MockableFunctionsFinder {
-    private functionNameRegex = /[.\s]([^.\s]+?)(?:\(|\s+=\s+(?:function\s*(?:[^.\s]+?\s*)?)?\()/g;
+    private functionNameRegex = /[.\s]([^.\s]+?)(?:\(|\s+=\s+(?:function\s*(?:[^.\s]+?\s*)?)?\(|\s+=\s+async\s)/g;
     private cleanFunctionNameRegex = /^[.\s]([^.\s]+?)[\s(]/;
     private excludedFunctionNames: string[] = ["hasOwnProperty", "function"];
 

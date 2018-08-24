@@ -166,6 +166,57 @@ describe("mocking", () => {
 
         });
     });
+
+    describe("mocking class with async methods", () => {
+      let mockedFoo: SampleClassWithAsync;
+      let foo: SampleClassWithAsync;
+
+      it("does create own method descriptors on instance 0", () => {
+        // given
+        mockedFoo = mock(SampleClassWithAsync);
+        foo = instance(mockedFoo);
+
+        // when
+        when(mockedFoo.asyncMethod0()).thenResolve(42);
+
+        // then
+        return foo.asyncMethod0()
+          .then(result => {
+            expect(result).toBe(42);
+          });
+      });
+
+      it("does create own method descriptors on instance 1", () => {
+        // given
+        mockedFoo = mock(SampleClassWithAsync);
+        foo = instance(mockedFoo);
+
+        // when
+        when(mockedFoo.asyncMethod1('bar')).thenResolve(42);
+
+        // then
+        return foo.asyncMethod1('bar')
+          .then(result => {
+            expect(result).toBe(42);
+          });
+      });
+
+      it("does create own method descriptors on instance 2", () => {
+        // given
+        mockedFoo = mock(SampleClassWithAsync);
+        foo = instance(mockedFoo);
+
+        // when
+        when(mockedFoo.asyncMethod2('bar', 2)).thenResolve(42);
+
+        // then
+        return foo.asyncMethod2('bar', 2)
+          .then(result => {
+            expect(result).toBe(42);
+          });
+      });
+});
+
 });
 
 abstract class SampleAbstractClass {
@@ -230,4 +281,14 @@ class SampleGeneric<T> {
     public getGenericTypedValue(): T {
         return null;
     }
+}
+
+class SampleClassWithAsync {
+
+  protected constructor() {}
+
+  // because the compiler produces different signatures for each of these
+  public asyncMethod0 = async () => 4;
+  public asyncMethod1 = async (foo: string) => Number(foo);
+  public asyncMethod2 = async (foo: string, bar: number) => bar;
 }

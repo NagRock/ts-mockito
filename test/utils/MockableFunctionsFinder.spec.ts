@@ -13,6 +13,8 @@ describe("MockableFunctionsFinder", () => {
             expect(result).toContain("log");
             expect(result).toContain("toString");
             expect(result).toContain("anonymousMethod");
+            expect(result).toContain("asyncMethod1");
+            expect(result).toContain("asyncMethod2");
         });
 
         it("should not find hasOwnProperty as it should not be mocked (because its used by mockito to evaluate properties)", () => {
@@ -36,6 +38,13 @@ export class Foo {
             console.log(arg);
             temp.hasOwnProperty("fakeProperty");
         }
+
+        this.asyncMethod1 = async arg => {
+        }
+
+        this.asyncMethod2 = async (foo, bar) => {
+        }
+
     }
 
     private convertNumberToString(value:number):string {

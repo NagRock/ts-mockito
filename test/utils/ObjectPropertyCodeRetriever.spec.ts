@@ -28,7 +28,7 @@ describe("ObjectPropertyCodeRetriever", () => {
             expect(objectPropertyCodeRetriever.get(object, "nanProperty")).toBe("NaN");
             expect(objectPropertyCodeRetriever.get(object, "stringProperty")).toBe("stringProperty");
             expect(objectPropertyCodeRetriever.get(object, "booleanProperty")).toBe("true");
-            expect(objectPropertyCodeRetriever.get(object, "testMethod")).toMatch(/function \(\)/);
+            expect(objectPropertyCodeRetriever.get(object, "testMethod")).toMatch(/() => true/);
         });
 
         it("Provides code of given existing property accessors", () => {
