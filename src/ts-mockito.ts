@@ -112,6 +112,10 @@ export function notNull(): any {
     return new NotNullMatcher() as any;
 }
 
+export function matchString(expectedValue: RegExp | string): any {
+    return new MatchingStringMatcher(expectedValue) as any;
+}
+
 export function strictEqual(expectedValue: any): any {
     return new StrictEqualMatcher(expectedValue) as any;
 }
@@ -142,6 +146,7 @@ export default {
     between,
     deepEqual,
     notNull,
+    matchString,
     strictEqual,
     match,
     objectContaining,
