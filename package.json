@@ -56,7 +56,7 @@
     "lodash": "^4.17.5"
   },
   "jest": {
-    "testEnvironment": "jsdom",
+    "testEnvironment": "node",
     "transform": {
       "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
