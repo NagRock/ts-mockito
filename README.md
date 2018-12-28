@@ -5,12 +5,13 @@ Mocking library for TypeScript inspired by http://mockito.org/
 ## 1.x to 2.x migration guide
 [1.x to 2.x migration guide](https://github.com/NagRock/ts-mockito/wiki/ts-mockito-1.x-to-2.x-migration-guide)
 
+
 ## Main features
 
 
 * Strongly typed
 * IDE autocomplete
-* Mock creation (`mock`) (also abstract classes) [#example](#basics)
+* Mock creation (`mock`) (also abstract classes and interfaces) [#example](#basics)
 * Spying on real objects (`spy`) [#example](#spying-on-real-objects)
 * Changing mock behavior (`when`) via:
 	* `thenReturn` - return value [#example](#stubbing-method-calls)
@@ -35,7 +36,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 ### Basics
 ``` typescript
-// Creating mock
+// Creating mock from a class
 let mockedFoo:Foo = mock(Foo);
 
 // Getting instance from mock
@@ -49,6 +50,43 @@ foo.getBar(5);
 verify(mockedFoo.getBar(3)).called();
 verify(mockedFoo.getBar(5)).called();
 ```
+
+### Create a mock from an interface
+
+Mocking interfaxces works just the same as mocking classes, except you
+must use the `imock()` function to create the mock.
+
+```typescript
+let mockedFoo:Foo = imock(); // Foo is a typescript interface
+when(mockedFoo.getBar(5)).thenReturn('five');
+```
+
+It also works for properties.
+
+```typescript
+let mockedFoo:Foo = imock();
+when(mockedFoo.bar).thenReturn('five');
+```
+
+For interface mocks, you can set the defauklt behviour for mocked properties that
+have no expectations set. They can behave eiter as a property, returning null, or
+as a function, returning a function that returns null, or throw an exception.
+
+```typescript
+let mockedFoo1:Foo = imock(MockPropertyPolicy.Throw);
+instance(mockedFoo1).bar; // This throws an exception, because there is no expectation set on the bar property
+
+let mockedFoo2:Foo = imock(MockPropertyPolicy.Throw);
+when(mockedFoo2.bar).thenReturn('five');
+instance(mockedFoo2).bar; // Now this returns 'five', and no exception is thrown, because there is an expectation set on the bar property
+
+let mockedFoo3:Foo = imock(MockPropertyPolicy.StubAsProperty);
+instance(mockedFoo3).bar; // This returns null, because no expectation is set
+
+let mockedFoo4:Foo = imock(MockPropertyPolicy.StubAsMethod);
+instance(mockedFoo4).getBar(5); // This returns null, because no expectation is set
+```
+
 
 ### Stubbing method calls
 
