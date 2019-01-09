@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import {Matcher} from "./Matcher";
 
-export class DeepEqualMatcher extends Matcher {
-    constructor(private expectedValue: any) {
+export class DeepEqualMatcher<T> extends Matcher {
+    constructor(private expectedValue: T) {
         super();
     }
 
