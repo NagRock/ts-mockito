@@ -105,8 +105,8 @@ export function between(min: number, max: number): any {
     return new BetweenMatcher(min, max) as any;
 }
 
-export function deepEqual(expectedValue: any): any {
-    return new DeepEqualMatcher(expectedValue);
+export function deepEqual<T>(expectedValue: T): T {
+    return new DeepEqualMatcher<T>(expectedValue) as any;
 }
 
 export function notNull(): any {
