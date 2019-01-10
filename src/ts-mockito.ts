@@ -33,7 +33,7 @@ export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
+export function mock<T>(clazz: Function & { prototype: T }): T {
     return new Mocker(clazz).getMock();
 }
 
@@ -80,7 +80,7 @@ export function resetCalls<T>(mockedValue: T): void {
     (mockedValue as any).__tsmockitoMocker.resetCalls();
 }
 
-export function anyOfClass<T>(expectedClass: { new (...args: any[]): T }): any {
+export function anyOfClass<T>(expectedClass: Function & { prototype: T }): any {
     return new AnyOfClassMatcher(expectedClass) as any;
 }
 
