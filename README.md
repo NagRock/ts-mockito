@@ -209,7 +209,7 @@ Or reset mock call counter with all stubs
 ``` typescript
 // Creating mock
 let mockedFoo:Foo = mock(Foo);
-when(mockedFoo.getBar(1).thenReturn("one")).
+when(mockedFoo.getBar(1)).thenReturn("one").
 
 // Getting instance
 let foo:Foo = instance(mockedFoo);
