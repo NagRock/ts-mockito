@@ -18,7 +18,6 @@ import {AnyStringMatcher} from "./matcher/type/AnyStringMatcher";
 import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
 import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
 import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
-import {Matcher} from "./matcher/type/Matcher";
 import {MatchingStringMatcher} from "./matcher/type/MatchingStringMatcher";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
 import {ObjectContainingMatcher} from "./matcher/type/ObjectContainingMatcher";
@@ -33,7 +32,7 @@ export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: { new(...args: any[]): T; } | (Function & { prototype: T }) ): T {
+export function mock<T>(clazz: (new(...args: any[]) => T) | (Function & { prototype: T }) ): T {
     return new Mocker(clazz).getMock();
 }
 
@@ -80,7 +79,7 @@ export function resetCalls<T>(mockedValue: T): void {
     (mockedValue as any).__tsmockitoMocker.resetCalls();
 }
 
-export function anyOfClass<T>(expectedClass: { new (...args: any[]): T }): any {
+export function anyOfClass<T>(expectedClass: new (...args: any[]) => T): any {
     return new AnyOfClassMatcher(expectedClass) as any;
 }
 
