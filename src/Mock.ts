@@ -23,9 +23,9 @@ export class Mocker {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
         if (_.isObject(this.clazz) && _.isObject(this.instance)) {
-            this.processProperties(this.clazz.prototype);
+            this.processProperties((this.clazz as any).prototype);
             this.processClassCode(this.clazz);
-            this.processFunctionsCode(this.clazz.prototype);
+            this.processFunctionsCode((this.clazz as any).prototype);
         }
         if (typeof Proxy !== "undefined") {
             this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
