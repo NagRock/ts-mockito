@@ -10,6 +10,12 @@ import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
 import {ObjectInspector} from "./utils/ObjectInspector";
 import {ObjectPropertyCodeRetriever} from "./utils/ObjectPropertyCodeRetriever";
 
+export enum MockPropertyPolicy {
+    StubAsProperty,
+    StubAsMethod,
+    Throw,
+}
+
 export class Mocker {
     protected objectInspector = new ObjectInspector();
     private methodStubCollections: any = {};
@@ -19,7 +25,9 @@ export class Mocker {
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
     private excludedPropertyNames: string[] = ["hasOwnProperty"];
 
-    constructor(private clazz: any, protected instance: any = {}) {
+    constructor(private clazz: any, policy: MockPropertyPolicy, protected instance: any = {}) {
+        this.mock.__policy = policy;
+
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
         if (_.isObject(this.clazz) && _.isObject(this.instance)) {
@@ -28,7 +36,7 @@ export class Mocker {
             this.processFunctionsCode((this.clazz as any).prototype);
         }
         if (typeof Proxy !== "undefined") {
-            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters("instance"));
         }
     }
 
@@ -36,17 +44,33 @@ export class Mocker {
         if (typeof Proxy === "undefined") {
             return this.mock;
         }
-        return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters("expectation"));
     }
 
-    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): any {
+    public createCatchAllHandlerForRemainingPropertiesWithoutGetters(origin: "instance" | "expectation"): any {
         return {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target;
                 if (!hasMethodStub) {
-                    this.createPropertyStub(name.toString());
-                    this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
-                }
+                    if (origin === "instance") {
+                        if (this.mock.__policy === MockPropertyPolicy.StubAsMethod) {
+                            if (name !== "then") {
+                                // Don't make this mock object instance look like a Promise instance by mistake, if someone is checking
+                                this.createMethodStub(name.toString());
+                                this.createInstanceActionListener(name.toString(), {});
+                            }
+                        } else if (this.mock.__policy === MockPropertyPolicy.StubAsProperty) {
+                            this.createPropertyStub(name.toString());
+                            this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
+                        } else if (this.mock.__policy === MockPropertyPolicy.Throw) {
+                            throw new Error(`Trying to read property ${name.toString()} from a mock object, which was not expected.`);
+                        } else {
+                            throw new Error("Invalid MockPolicy value");
+                        }
+                    } else if (origin === "expectation") {
+                        this.createMixedStub(name.toString());
+                    }
+            }
                 return target[name];
             },
         };
@@ -90,7 +114,6 @@ export class Mocker {
                 if (descriptor.get) {
                     this.createPropertyStub(name);
                     this.createInstancePropertyDescriptorListener(name, descriptor, obj);
-                    this.createInstanceActionListener(name, obj);
                 } else if (typeof descriptor.value === "function") {
                     this.createMethodStub(name);
                     this.createInstanceActionListener(name, obj);
@@ -153,6 +176,54 @@ export class Mocker {
                     this.createInstanceActionListener(functionName, this.clazz.prototype);
                 });
             });
+        });
+    }
+
+    private createMixedStub(key: string): void {
+        if (this.mock.hasOwnProperty(key)) {
+            return;
+        }
+
+        // Assume it is a property stub, until proven otherwise
+        let isProperty = true;
+
+        Object.defineProperty(this.instance, key, {
+            get: () => {
+                if (isProperty) {
+                    return this.createActionListener(key)();
+                } else {
+                    return this.createActionListener(key);
+                }
+            },
+        });
+
+        const methodMock = (...args) => {
+            isProperty = false;
+
+            const matchers: Matcher[] = [];
+
+            for (const arg of args) {
+                if (!(arg instanceof Matcher)) {
+                    matchers.push(strictEqual(arg));
+                } else {
+                    matchers.push(arg);
+                }
+            }
+
+            return new MethodToStub(this.methodStubCollections[key], matchers, this, key);
+        };
+
+        const propertyMock = () => {
+            if (!this.methodStubCollections[key]) {
+                this.methodStubCollections[key] = new MethodStubCollection();
+            }
+
+            // Return a mix of a method stub and a property invocation, which works as both
+            return Object.assign(methodMock, new MethodToStub(this.methodStubCollections[key], [], this, key));
+        };
+
+        Object.defineProperty(this.mock, key, {
+            get: propertyMock,
         });
     }
 

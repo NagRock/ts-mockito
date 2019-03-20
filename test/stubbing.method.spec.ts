@@ -1,4 +1,4 @@
-import {anything, instance, mock, when} from "../src/ts-mockito";
+import {anything, imock, instance, mock, when} from "../src/ts-mockito";
 import {Foo} from "./utils/Foo";
 
 describe("mocking", () => {
@@ -213,6 +213,25 @@ describe("mocking", () => {
                     })
                     .catch(err => done.fail(err));
             });
+
+            if (typeof Proxy !== "undefined") {
+                it("resolves with given mock value", done => {
+                    // given
+                    const sampleValue = "abc";
+                    const expectedResult: Foo = imock();
+
+                    when(mockedFoo.sampleMethodReturningObjectPromise(sampleValue)).thenResolve(instance(expectedResult));
+
+                    // when
+                    foo.sampleMethodReturningObjectPromise(sampleValue)
+                        .then(value => {
+                            // then
+                            expect(value).toEqual(instance(expectedResult));
+                            done();
+                        })
+                        .catch(err => done.fail(err));
+                });
+            }
         });
 
         describe("with stubbed promise rejection", () => {

@@ -25,15 +25,28 @@ import {StrictEqualMatcher} from "./matcher/type/StrictEqualMatcher";
 import {MethodStubSetter} from "./MethodStubSetter";
 import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
-import {Mocker} from "./Mock";
+import {Mocker, MockPropertyPolicy} from "./Mock";
 import {Spy} from "./Spy";
+
+export {MockPropertyPolicy} from "./Mock";
 
 export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: (new(...args: any[]) => T) | (Function & { prototype: T }) ): T {
-    return new Mocker(clazz).getMock();
+export function mock<T>(clazz: (new(...args: any[]) => T) | (Function & { prototype: T }), policy: MockPropertyPolicy = MockPropertyPolicy.StubAsProperty ): T {
+    return new Mocker(clazz, policy).getMock();
+}
+
+export function imock<T>(policy: MockPropertyPolicy = MockPropertyPolicy.StubAsMethod): T {
+    class Empty {}
+    const mockedValue = new Mocker(Empty, policy).getMock();
+
+    if (typeof Proxy === "undefined") {
+        throw new Error("Mocking of interfaces requires support for Proxy objects");
+    }
+    const tsmockitoMocker = mockedValue.__tsmockitoMocker as Mocker;
+    return new Proxy(mockedValue, tsmockitoMocker.createCatchAllHandlerForRemainingPropertiesWithoutGetters("expectation"));
 }
 
 export function verify<T>(method: T): MethodStubVerificator<T> {
@@ -64,7 +77,7 @@ export function capture<T0>(method: (a: T0) => any): ArgCaptor1<T0>;
 export function capture(method: (...args: any[]) => any): ArgCaptor {
     const methodStub: MethodToStub = method();
     if (methodStub instanceof MethodToStub) {
-        const actions = methodStub.mocker.getActionsByName(methodStub.name);
+        const actions = methodStub.mocker.getActionsByName(methodStub.methodName);
         return new ArgCaptor(actions);
     } else {
         throw Error("Cannot capture from not mocked object.");
@@ -127,6 +140,7 @@ export function objectContaining(expectedValue: Object): any {
 export default {
     spy,
     mock,
+    imock,
     verify,
     when,
     instance,
@@ -144,4 +158,5 @@ export default {
     strictEqual,
     match,
     objectContaining,
+    MockPropertyPolicy,
 };
