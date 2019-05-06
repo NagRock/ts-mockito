@@ -5,7 +5,7 @@ describe("AnyStringMatcher", () => {
     describe("checking if number matches", () => {
         it("returns false", () => {
             // given
-            const testObj: Matcher = anyString();
+            const testObj: Matcher = anyString() as any;
 
             // when
             const result = testObj.match(3);
@@ -18,7 +18,7 @@ describe("AnyStringMatcher", () => {
     describe("checking if object matches", () => {
         it("returns false", () => {
             // given
-            const testObj: Matcher = anyString();
+            const testObj: Matcher = anyString() as any;
 
             // when
             const result = testObj.match({});
@@ -31,7 +31,7 @@ describe("AnyStringMatcher", () => {
     describe("checking if empty string matches", () => {
         it("returns true", () => {
             // given
-            const testObj: Matcher = anyString();
+            const testObj: Matcher = anyString() as any;
 
             // when
             const result = testObj.match("");
@@ -44,7 +44,7 @@ describe("AnyStringMatcher", () => {
     describe("checking if sample string matches", () => {
         it("returns true", () => {
             // given
-            const testObj: Matcher = anyString();
+            const testObj: Matcher = anyString() as any;
 
             // when
             const result = testObj.match("sampleString");

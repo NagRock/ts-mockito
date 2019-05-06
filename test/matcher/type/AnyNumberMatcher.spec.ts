@@ -5,7 +5,7 @@ describe("AnyNumberMatcher", () => {
     describe("checking if positive number is matching", () => {
         it("returns true", () => {
             // given
-            const testObj: Matcher = anyNumber();
+            const testObj: Matcher = anyNumber() as any;
 
             // when
             const result = testObj.match(3);
@@ -18,7 +18,7 @@ describe("AnyNumberMatcher", () => {
     describe("checking if negative number is matching", () => {
         it("returns true", () => {
             // given
-            const testObj: Matcher = anyNumber();
+            const testObj: Matcher = anyNumber() as any;
 
             // when
             const result = testObj.match(-3);
@@ -31,7 +31,7 @@ describe("AnyNumberMatcher", () => {
     describe("checking if zero is matching", () => {
         it("returns true", () => {
             // given
-            const testObj: Matcher = anyNumber();
+            const testObj: Matcher = anyNumber() as any;
 
             // when
             const result = testObj.match(0);
@@ -44,7 +44,7 @@ describe("AnyNumberMatcher", () => {
     describe("checking if string representation of number is matching", () => {
         it("returns false", () => {
             // given
-            const testObj: Matcher = anyNumber();
+            const testObj: Matcher = anyNumber() as any;
 
             // when
             const result = testObj.match("5");
@@ -57,7 +57,7 @@ describe("AnyNumberMatcher", () => {
     describe("checking if object is matching", () => {
         it("returns false", () => {
             // given
-            const testObj: Matcher = anyNumber();
+            const testObj: Matcher = anyNumber() as any;
 
             // when
             const result = testObj.match({});

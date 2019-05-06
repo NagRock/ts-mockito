@@ -89,11 +89,11 @@ export function anyFunction(): any {
     return new AnyFunctionMatcher() as any;
 }
 
-export function anyNumber(): any {
+export function anyNumber(): number {
     return new AnyNumberMatcher() as any;
 }
 
-export function anyString(): any {
+export function anyString(): string {
     return new AnyStringMatcher() as any;
 }
 
@@ -101,23 +101,23 @@ export function anything(): any {
     return new AnythingMatcher() as any;
 }
 
-export function between(min: number, max: number): any {
+export function between(min: number, max: number): number {
     return new BetweenMatcher(min, max) as any;
 }
 
-export function deepEqual(expectedValue: any): any {
-    return new DeepEqualMatcher(expectedValue);
+export function deepEqual<T>(expectedValue: T): T {
+    return new DeepEqualMatcher(expectedValue) as any;
 }
 
 export function notNull(): any {
     return new NotNullMatcher() as any;
 }
 
-export function strictEqual(expectedValue: any): any {
+export function strictEqual<T>(expectedValue: T): T {
     return new StrictEqualMatcher(expectedValue) as any;
 }
 
-export function match(expectedValue: RegExp | string): any {
+export function match(expectedValue: RegExp | string): string {
     return new MatchingStringMatcher(expectedValue) as any;
 }
 
