@@ -91,6 +91,18 @@ Syntax is the same as with getter values.
 
 Please note, that stubbing properties that don't have getters only works if [Proxy](http://www.ecma-international.org/ecma-262/6.0/#sec-proxy-objects) object is available (ES6).
 
+### Mocking free functions
+
+Sometimes you need to mock a function, not an object, for example to pass as a callback somewhere. This can be done using `fnmock()`. It works just like any other mock, except it's a function, not an object.
+
+```typescript
+let fn: (a: number, b: string) => number = fnmock();
+when(fn(10, 'hello')).thenReturn(5);
+
+instance(fn)(10, 'hello'); // returns 5
+verify(fn(10, 'hello')).called();
+```
+
 ### Call count verification
 
 ``` typescript
