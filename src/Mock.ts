@@ -175,7 +175,7 @@ export class Mocker {
     }
 
     private createMethodToStub(key: string): () => any {
-        return (...args) => {
+        return (...args: any[]) => {
             if (!this.methodStubCollections[key]) {
                 this.methodStubCollections[key] = new MethodStubCollection();
             }
