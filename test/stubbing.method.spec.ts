@@ -231,6 +231,23 @@ describe("mocking", () => {
                         done();
                     });
             });
+
+            describe("But without defined error", () => {
+                it("rejects with default error", done => {
+                    // given
+                    when(mockedFoo.sampleMethodReturningVoidPromiseWithoutParams()).thenReject();
+
+                    // when
+                    foo.sampleMethodReturningVoidPromiseWithoutParams()
+                      .then(value => done.fail())
+                      .catch(err => {
+                          // then
+                          expect(err.message).toEqual("mocked 'sampleMethodReturningVoidPromiseWithoutParams' rejected");
+                          done();
+                      });
+                });
+            });
+
         });
 
         describe("with stubbed function call", () => {

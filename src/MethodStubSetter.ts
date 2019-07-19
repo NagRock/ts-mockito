@@ -5,7 +5,7 @@ import {ResolvePromiseMethodStub} from "./stub/ResolvePromiseMethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {ThrowErrorMethodStub} from "./stub/ThrowErrorMethodStub";
 
-export class MethodStubSetter<T, ResolveType = void, RejectType = void> {
+export class MethodStubSetter<T, ResolveType = void, RejectType = Error> {
     private static globalGroupIndex: number = 0;
     private groupIndex: number;
 
@@ -43,7 +43,11 @@ export class MethodStubSetter<T, ResolveType = void, RejectType = void> {
         return this;
     }
 
-    public thenReject(...rest: RejectType[]): this {
+    public thenReject(...rest: Error[]): this {
+        // Resolves undefined if no resolve values are given.
+        if (rest.length === 0) {
+            rest.push(new Error(`mocked '${this.methodToStub.name}' rejected`));
+        }
         rest.forEach(value => {
             this.methodToStub.methodStubCollection.add(new RejectPromiseMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         });
