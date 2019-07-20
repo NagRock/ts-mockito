@@ -11,15 +11,15 @@ import {ObjectInspector} from "./utils/ObjectInspector";
 import {ObjectPropertyCodeRetriever} from "./utils/ObjectPropertyCodeRetriever";
 
 export class Mocker {
+    public mock: any = {};
     protected objectInspector = new ObjectInspector();
     private methodStubCollections: any = {};
     private methodActions: MethodAction[] = [];
-    private mock: any = {};
     private mockableFunctionsFinder = new MockableFunctionsFinder();
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
     private excludedPropertyNames: string[] = ["hasOwnProperty"];
 
-    constructor(private clazz: any, protected instance: any = {}) {
+    constructor(private clazz: any, public instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
         this.mock.__tsmockitoMocker = this;
         if (_.isObject(this.clazz) && _.isObject(this.instance)) {
@@ -27,8 +27,24 @@ export class Mocker {
             this.processClassCode(this.clazz);
             this.processFunctionsCode((this.clazz as any).prototype);
         }
-        if (typeof Proxy !== "undefined") {
+        if (typeof Proxy !== "undefined" && this.clazz) {
             this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        } else if (typeof Proxy !== "undefined" && !this.clazz) {
+            this.instance = new Proxy(this.instance, {
+                get: (target: any, name: PropertyKey) => {
+                    if (this.excludedPropertyNames.indexOf(name.toString()) >= 0) {
+                        return target[name];
+                    }
+
+                    const hasMethodStub = name in target;
+
+                    if (!hasMethodStub) {
+                        return this.createActionListener(name.toString());
+                    }
+                    return target[name];
+                },
+            });
+            this.mock.__tsmockitoInstance = this.instance;
         }
     }
 
@@ -36,7 +52,24 @@ export class Mocker {
         if (typeof Proxy === "undefined") {
             return this.mock;
         }
-        return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        if (typeof Proxy !== "undefined" && this.clazz) {
+            return new Proxy(this.mock, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        }
+        return new Proxy(this.mock, {
+            get: (target: any, name: PropertyKey) => {
+                const hasProp = name in target;
+                if (hasProp) {
+                    return target[name];
+                }
+
+                const hasMethodStub = name in target;
+                if (!hasMethodStub) {
+                    this.createMethodStub(name.toString());
+                    this.createInstanceActionListener(name.toString(), {});
+                }
+                return this.mock[name.toString()];
+            },
+        });
     }
 
     public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): any {
@@ -176,6 +209,12 @@ export class Mocker {
 
     private createMethodToStub(key: string): () => any {
         return (...args) => {
+            if (args.length === 1 && args[0] === "__tsMockitoGetInfo") {
+                return {
+                    key,
+                    mocker: this,
+                };
+            }
             if (!this.methodStubCollections[key]) {
                 this.methodStubCollections[key] = new MethodStubCollection();
             }
