@@ -32,7 +32,8 @@ export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
 }
 
-export function mock<T>(clazz: (new(...args: any[]) => T) | (Function & { prototype: T }) ): T {
+export function mock<T>(clazz?: any): T;
+export function mock<T>(clazz?: (new(...args: any[]) => T) | (Function & { prototype: T }) ): T {
     return new Mocker(clazz).getMock();
 }
 

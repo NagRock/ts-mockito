@@ -1,4 +1,3 @@
-import {MethodToStub} from "../src/MethodToStub";
 import {instance, mock, when} from "../src/ts-mockito";
 import {Bar} from "./utils/Bar";
 
@@ -18,16 +17,6 @@ describe("mocking", () => {
 
         });
 
-        it("does create own property descriptors on mock", () => {
-            // given
-
-            // when
-            mockedFoo = mock(FooWithGetterAndSetter);
-
-            // then
-            expect((mockedFoo.twoPlusTwo as any) instanceof MethodToStub).toBe(true);
-        });
-
         it("does create own property descriptors on instance", () => {
             // given
             mockedFoo = mock(FooWithGetterAndSetter);
@@ -38,17 +27,6 @@ describe("mocking", () => {
 
             // then
             expect(foo.twoPlusTwo).toBe(42);
-        });
-
-        it("does create inherited property descriptors on mock", () => {
-            // given
-            mockedFoo = mock(FooWithGetterAndSetter);
-            foo = instance(mockedFoo);
-
-            // when
-
-            // then
-            expect((mockedFoo.sampleString as any) instanceof MethodToStub).toBe(true);
         });
 
         it("does create inherited property descriptors on instance", () => {
