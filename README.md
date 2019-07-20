@@ -309,6 +309,14 @@ foo.getBar(3); // MultipleMatchersMatchSameStubError will be thrown, two matcher
 
 ```
 
+### Mocking interfaces
+
+You can mock interfaces too, just instead of passing type to `mock` function, set `mock` function generic type
+
+``` typescript
+let mockedFoo:Foo = mock<FooInterface>(); // instead of mock(FooInterface)
+```
+
 ### Mocking types
 
 You can mock abstract classes
