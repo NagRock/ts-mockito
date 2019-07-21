@@ -3,10 +3,16 @@ import {MethodCallToStringConverter} from "../src/utils/MethodCallToStringConver
 import {Bar} from "./utils/Bar";
 import {Foo} from "./utils/Foo";
 
-[
+let cases = [
     {desc: "verifying mocked object", fooClass: Foo, barClass: Bar},
     {desc: "verifying mocked interface", fooClass: undefined, barClass: undefined},
-].forEach(testData => {
+];
+
+if (typeof Proxy === "undefined") {
+    cases = [{desc: "verifying mocked object", fooClass: Foo, barClass: Bar}];
+}
+
+cases.forEach(testData => {
     describe(testData.desc, () => {
         let mockedFoo: Foo;
         let foo: Foo;

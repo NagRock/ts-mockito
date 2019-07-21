@@ -55,6 +55,9 @@
   "dependencies": {
     "lodash": "^4.17.5"
   },
+  "resolutions": {
+    "write-file-atomic": "2.4.1"
+  },
   "jest": {
     "testEnvironment": "node",
     "transform": {
