@@ -13,11 +13,6 @@ export class MethodStubSetter<T, ResolveType = void, RejectType = Error> {
         this.groupIndex = ++MethodStubSetter.globalGroupIndex;
     }
 
-    public thenDoNothing(...rest: T[]): this {
-        this.convertToPropertyIfIsNotAFunction();
-        return this;
-    }
-
     public thenReturn(...rest: T[]): this {
         this.convertToPropertyIfIsNotAFunction();
         rest.forEach(value => {
@@ -61,6 +56,11 @@ export class MethodStubSetter<T, ResolveType = void, RejectType = Error> {
         rest.forEach(value => {
             this.methodToStub.methodStubCollection.add(new RejectPromiseMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         });
+        return this;
+    }
+
+    private thenDoNothing(...rest: T[]): this {
+        this.convertToPropertyIfIsNotAFunction();
         return this;
     }
 

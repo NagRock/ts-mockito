@@ -50,7 +50,7 @@ describe("mocking", () => {
             // given
             mockedFoo = mock(FooWithProperties);
             foo = instance(mockedFoo);
-            when(mockedFoo.sampleNumber).thenDoNothing();
+            (when(mockedFoo.sampleNumber) as any).thenDoNothing();
 
             // when
             const value = foo.sampleNumber;
