@@ -316,6 +316,7 @@ Mocking interfaces requires `Proxy` implementation
 
 ``` typescript
 let mockedFoo:Foo = mock<FooInterface>(); // instead of mock(FooInterface)
+const foo: SampleGeneric<FooInterface> = instance(mockedFoo);
 ```
 
 ### Mocking types
