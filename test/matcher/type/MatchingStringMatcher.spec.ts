@@ -3,7 +3,7 @@ import {match} from "../../../src/ts-mockito";
 
 describe("MatchingStringMatcher", () => {
     describe("checking if value matches given regexp", () => {
-        const testObj: Matcher = match(/\w123/);
+        const testObj: Matcher = match(/\w123/) as any;
 
         describe("when given value matches regexp", () => {
             it("returns true", () => {

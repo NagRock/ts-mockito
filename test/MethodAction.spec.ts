@@ -12,7 +12,7 @@ describe("MethodAction", () => {
                 const testObj: MethodAction = new MethodAction(methodName, [firstArg, secondArg]);
 
                 // when
-                const result = testObj.isApplicable(methodName, [strictEqual(firstArg), strictEqual(secondArg)]);
+                const result = testObj.isApplicable(methodName, [strictEqual(firstArg) as any, strictEqual(secondArg) as any]);
 
                 // then
                 expect(result).toBeTruthy();
@@ -28,7 +28,7 @@ describe("MethodAction", () => {
                 const testObj: MethodAction = new MethodAction(methodName, [firstArg, notMatchingArg]);
 
                 // when
-                const result = testObj.isApplicable(methodName, [strictEqual(firstArg), strictEqual(secondArg)]);
+                const result = testObj.isApplicable(methodName, [strictEqual(firstArg) as any, strictEqual(secondArg) as any]);
 
                 // then
                 expect(result).toBeFalsy();
