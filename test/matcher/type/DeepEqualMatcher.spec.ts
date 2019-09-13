@@ -96,11 +96,11 @@ describe("deepEqual", () => {
   describe("using in verify statements", () => {
       it("can be used for equality", () => {
         class Foo {
-          public add = (num1: number, num2: number): number => num1 + num2;
+          public add = (str: string, num: number, obj: {a: string}): number => null;
         }
         const foo = mock(Foo);
-        instance(foo).add(1, 2);
-        verify(foo.add(deepEqual(1), deepEqual(2))).once();
+        instance(foo).add("1", 2, {a: "sampleValue"});
+        verify(foo.add(deepEqual("1"), deepEqual(2), deepEqual({a: "sampleValue"}))).once();
       });
   });
 });
