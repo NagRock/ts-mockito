@@ -5,7 +5,7 @@
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
   "scripts": {
-    "compile": "rm -rf 'lib/*' && ./node_modules/.bin/tsc -p ./src",
+    "compile": "yarn test:compile-check && yarn rimraf 'lib/*' && ./node_modules/.bin/tsc -p ./src",
     "test": "npm run test:jest && npm run test:karma",
     "test:watch": "npm run test:jest:watch",
     "test:coverage": "jest --coverage --maxWorkers=4",
@@ -13,6 +13,7 @@
     "test:jest:watch": "jest --watch",
     "test:karma": "./node_modules/.bin/karma start karma.conf.js --single-run",
     "test:karma:watch": "./node_modules/.bin/karma start karma.conf.js",
+    "test:compile-check": "tsc --noEmit -p tsconfig.json",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
   },
   "author": "kuster.maciej@gmail.com",
@@ -47,6 +48,7 @@
     "karma-typescript-preprocessor": "^0.3.1",
     "phantomjs-prebuilt": "^2.1.16",
     "puppeteer": "^0.12.0",
+    "rimraf": "^3.0.0",
     "ts-helpers": "^1.1.2",
     "ts-jest": "^23.0.1",
     "tslint": "^5.7.0",
