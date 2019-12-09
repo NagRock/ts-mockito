@@ -5,7 +5,7 @@ import {MethodStubCollection} from "./MethodStubCollection";
 import {MethodToStub} from "./MethodToStub";
 import {MethodStub} from "./stub/MethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
-import {strictEqual} from "./ts-mockito";
+import {strictEqual, when} from "./ts-mockito";
 import {MockableFunctionsFinder} from "./utils/MockableFunctionsFinder";
 import {ObjectInspector} from "./utils/ObjectInspector";
 import {ObjectPropertyCodeRetriever} from "./utils/ObjectPropertyCodeRetriever";
@@ -73,6 +73,7 @@ export class Mocker {
     }
 
     public createCatchAllHandlerForRemainingPropertiesWithoutGetters(): any {
+        const mockContainer = this;
         return {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target;
@@ -81,6 +82,17 @@ export class Mocker {
                     this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
                 }
                 return target[name];
+            },
+            set: (target: any, name: PropertyKey, value: any) => {
+                const hasMethodStub = name in target;
+                if (!hasMethodStub && mockContainer === mockContainer) {
+                    this.createPropertyStub(name.toString());
+                    this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
+                }
+
+                when(mockContainer.mock[name]).thenReturn(value);
+
+                return true;
             },
         };
     }
@@ -141,8 +153,10 @@ export class Mocker {
             return;
         }
 
+        const mockObject = this;
         Object.defineProperty(this.instance, key, {
             get: this.createActionListener(key),
+            set: () => true,
         });
     }
 
@@ -194,8 +208,10 @@ export class Mocker {
             return;
         }
 
+        const propertyStub = this.createMethodToStub(key);
         Object.defineProperty(this.mock, key, {
-            get: this.createMethodToStub(key),
+            get: propertyStub,
+            set: () => true,
         });
     }
 

@@ -87,7 +87,7 @@ console.log(foo.sampleGetter);
 
 ### Stubbing property values that have no getters
 
-Syntax is the same as with getter values.
+Syntax is the same as with getter values. If the property has a setter calling the setter will automatically define a ```when``` on the property and the provided value will be returned by subsequent calls to the property. 
 
 Please note, that stubbing properties that don't have getters only works if [Proxy](http://www.ecma-international.org/ecma-262/6.0/#sec-proxy-objects) object is available (ES6).
 
