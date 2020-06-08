@@ -1,4 +1,5 @@
-import {anything, instance, mock, resetCalls, verify} from "../src/ts-mockito";
+import { Mocker } from "../src/Mock";
+import { anything, instance, mock, resetCalls, verify } from "../src/ts-mockito";
 import {Foo} from "./utils/Foo";
 
 describe("resetting mocked object", () => {
@@ -128,5 +129,22 @@ describe("resetting mocked object", () => {
                 }
             });
         });
+    });
+
+    it("should reset calls of all passed mocks", () => {
+        if (typeof Proxy === "undefined") {
+            pending("Testing browser doesn't support Proxy.");
+        }
+
+        // given
+        const firstMock = mock<Mocker>();
+        const secondMock = mock<Mocker>();
+
+        // when
+        resetCalls({__tsmockitoMocker: instance(firstMock)}, {__tsmockitoMocker: instance(secondMock)});
+
+        // then
+        verify(firstMock.resetCalls()).once();
+        verify(secondMock.resetCalls()).once();
     });
 });

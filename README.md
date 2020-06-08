@@ -202,6 +202,8 @@ resetCalls(mockedFoo);
 verify(mockedFoo.getBar(1)).never();      // has never been called after reset
 ```
 
+You can also reset calls of multiple mocks at once `resetCalls(firstMock, secondMock, thirdMock)`
+
 ### Resetting mock
 
 Or reset mock call counter with all stubs
@@ -226,6 +228,8 @@ reset(mockedFoo);
 verify(mockedFoo.getBar(1)).never();      // has never been called after reset
 console.log(foo.getBar(1));               // null - previously added stub has been removed
 ```
+
+You can also reset multiple mocks at once `reset(firstMock, secondMock, thirdMock)`
 
 ### Capturing method arguments
 

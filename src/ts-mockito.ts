@@ -73,12 +73,12 @@ export function capture(method: (...args: any[]) => any): ArgCaptor {
     }
 }
 
-export function reset<T>(mockedValue: T): void {
-    (mockedValue as any).__tsmockitoMocker.reset();
+export function reset<T>(...mockedValues: T[]): void {
+    mockedValues.forEach(mockedValue => (mockedValue as any).__tsmockitoMocker.reset());
 }
 
-export function resetCalls<T>(mockedValue: T): void {
-    (mockedValue as any).__tsmockitoMocker.resetCalls();
+export function resetCalls<T>(...mockedValues: T[]): void {
+    mockedValues.forEach(mockedValue => (mockedValue as any).__tsmockitoMocker.resetCalls());
 }
 
 export function anyOfClass<T>(expectedClass: new (...args: any[]) => T): any {
