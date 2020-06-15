@@ -21,15 +21,17 @@ export class Mocker {
 
     constructor(private clazz: any, public instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
+        this.instance.__tsmockitoMocker = this;
         this.mock.__tsmockitoMocker = this;
-        if (_.isObject(this.clazz) && _.isObject(this.instance)) {
-            this.processProperties((this.clazz as any).prototype);
-            this.processClassCode(this.clazz);
-            this.processFunctionsCode((this.clazz as any).prototype);
-        }
-        if (typeof Proxy !== "undefined" && this.clazz) {
-            this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
-        } else if (typeof Proxy !== "undefined" && !this.clazz) {
+        // if (_.isObject(this.clazz) && _.isObject(this.instance)) {
+        //     this.processProperties((this.clazz as any).prototype);
+        //     this.processClassCode(this.clazz);
+        //     this.processFunctionsCode((this.clazz as any).prototype);
+        // }
+        // if (typeof Proxy !== "undefined" && this.clazz) {
+        //     this.mock.__tsmockitoInstance = new Proxy(this.instance, this.createCatchAllHandlerForRemainingPropertiesWithoutGetters());
+        // } else
+            if (typeof Proxy !== "undefined") {/// && !this.clazz)
             this.instance = new Proxy(this.instance, {
                 get: (target: any, name: PropertyKey) => {
                     if (this.excludedPropertyNames.indexOf(name.toString()) >= 0) {
@@ -154,8 +156,9 @@ export class Mocker {
         this.instance[key] = this.createActionListener(key);
     }
 
-    protected createActionListener(key: string): () => any {
+    public createActionListener(key: string): () => any {
         return (...args) => {
+            console.log('>>', key, args);
             const action: MethodAction = new MethodAction(key, args);
             this.methodActions.push(action);
             const methodStub = this.getMethodStub(key, args);
@@ -207,8 +210,9 @@ export class Mocker {
         this.mock[key] = this.createMethodToStub(key);
     }
 
-    private createMethodToStub(key: string): () => any {
+    public createMethodToStub(key: string): () => any {
         return (...args) => {
+            // @ts-ignore
             if (args.length === 1 && args[0] === "__tsMockitoGetInfo") {
                 return {
                     key,
@@ -222,6 +226,7 @@ export class Mocker {
             const matchers: Matcher[] = [];
 
             for (const arg of args) {
+                // @ts-ignore
                 if (!(arg instanceof Matcher)) {
                     matchers.push(strictEqual(arg));
                 } else {

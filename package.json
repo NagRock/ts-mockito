@@ -1,6 +1,6 @@
 {
   "name": "ts-mockito",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Mocking library for TypeScript",
   "main": "lib/ts-mockito.js",
   "typings": "lib/ts-mockito",
@@ -52,7 +52,7 @@
     "ts-helpers": "^1.1.2",
     "ts-jest": "^23.0.1",
     "tslint": "^5.7.0",
-    "typescript": "^2.7.2"
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "lodash": "^4.17.5"

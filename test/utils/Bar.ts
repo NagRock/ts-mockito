@@ -10,4 +10,8 @@ export class Bar {
     public sumTwoNumbers(a: number, b: number): number {
         return a + b;
     }
+
+    public get something(): number {
+        return 666;
+    }
 }

@@ -35,7 +35,9 @@ export function spy<T>(instanceToSpy: T): T {
 export function mock<T>(clazz: (new(...args: any[]) => T) | (Function & { prototype: T }) ): T;
 export function mock<T>(clazz?: any): T;
 export function mock<T>(clazz?: any): T {
-    return new Mocker(clazz).getMock();
+    const myMock = new Mocker(clazz).getMock();
+
+    return myMock.__tsmockitoInstance;
 }
 
 export function verify<T>(method: T): MethodStubVerificator<T> {
@@ -47,6 +49,30 @@ export function when<T>(method: T): MethodStubSetter<T>;
 export function when<T>(method: any): any {
     return new MethodStubSetter(method);
 }
+
+type BehaviorSetter<T> = MethodStubSetter<T>;
+
+type FunctionToChangeBehavior<A extends any[], R> = (...args: A) => BehaviorSetter<R>;
+
+type Mock<T> = {
+    [K in keyof T]: T[K] extends (...args: infer A) => infer R ? FunctionToChangeBehavior<A, R> : BehaviorSetter<T[K]>;
+};
+
+export function newWhen<T>(myMock: T): Mock<T> {
+    return new Proxy({}, {
+        get(target: {}, p: PropertyKey, receiver: any): any {
+            const tsmockitoMocker = (myMock as any).__tsmockitoMocker;
+            // console.log('>>>>>>', tsmockitoMocker);
+
+
+            return (... args) => {
+                const methodToStub = tsmockitoMocker.createMethodToStub(p)(...args);
+
+                return new MethodStubSetter(methodToStub);
+            };//tsmockitoMocker.createActionListener(p);
+        },
+    }) as any;
+};
 
 export function instance<T>(mockedValue: T): T {
     const tsmockitoInstance = (mockedValue as any).__tsmockitoInstance as T;
