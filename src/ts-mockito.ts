@@ -18,6 +18,7 @@ import {AnyStringMatcher} from "./matcher/type/AnyStringMatcher";
 import {AnythingMatcher} from "./matcher/type/AnythingMatcher";
 import {BetweenMatcher} from "./matcher/type/BetweenMatcher";
 import {DeepEqualMatcher} from "./matcher/type/DeepEqualMatcher";
+import { Matcher } from "./matcher/type/Matcher";
 import {MatchingStringMatcher} from "./matcher/type/MatchingStringMatcher";
 import {NotNullMatcher} from "./matcher/type/NotNullMatcher";
 import {ObjectContainingMatcher} from "./matcher/type/ObjectContainingMatcher";
@@ -27,6 +28,8 @@ import {MethodStubVerificator} from "./MethodStubVerificator";
 import {MethodToStub} from "./MethodToStub";
 import {Mocker} from "./Mock";
 import {Spy} from "./Spy";
+import { StubVerificator } from "./stub-verificator/StubVerificator";
+import { TimesVerificator } from "./stub-verificator/TimesVerificator";
 
 export function spy<T>(instanceToSpy: T): T {
     return new Spy(instanceToSpy).getMock();
@@ -64,15 +67,69 @@ export function newWhen<T>(myMock: T): Mock<T> {
             const tsmockitoMocker = (myMock as any).__tsmockitoMocker;
             // console.log('>>>>>>', tsmockitoMocker);
 
-
-            return (... args) => {
+            let newVar = (... args) => {
                 const methodToStub = tsmockitoMocker.createMethodToStub(p)(...args);
 
                 return new MethodStubSetter(methodToStub);
-            };//tsmockitoMocker.createActionListener(p);
+            };
+            (newVar as any).thenReturn = (...args) => {
+                console.log('thenReturn', args);
+            };
+            return newVar;
         },
     }) as any;
 };
+
+export function newVerify<T>(myMock: T, verificator: StubVerificator): any {
+    return new Proxy({}, {
+        get(target: {}, p: PropertyKey, receiver: any): any {
+            const tsmockitoMocker = (myMock as any).__tsmockitoMocker as Mocker;
+
+            let called = false;
+
+            const newVar = (...args) => {
+                const matchers = [];
+                for (const arg of args) {
+                    // @ts-ignore
+                    if (!(arg instanceof Matcher)) {
+                        matchers.push(strictEqual(arg));
+                    } else {
+                        matchers.push(arg);
+                    }
+                }
+
+                const toVerify = new MethodToStub(
+                  tsmockitoMocker.methodStubCollections,
+                  matchers,
+                  tsmockitoMocker,
+                  p as string,
+                );
+                called = true;
+                verificator.verify(toVerify);
+            };
+
+            (newVar as any).setter = (...args) => {
+                called = true;
+                console.log('setter', args);
+            };
+
+            (newVar as any).getter = (...args) => {
+                called = true;
+                console.log('getter', args);
+            };
+            Promise.resolve().then(() => {
+                if (called === false) {
+                    throw new Error('No expectattion for verify');
+                }
+            });
+            return newVar;
+        },
+    }) as any;
+};
+
+export function times(value: number): StubVerificator {
+    return new TimesVerificator(value);
+}
 
 export function instance<T>(mockedValue: T): T {
     const tsmockitoInstance = (mockedValue as any).__tsmockitoInstance as T;

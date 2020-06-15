@@ -1,5 +1,5 @@
 import { Mocker } from "../src/Mock";
-import { anything, instance, mock, newWhen, verify, when } from "../src/ts-mockito";
+import { anything, instance, mock, newVerify, newWhen, times, verify, when } from "../src/ts-mockito";
 import { Bar } from "./utils/Bar";
 import {Foo} from "./utils/Foo";
 
@@ -14,17 +14,16 @@ describe("mocking", () => {
         bar.sumTwoNumbers(10, 20);
         bar.sumTwoNumbers(10, 20);
 
-        // const tsmockitoMocker = (bar as any).__tsmockitoMocker as Mocker;
-        // verify(tsmockitoMocker).twice();
+        newVerify(bar, times(4)).sumTwoNumbers(10, 20);
     });
 
     it('property', () => {
         const bar: Bar = mock();
         newWhen(bar).something.thenReturn(44);
 
+        newVerify(bar, times(5)).something.setter(3);
 
-
-        // const tsmockitoMocker = (bar as any).__tsmockitoMocker as Mocker;
-        // verify(tsmockitoMocker).twice();
+        // newNewVerify(bar, times(5)).verify(() => bar.something)
+        // newVerifyGetter(bar, times(5)).getter((bar) => bar.something);
     });
 });

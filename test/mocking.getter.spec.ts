@@ -1,4 +1,4 @@
-import {instance, mock, when} from "../src/ts-mockito";
+import { instance, mock, verify, when } from "../src/ts-mockito";
 import {Bar} from "./utils/Bar";
 
 describe("mocking", () => {
@@ -26,7 +26,8 @@ describe("mocking", () => {
             when(mockedFoo.twoPlusTwo).thenReturn(42);
 
             // then
-            expect(foo.twoPlusTwo).toBe(42);
+            verify(mockedFoo.twoPlusTwo).once();
+            // expect(foo.twoPlusTwo).toBe(42);
         });
 
         it("does create inherited property descriptors on instance", () => {
@@ -35,7 +36,7 @@ describe("mocking", () => {
             foo = instance(mockedFoo);
 
             // when
-            when(mockedFoo.sampleString).thenReturn("42");
+            when(mockedFoo.sampleString).thenReturn("42", "52");
 
             // then
             expect(foo.sampleString).toBe("42");

@@ -13,7 +13,7 @@ import {ObjectPropertyCodeRetriever} from "./utils/ObjectPropertyCodeRetriever";
 export class Mocker {
     public mock: any = {};
     protected objectInspector = new ObjectInspector();
-    private methodStubCollections: any = {};
+    public methodStubCollections: any = {};
     private methodActions: MethodAction[] = [];
     private mockableFunctionsFinder = new MockableFunctionsFinder();
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
@@ -158,7 +158,6 @@ export class Mocker {
 
     public createActionListener(key: string): () => any {
         return (...args) => {
-            console.log('>>', key, args);
             const action: MethodAction = new MethodAction(key, args);
             this.methodActions.push(action);
             const methodStub = this.getMethodStub(key, args);
