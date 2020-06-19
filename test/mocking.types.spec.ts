@@ -108,6 +108,18 @@ describe("mocking", () => {
             // then
             expect(thenable.catch()).toEqual("42");
         });
+
+        it("formats as [object Object]", () => {
+            // given
+            const mockedThenable = mock(SampleThenable);
+            const thenable = instance(mockedThenable);
+
+            // when
+
+            // then
+            const str = `"${thenable}"`;
+            expect(str).toEqual('"[object Object]"');
+        });
     });
 
     describe("mocking class with hasOwnProperty", () => {
