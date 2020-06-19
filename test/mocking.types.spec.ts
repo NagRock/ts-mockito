@@ -62,6 +62,52 @@ describe("mocking", () => {
             // then
             expect(foo.sampleString).toBe("42");
         });
+
+        it("does not create then() descriptor", () => {
+            // given
+            mockedFoo = mock(SampleAbstractClass);
+            const woof: any = instance(mockedFoo);
+
+            // when
+
+            // then
+            expect(woof.then == null).toBe(true);
+        });
+
+        it("does create then() descriptor", () => {
+            // given
+            const mockedThenable = mock(SampleThenable);
+            const thenable = instance(mockedThenable);
+
+            // when
+            when(mockedThenable.then()).thenReturn("42");
+
+            // then
+            expect(thenable.then()).toEqual("42");
+        });
+
+        it("does not create catch() descriptor", () => {
+            // given
+            mockedFoo = mock(SampleAbstractClass);
+            const woof: any = instance(mockedFoo);
+
+            // when
+
+            // then
+            expect(woof.catch == null).toBe(true);
+        });
+
+        it("does create catch() descriptor", () => {
+            // given
+            const mockedThenable = mock(SampleThenable);
+            const thenable = instance(mockedThenable);
+
+            // when
+            when(mockedThenable.catch()).thenReturn("42");
+
+            // then
+            expect(thenable.catch()).toEqual("42");
+        });
     });
 
     describe("mocking class with hasOwnProperty", () => {
@@ -229,5 +275,15 @@ class SampleGeneric<T> {
 
     public getGenericTypedValue(): T {
         return null;
+    }
+}
+
+abstract class SampleThenable {
+    public then(): string {
+        return "bob";
+    }
+
+    public catch(): string {
+        return "bob";
     }
 }

@@ -18,6 +18,7 @@ export class Mocker {
     private mockableFunctionsFinder = new MockableFunctionsFinder();
     private objectPropertyCodeRetriever = new ObjectPropertyCodeRetriever();
     private excludedPropertyNames: string[] = ["hasOwnProperty"];
+    private defaultedPropertyNames: string[] = ["Symbol(Symbol.toPrimitive)", "then", "catch"];
 
     constructor(private clazz: any, public instance: any = {}) {
         this.mock.__tsmockitoInstance = this.instance;
@@ -39,6 +40,9 @@ export class Mocker {
                     const hasMethodStub = name in target;
 
                     if (!hasMethodStub) {
+                        if (this.defaultedPropertyNames.indexOf(name.toString()) >= 0) {
+                            return undefined;
+                        }
                         return this.createActionListener(name.toString());
                     }
                     return target[name];
@@ -64,6 +68,9 @@ export class Mocker {
 
                 const hasMethodStub = name in target;
                 if (!hasMethodStub) {
+                    if (this.defaultedPropertyNames.indexOf(name.toString()) >= 0) {
+                        return undefined;
+                    }
                     this.createMethodStub(name.toString());
                     this.createInstanceActionListener(name.toString(), {});
                 }
