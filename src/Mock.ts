@@ -68,9 +68,6 @@ export class Mocker {
 
                 const hasMethodStub = name in target;
                 if (!hasMethodStub) {
-                    if (this.defaultedPropertyNames.indexOf(name.toString()) >= 0) {
-                        return undefined;
-                    }
                     this.createMethodStub(name.toString());
                     this.createInstanceActionListener(name.toString(), {});
                 }
@@ -84,6 +81,9 @@ export class Mocker {
             get: (target: any, name: PropertyKey) => {
                 const hasMethodStub = name in target;
                 if (!hasMethodStub) {
+                    if (this.defaultedPropertyNames.indexOf(name.toString()) >= 0) {
+                        return undefined;
+                    }
                     this.createPropertyStub(name.toString());
                     this.createInstancePropertyDescriptorListener(name.toString(), {}, this.clazz.prototype);
                 }

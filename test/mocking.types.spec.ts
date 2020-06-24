@@ -1,6 +1,7 @@
-import {MethodToStub} from "../src/MethodToStub";
-import {instance, mock, when} from "../src/ts-mockito";
-import {Bar} from "./utils/Bar";
+import { MethodToStub } from "../src/MethodToStub";
+import { instance, mock, when } from "../src/ts-mockito";
+import { Bar } from "./utils/Bar";
+import { ThenableClass } from "./utils/Thenable";
 
 describe("mocking", () => {
     describe("mocking abstract class", () => {
@@ -62,62 +63,63 @@ describe("mocking", () => {
             // then
             expect(foo.sampleString).toBe("42");
         });
-
-        it("does not create then() descriptor", () => {
+    });
+    describe("mocking promise methods", () => {
+        it("does not create then descriptor for class", () => {
             // given
-            mockedFoo = mock(SampleAbstractClass);
-            const woof: any = instance(mockedFoo);
+            const mocked = mock(SampleAbstractClass);
+            const inst = instance(mocked);
 
             // when
 
             // then
-            expect(woof.then == null).toBe(true);
+            expect((inst as any).then).toBeUndefined();
         });
 
-        it("does create then() descriptor", () => {
+        it("does create then descriptor", () => {
             // given
-            const mockedThenable = mock(SampleThenable);
-            const thenable = instance(mockedThenable);
+            const mocked = mock(ThenableClass);
+            const inst = instance(mocked);
 
             // when
-            when(mockedThenable.then()).thenReturn("42");
+            when(mocked.then()).thenReturn("42");
 
             // then
-            expect(thenable.then()).toEqual("42");
+            expect(inst.then()).toEqual("42");
         });
 
-        it("does not create catch() descriptor", () => {
+        it("does not create catch descriptor", () => {
             // given
-            mockedFoo = mock(SampleAbstractClass);
-            const woof: any = instance(mockedFoo);
+            const mocked = mock(SampleAbstractClass);
+            const inst = instance(mocked);
 
             // when
 
             // then
-            expect(woof.catch == null).toBe(true);
+            expect((inst as any).catch).toBeUndefined();
         });
 
-        it("does create catch() descriptor", () => {
+        it("does create catch descriptor", () => {
             // given
-            const mockedThenable = mock(SampleThenable);
-            const thenable = instance(mockedThenable);
+            const mocked = mock(ThenableClass);
+            const inst = instance(mocked);
 
             // when
-            when(mockedThenable.catch()).thenReturn("42");
+            when(mocked.catch()).thenReturn("42");
 
             // then
-            expect(thenable.catch()).toEqual("42");
+            expect(inst.catch()).toEqual("42");
         });
 
-        it("formats as [object Object]", () => {
+        it("default object formatting works", () => {
             // given
-            const mockedThenable = mock(SampleThenable);
-            const thenable = instance(mockedThenable);
+            const mocked = mock(ThenableClass);
+            const inst = instance(mocked);
 
             // when
 
             // then
-            const str = `"${thenable}"`;
+            const str = `"${inst}"`;
             expect(str).toEqual('"[object Object]"');
         });
     });
@@ -287,15 +289,5 @@ class SampleGeneric<T> {
 
     public getGenericTypedValue(): T {
         return null;
-    }
-}
-
-abstract class SampleThenable {
-    public then(): string {
-        return "bob";
-    }
-
-    public catch(): string {
-        return "bob";
     }
 }
