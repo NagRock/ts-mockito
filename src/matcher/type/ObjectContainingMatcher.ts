@@ -11,6 +11,6 @@ export class ObjectContainingMatcher extends Matcher {
     }
 
     public toString(): string {
-        return `objectContaining(${this.expectedValue})`;
+        return `objectContaining(${JSON.stringify(this.expectedValue)})`;
     }
 }
