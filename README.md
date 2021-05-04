@@ -366,7 +366,7 @@ console.log(capture(spiedFoo.bar).last()); // [42]
 ```
 ## Limitations
 
-You can not mock standalone functions (example `typeof()`) using ts-mockito. It only supports mocking the of functions that are associated with a class (example `Math.random()`).
+You can not mock standalone functions (example `typeof()`) using ts-mockito. It only supports the mocking of functions that are associated with a class (example `Math.random()`).
 
 
 
