@@ -25,10 +25,10 @@ export class ArgCaptor {
     }
 
     public byCallIndex(index: number): any {
-        if (index >= this.actions.length) {
-            throw new Error(`Cannot capture arguments, method has not been called so many times: ${index + 1}`);
+        if (this.actions.length > index && index >= 0) {
+            return this.actions[index].args;
         }
-        return this.actions[index].args;
+        throw new Error(`Cannot capture arguments, method has not been called so many times: ${index + 1}`);
     }
 }
 
