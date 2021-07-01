@@ -10,6 +10,21 @@ describe("capturing method arguments", () => {
         foo = instance(mockedFoo);
     });
 
+    describe("when method has NOT been called", () => {
+        it("should NOT try to read call with negative index", () => {
+            // given
+            let error;
+
+            // then
+            try {
+                capture(mockedFoo.concatStringWithNumber).last();
+            } catch (e) {
+                error = e;
+            }
+            expect(error.message).toEqual('Cannot capture arguments, method has not been called so many times: 0');
+        });
+    });
+
     describe("when method has been called", () => {
         it("captures all arguments passed to it", () => {
             // given
