@@ -112,7 +112,7 @@ verify(mockedFoo.getBar(2)).twice();              // was called with arg === 2 e
 verify(mockedFoo.getBar(between(2, 3))).thrice(); // was called with arg between 2-3 exactly three times
 verify(mockedFoo.getBar(anyNumber()).times(4);    // was called with any number arg exactly four times
 verify(mockedFoo.getBar(2)).atLeast(2);           // was called with arg === 2 min two times
-verify(mockedFoo.getBar(anything())).atMost(4);   // was called with any argument max one time
+verify(mockedFoo.getBar(anything())).atMost(4);   // was called with any argument max four times
 verify(mockedFoo.getBar(4)).never();              // was never called with arg === 4
 ```
 
