@@ -26,7 +26,7 @@ module.exports = function (config) {
 
         reporters: ["progress", "mocha"],
 
-        browsers: ["CustomChromeHeadless", "PhantomJS"],
+        browsers: ["CustomChromeHeadless"],
 
         mochaReporter: {
             output: 'minimal'

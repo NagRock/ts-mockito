@@ -16,7 +16,8 @@ export class MockableFunctionsFinder {
     public find(code: string): string[] {
         return (code.match(this.functionNameRegex) || [])
             .map((match: string) => match.match(this.cleanFunctionNameRegex)[1])
-            .filter((functionName: string) => this.isMockable(functionName));
+            .filter((functionName: string) => this.isMockable(functionName))
+            .map((functionName: string) => functionName.indexOf('=') > 0 ? functionName.substr(0, functionName.indexOf('=')) : functionName);
     }
 
     private isMockable(name: string): boolean {

@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "8.8.0"
+  - "14.17.1"
 
 install:
   - "npm install"
