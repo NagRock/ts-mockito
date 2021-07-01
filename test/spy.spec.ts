@@ -4,16 +4,16 @@ describe("spying on a real object", () => {
     class Real {
         public b = 11;
 
+        get baz() {
+            return 3;
+        }
+
         public foo(a: number) {
             return a;
         }
 
         public bar() {
             return 2;
-        }
-
-        get baz() {
-            return 3;
         }
     }
 

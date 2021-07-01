@@ -86,7 +86,7 @@ describe("mocking", () => {
             // given
 
             // when
-            mockedFoo = mock(SampleGeneric);
+            mockedFoo = mock<SampleGeneric<SampleInterface>>(SampleGeneric);
             foo = instance(mockedFoo);
 
             // then
@@ -97,7 +97,7 @@ describe("mocking", () => {
             // given
 
             // when
-            mockedFoo = mock(SampleGeneric);
+            mockedFoo = mock<SampleGeneric<SampleInterface>>(SampleGeneric);
 
             // then
             expect((mockedFoo.twoPlusTwo as any) instanceof MethodToStub).toBe(true);
@@ -105,7 +105,7 @@ describe("mocking", () => {
 
         it("allows to mock method with generic return type value (with IDE completion)", () => {
             // given
-            mockedFoo = mock(SampleGeneric);
+            mockedFoo = mock<SampleGeneric<SampleInterface>>(SampleGeneric);
             foo = instance(mockedFoo);
             const expectedResult = new SampleInterfaceImplementation();
             when(mockedFoo.getGenericTypedValue()).thenReturn(expectedResult);
@@ -119,7 +119,7 @@ describe("mocking", () => {
 
         it("does create own property descriptors on instance", () => {
             // given
-            mockedFoo = mock(SampleGeneric);
+            mockedFoo = mock<SampleGeneric<SampleInterface>>(SampleGeneric);
             foo = instance(mockedFoo);
 
             // when
@@ -131,7 +131,7 @@ describe("mocking", () => {
 
         it("does create inherited property descriptors on mock", () => {
             // given
-            mockedFoo = mock(SampleGeneric);
+            mockedFoo = mock<SampleGeneric<SampleInterface>>(SampleGeneric);
             foo = instance(mockedFoo);
 
             // when
@@ -142,7 +142,7 @@ describe("mocking", () => {
 
         it("does create inherited property descriptors on instance", () => {
             // given
-            mockedFoo = mock(SampleGeneric);
+            mockedFoo = mock<SampleGeneric<SampleInterface>>(SampleGeneric);
             foo = instance(mockedFoo);
 
             // when
@@ -175,16 +175,16 @@ abstract class SampleAbstractClass {
         return "sampleString";
     }
 
-    public sampleMethod(): number {
-        return 4;
-    }
-
     public get twoPlusTwo(): number {
         return this.dependency.sumTwoNumbers(2, 2);
     }
 
     public set twoPlusTwo(value: number) {
         this.dependency.sumTwoNumbers(value, 0);
+    }
+
+    public sampleMethod(): number {
+        return 4;
     }
 }
 
@@ -211,20 +211,20 @@ class SampleInterfaceImplementation implements SampleInterface {
 class SampleGeneric<T> {
     public dependency: Bar;
 
-    public get sampleString(): string {
-        return "sampleString";
-    }
-
-    public sampleMethod(): number {
-        return 4;
-    }
-
     public get twoPlusTwo(): number {
         return this.dependency.sumTwoNumbers(2, 2);
     }
 
     public set twoPlusTwo(value: number) {
         this.dependency.sumTwoNumbers(value, 0);
+    }
+
+    public get sampleString(): string {
+        return "sampleString";
+    }
+
+    public sampleMethod(): number {
+        return 4;
     }
 
     public getGenericTypedValue(): T {

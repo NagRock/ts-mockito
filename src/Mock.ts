@@ -208,7 +208,7 @@ export class Mocker {
     }
 
     private createMethodToStub(key: string): () => any {
-        return (...args) => {
+        return (...args: Array<any>) => {
             if (args.length === 1 && args[0] === "__tsMockitoGetInfo") {
                 return {
                     key,

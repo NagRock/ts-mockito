@@ -66,15 +66,15 @@ class FooWithGetterAndSetter extends SampleAbstractClass {
         super();
     }
 
-    public sampleMethod(): number {
-        return 4;
-    }
-
     public get twoPlusTwo(): number {
         return this.dependency.sumTwoNumbers(2, 2);
     }
 
     public set twoPlusTwo(value: number) {
         this.dependency.sumTwoNumbers(value, 0);
+    }
+
+    public sampleMethod(): number {
+        return 4;
     }
 }
