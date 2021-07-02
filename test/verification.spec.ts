@@ -784,6 +784,24 @@ cases.forEach(testData => {
                 });
             });
         });
+
+        describe("matcher error messages", () => {
+            it("should describe expected method call", () => {
+                instance(mockedFoo).getStringById(2);
+
+                try {
+                    // when
+                    verify(mockedFoo.getStringById(1)).once();
+
+                    expect(true).toBe(false); // Above call should throw an exception
+                } catch (e) {
+                    // then
+                    expect(e.message).toContain("Expected \"getStringById(strictEqual(1))\" to be called 1 time(s). But has been called 0 time(s).\n");
+                    expect(e.message).toContain("Actual calls:\n");
+                    expect(e.message).toContain("getStringById(2)");
+                }
+            });
+        });
     });
 });
 
