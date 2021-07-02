@@ -1,6 +1,9 @@
 import {MethodToStub} from "./MethodToStub";
 import {MethodCallToStringConverter} from "./utils/MethodCallToStringConverter";
 
+// Save reference to setTimeout, in case tests are mocking time functions
+const localSetTimeout = setTimeout;
+
 export class MethodStubVerificator<T> {
     private methodCallToStringConverter: MethodCallToStringConverter = new MethodCallToStringConverter();
 
@@ -90,5 +93,26 @@ export class MethodStubVerificator<T> {
         } else {
             throw new Error(`${errorBeginning}but none of them has been called.`);
         }
+    }
+
+    public timeout(ms: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const expired = Date.now() + ms;
+
+            const check = () => {
+                const allMatchingActions = this.methodToVerify.mocker.getAllMatchingActions(this.methodToVerify.name, this.methodToVerify.matchers);
+
+                if (allMatchingActions.length > 0) {
+                    resolve();
+                } else if (Date.now() >= expired) {
+                    const methodToVerifyAsString = this.methodCallToStringConverter.convert(this.methodToVerify);
+                    reject(new Error(`Expected "${methodToVerifyAsString}to be called within ${ms} ms.`));
+                } else {
+                    localSetTimeout(check, 1);
+                }
+            };
+
+            check();
+        });
     }
 }

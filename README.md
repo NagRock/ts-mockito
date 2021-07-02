@@ -365,6 +365,16 @@ foo.bar();
 console.log(capture(spiedFoo.bar).last()); // [42] 
 ```
 
+### Verify with timeout
+
+This feature is useful when testing asynchronous functionality. You do some action and expect the result to arrive as an asynchronous function call to one of your mocks.
+
+```typescript
+let mockedFoo:Foo = mock(Foo);
+await verify(mockedFoo.getBar(3)).timeout(1000);
+```
+
+
 ### Thanks
 
 * Szczepan Faber (https://www.linkedin.com/in/szczepiq) 
