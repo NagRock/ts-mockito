@@ -168,6 +168,25 @@ when(mockedFoo.sumTwoNumbers(anyNumber(), anyNumber())).thenCall((arg1:number, a
 console.log(foo.sumTwoNumbers(5, 10));
 ```
 
+### Using matchers to verify
+
+DeepEqualMatcher to compare objects
+
+``` typescript
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// Some calls
+foo.getBar({ foo: "bar" });
+
+// Use deepEqual to verify objects
+verify(mockedFoo.getBar(deepEqual({ foo: "bar" }))).called();    // Was called with object only once
+```
+
+
 ### Resolving / rejecting promises
 
 You can also stub method to resolve / reject promise
