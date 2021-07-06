@@ -179,6 +179,17 @@ when(mockedFoo.fetchData("a")).thenResolve({id: "a", value: "Hello world"});
 when(mockedFoo.fetchData("b")).thenReject(new Error("b does not exist"));
 ```
 
+### Defer resolving promises
+
+The actions `.thenResolve()` and `.thenReject()` are returning promises that are already resolved or rejected. Sometimes you want to control the order or timing of when promises are resolved. In that case it is useful to return a deferred promise, and resolve it from the test code, when appropriate.
+
+```typescript
+let d = defer<number>();
+when(obj.method()).thenReturn(d); // Return a promise that is not resolved yet
+
+d.resolve(1); // Later, the promise is resolved or rejected
+```
+
 ### Resetting mock calls
 
 You can reset just mock call counter
