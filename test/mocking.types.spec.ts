@@ -1,6 +1,7 @@
-import {MethodToStub} from "../src/MethodToStub";
-import {instance, mock, when} from "../src/ts-mockito";
-import {Bar} from "./utils/Bar";
+import { MethodToStub } from "../src/MethodToStub";
+import { instance, mock, when } from "../src/ts-mockito";
+import { Bar } from "./utils/Bar";
+import { ThenableClass } from "./utils/Thenable";
 
 describe("mocking", () => {
     describe("mocking abstract class", () => {
@@ -61,6 +62,65 @@ describe("mocking", () => {
 
             // then
             expect(foo.sampleString).toBe("42");
+        });
+    });
+    describe("mocking promise methods", () => {
+        it("does not create then descriptor for class", () => {
+            // given
+            const mocked = mock(SampleAbstractClass);
+            const inst = instance(mocked);
+
+            // when
+
+            // then
+            expect((inst as any).then).toBeUndefined();
+        });
+
+        it("does create then descriptor", () => {
+            // given
+            const mocked = mock(ThenableClass);
+            const inst = instance(mocked);
+
+            // when
+            when(mocked.then()).thenReturn("42");
+
+            // then
+            expect(inst.then()).toEqual("42");
+        });
+
+        it("does not create catch descriptor", () => {
+            // given
+            const mocked = mock(SampleAbstractClass);
+            const inst = instance(mocked);
+
+            // when
+
+            // then
+            expect((inst as any).catch).toBeUndefined();
+        });
+
+        it("does create catch descriptor", () => {
+            // given
+            const mocked = mock(ThenableClass);
+            const inst = instance(mocked);
+
+            // when
+            when(mocked.catch()).thenReturn("42");
+
+            // then
+            expect(inst.catch()).toEqual("42");
+        });
+
+        it("default object formatting works", () => {
+            // given
+            const mocked = mock(ThenableClass);
+            const inst = instance(mocked);
+
+            // when
+
+            // then
+            const str = `"${inst}"`;
+            expect(str).toEqual('"[object Object]"');
         });
     });
 
