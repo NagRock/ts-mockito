@@ -120,8 +120,8 @@ export class Mocker {
                     return;
                 }
                 const descriptor = Object.getOwnPropertyDescriptor(obj, name);
-                if (descriptor.get) {
-                    this.createPropertyStub(name);
+                if (descriptor.get || descriptor.set) {
+                    this.createPropertyStub(name, descriptor);
                     this.createInstancePropertyDescriptorListener(name, descriptor, obj);
                     this.createInstanceActionListener(name, obj);
                 } else if (typeof descriptor.value === "function") {
@@ -141,8 +141,16 @@ export class Mocker {
             return;
         }
 
+        if (_.isEmpty(descriptor)) {
+            Object.defineProperty(this.instance, key, {
+                get: this.createActionListener(key),
+            });
+            return;
+        }
+
         Object.defineProperty(this.instance, key, {
-            get: this.createActionListener(key),
+            get: descriptor.get ? this.createActionListener(key) : undefined,
+            set: descriptor.set ? this.createActionListener(key) : undefined,
         });
     }
 
@@ -189,13 +197,21 @@ export class Mocker {
         });
     }
 
-    private createPropertyStub(key: string): void {
+    private createPropertyStub(key: string, descriptor?: PropertyDescriptor): void {
         if (this.mock.hasOwnProperty(key)) {
             return;
         }
 
+        if (descriptor === undefined) {
+            Object.defineProperty(this.mock, key, {
+                get: this.createMethodToStub(key),
+            });
+            return;
+        }
+
         Object.defineProperty(this.mock, key, {
-            get: this.createMethodToStub(key),
+            get: descriptor.get ? this.createMethodToStub(key) : undefined,
+            set: descriptor.set ? this.createMethodToStub(key) : undefined,
         });
     }
 
