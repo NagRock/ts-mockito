@@ -5,7 +5,7 @@ import {ResolvePromiseMethodStub} from "./stub/ResolvePromiseMethodStub";
 import {ReturnValueMethodStub} from "./stub/ReturnValueMethodStub";
 import {ThrowErrorMethodStub} from "./stub/ThrowErrorMethodStub";
 
-export class MethodStubSetter<T, ResolveType = void, RejectType = Error> {
+export class MethodStubSetter<T, ResolveType = void, RejectType = any> {
     private static globalGroupIndex: number = 0;
     private groupIndex: number;
 
@@ -47,13 +47,10 @@ export class MethodStubSetter<T, ResolveType = void, RejectType = Error> {
         return this;
     }
 
-    public thenReject(...rest: Error[]): this {
+    public thenReject(...rest: RejectType[]): this {
         this.convertToPropertyIfIsNotAFunction();
-        // Resolves undefined if no resolve values are given.
-        if (rest.length === 0) {
-            rest.push(new Error(`mocked '${this.methodToStub.name}' rejected`));
-        }
-        rest.forEach(value => {
+        const rejections: any[] = rest.length === 0 ? [new Error(`mocked '${this.methodToStub.name}' rejected`)] : rest;
+        rejections.forEach(value => {
             this.methodToStub.methodStubCollection.add(new RejectPromiseMethodStub(this.groupIndex, this.methodToStub.matchers, value));
         });
         return this;

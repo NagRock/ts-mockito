@@ -232,6 +232,23 @@ describe("mocking", () => {
                     });
             });
 
+            it("rejects with given anything", done => {
+                // given
+                const sampleValue = "abc";
+                const sampleRejection = "myErrorType";
+                const a = when(mockedFoo.sampleMethodReturningPromise(sampleValue));
+                a.thenReject(sampleRejection);
+
+                // when
+                foo.sampleMethodReturningPromise(sampleValue)
+                    .then(value => done.fail())
+                    .catch(err => {
+                        // then
+                        expect(err).toEqual(sampleRejection);
+                        done();
+                    });
+            });
+
             describe("But without defined error", () => {
                 it("rejects with default error", done => {
                     // given
