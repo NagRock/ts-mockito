@@ -35,7 +35,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 ### Importing
 
-`import { mock } from "ts-mockito/lib/ts-mockito";`
+`import { mock } from "ts-mockito";`
 
 ### Basics
 ``` typescript
