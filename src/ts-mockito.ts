@@ -39,6 +39,9 @@ export function mock<T>(clazz?: any): T {
 }
 
 export function verify<T>(method: T): MethodStubVerificator<T> {
+    if ('expect' in globalThis && 'nothing' in expect()) {
+        expect().nothing();
+    }
     return new MethodStubVerificator(method as any);
 }
 
