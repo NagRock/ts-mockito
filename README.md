@@ -7,7 +7,6 @@ Mocking library for TypeScript inspired by http://mockito.org/
 
 ## Main features
 
-
 * Strongly typed
 * IDE autocomplete
 * Mock creation (`mock`) (also abstract classes) [#example](#basics)
@@ -26,6 +25,7 @@ Mocking library for TypeScript inspired by http://mockito.org/
 * Capturing arguments passed to method (`capture`) [#example](#capturing-method-arguments)
 * Recording multiple behaviors [#example](#recording-multiple-behaviors)
 * Readable error messages (ex. `'Expected "convertNumberToString(strictEqual(3))" to be called 2 time(s). But has been called 1 time(s).'`)
+* Mocking within other functions [#example](#mocking-within-other-functions)
 
 ## Installation
 
@@ -83,6 +83,22 @@ let foo:Foo = instance(mockedFoo);
 
 // prints three
 console.log(foo.sampleGetter);
+```
+
+in th case that your getter returns an object, make sure that you return the expected object rather than trying to access its properties from within `when`:
+
+``` typescript
+// Creating mock
+let mockedFoo:Foo = mock(Foo);
+
+// stub getter before execution
+when(mockedFoo.sampleGetter).thenReturn({ name: 'three' });
+
+// Getting instance
+let foo:Foo = instance(mockedFoo);
+
+// prints three
+console.log(foo.sampleGetter.name);
 ```
 
 ### Stubbing property values that have no getters
@@ -363,6 +379,24 @@ const spiedFoo = spy(foo);
 foo.bar();
 
 console.log(capture(spiedFoo.bar).last()); // [42] 
+```
+
+### Mocking within other functions
+
+To mock class objects within other functions, it works exactly the same as mocking outside of functions
+
+``` typescript
+const baz = () => {
+    const foo = new Foo();
+    return foo.getBar(1);
+}
+
+const mockedFoo = mock(Foo);
+when(mockedFoo.getBar(1)).thenReturn(5);
+
+console.log(baz()); // 5
+
+verify(mockedFoo.getBar(1)).once();
 ```
 
 ### Thanks
